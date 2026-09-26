@@ -10,21 +10,22 @@ import { StudyLogger } from '@/components/study/study-logger'
 export default async function DashboardPage() {
   const supabase = createClient()
   
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null
+  let profile = null
   
-  if (!user) {
-    redirect('/login')
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+    if (user) {
+      const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      profile = p
+    }
+  } catch {
+    // Ignore error for Demo Mode
   }
 
-  // Fetch user profile (mocked layout for now)
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  const displayName = profile?.display_name || profile?.username || 'Student'
-  const currentStreak = profile?.current_streak || 0
+  const displayName = profile?.display_name || profile?.username || 'Kenji (Demo Mode)'
+  const currentStreak = profile?.current_streak || 14
   const jlptProgress = 82 // Mocked
   
   return (

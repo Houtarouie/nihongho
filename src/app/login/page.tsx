@@ -57,6 +57,12 @@ export default function LoginPage() {
             </button>
           </div>
           
+          <div className="flex justify-center w-full mb-4">
+            <a href="/dashboard" className="text-sm text-blue-500 hover:underline">
+              Or skip login and enter Demo Mode &rarr;
+            </a>
+          </div>
+          
           {isLogin ? (
             <Card>
               <form onSubmit={(e) => onSubmit(e, login)}>
