@@ -6,12 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>, action: typeof login | typeof signup) {
     event.preventDefault()
@@ -37,13 +37,27 @@ export default function LoginPage() {
           <p className="text-muted-foreground mt-2">Learn Japanese together. Every day.</p>
         </div>
         
-        <Tabs defaultValue="login" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
-          </TabsList>
+        <div className="w-full space-y-4">
+          <div className="flex w-full rounded-lg bg-muted p-1">
+            <button
+              onClick={() => setIsLogin(true)}
+              className={`flex-1 rounded-md py-1.5 text-sm font-medium transition-all ${
+                isLogin ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => setIsLogin(false)}
+              className={`flex-1 rounded-md py-1.5 text-sm font-medium transition-all ${
+                !isLogin ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Sign Up
+            </button>
+          </div>
           
-          <TabsContent value="login">
+          {isLogin ? (
             <Card>
               <form onSubmit={(e) => onSubmit(e, login)}>
                 <CardHeader>
@@ -67,9 +81,7 @@ export default function LoginPage() {
                 </CardFooter>
               </form>
             </Card>
-          </TabsContent>
-          
-          <TabsContent value="signup">
+          ) : (
             <Card>
               <form onSubmit={(e) => onSubmit(e, signup)}>
                 <CardHeader>
@@ -97,8 +109,8 @@ export default function LoginPage() {
                 </CardFooter>
               </form>
             </Card>
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </div>
     </div>
   )

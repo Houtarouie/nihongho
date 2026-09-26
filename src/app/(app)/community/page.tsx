@@ -1,6 +1,8 @@
+'use client'
+
+import { useState } from 'react'
 import { PostComposer } from '@/components/social/post-composer'
 import { PostCard } from '@/components/social/post-card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 // Mock Data
 const MOCK_POSTS = [
@@ -33,33 +35,49 @@ const MOCK_POSTS = [
 ]
 
 export default function CommunityPage() {
+  const [activeTab, setActiveTab] = useState<'following' | 'discover'>('following')
+
   return (
     <div className="max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Community</h1>
       
-      <Tabs defaultValue="following" className="mb-6">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="following">Following</TabsTrigger>
-          <TabsTrigger value="discover">Discover</TabsTrigger>
-        </TabsList>
+      <div className="mb-6">
+        <div className="flex w-full rounded-lg bg-muted p-1 mb-6">
+          <button
+            onClick={() => setActiveTab('following')}
+            className={`flex-1 rounded-md py-1.5 text-sm font-medium transition-all ${
+              activeTab === 'following' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            Following
+          </button>
+          <button
+            onClick={() => setActiveTab('discover')}
+            className={`flex-1 rounded-md py-1.5 text-sm font-medium transition-all ${
+              activeTab === 'discover' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            Discover
+          </button>
+        </div>
         
-        <TabsContent value="following" className="space-y-4">
-          <PostComposer />
-          
+        {activeTab === 'following' ? (
           <div className="space-y-4">
-            {MOCK_POSTS.map(post => (
-              <PostCard key={post.id} post={post} />
-            ))}
+            <PostComposer />
+            
+            <div className="space-y-4">
+              {MOCK_POSTS.map(post => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
           </div>
-        </TabsContent>
-        
-        <TabsContent value="discover">
+        ) : (
           <div className="text-center p-8 text-muted-foreground bg-muted/20 rounded-lg border">
             <p>Discover new learners and interesting posts here.</p>
             <p className="text-sm mt-2">Coming soon!</p>
           </div>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
     </div>
   )
 }

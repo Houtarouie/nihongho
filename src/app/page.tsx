@@ -31,7 +31,7 @@ export default function LandingPage() {
                 <Link href="/login">
                   <Button size="lg">Start Learning</Button>
                 </Link>
-                <Link href="#features">
+                <Link href="/login">
                   <Button variant="outline" size="lg">Explore Japanese</Button>
                 </Link>
               </div>
