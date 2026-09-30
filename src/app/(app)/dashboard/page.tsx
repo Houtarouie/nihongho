@@ -80,7 +80,7 @@ export default function DashboardPage() {
       </header>
 
       {/* Quick Access Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link href="/learn?lesson=hiragana">
           <Card className="hover:border-primary/50 transition-all cursor-pointer h-full">
             <CardContent className="p-4 flex items-center justify-between">
@@ -92,6 +92,22 @@ export default function DashboardPage() {
               </div>
               <span className="text-2xl font-bold text-primary bg-primary/10 h-10 w-10 rounded-lg flex items-center justify-center">
                 あ
+              </span>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/reading">
+          <Card className="hover:border-[#e15b64]/60 transition-all cursor-pointer h-full border-[#e15b64]/20">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-[#e15b64] font-semibold">
+                  Graded Reader & Decks
+                </p>
+                <p className="text-lg font-bold mt-0.5">Reading & Vocab Lists</p>
+              </div>
+              <span className="text-2xl font-bold text-[#e15b64] bg-[#e15b64]/10 h-10 w-10 rounded-lg flex items-center justify-center">
+                単
               </span>
             </CardContent>
           </Card>
