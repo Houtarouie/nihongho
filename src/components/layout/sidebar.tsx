@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 const navItems = [
   { name: 'Home', href: '/dashboard', icon: Home },
   { name: 'Learn', href: '/learn', icon: BookOpen },
+  { name: 'Grammar', href: '/grammar', icon: BookOpen },
   { name: 'Practice', href: '/practice', icon: PenTool },
   { name: 'Community', href: '/community', icon: Users },
   { name: 'Profile', href: '/profile', icon: User },

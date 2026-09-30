@@ -1,0 +1,5876 @@
+[
+  {
+    "grammar": "だ",
+    "meaning": "To be, Is",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "です",
+    "meaning": "To be, Is",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "は",
+    "meaning": "As for... (Highlights sentence topic)",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "も",
+    "meaning": "Also, Too, As well, Even, Either, Neither",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "これ",
+    "meaning": "This",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "それ",
+    "meaning": "That",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "あれ",
+    "meaning": "That (over there)",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "の",
+    "meaning": "Indicates possession",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "いい いい",
+    "meaning": "い-Adjective meaning 'good'",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "い-Adjectives い-Adjective",
+    "meaning": "Adjectives ending in い",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "な-Adjectives な-Adjective",
+    "meaning": "Adjectives that are also nouns",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "か",
+    "meaning": "Question marking particle",
+    "level": "N5",
+    "lesson": "Lesson 1 – Things that Are Crucial to Make a Natural -Interesting- Sentence"
+  },
+  {
+    "grammar": "が",
+    "meaning": "Subject marking particle, Identification particle",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "よ",
+    "meaning": "Emphasis (Sentence ending particle)",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "ね",
+    "meaning": "Isn't it?, Right? (Sentence ending particle)",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "る-Verb (Dictionary)",
+    "meaning": "る + ます (Ichidan Verbs)",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "う-Verb (Dictionary)",
+    "meaning": "う + ます (Godan Verbs)",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "を",
+    "meaning": "Object marking particle",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "ます",
+    "meaning": "Polite Verb Endings",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "る-Verb (Negative)",
+    "meaning": "Will/Does/Do (not)",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "う-Verb (Negative)",
+    "meaning": "Will/Does/Do (not)",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "と",
+    "meaning": "And",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "ここ",
+    "meaning": "Here, This place",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "そこ",
+    "meaning": "There, That place",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "あそこ",
+    "meaning": "Over there",
+    "level": "N5",
+    "lesson": "Lesson 2 – Things that Are Necessary to Use Basic Types of Verbs"
+  },
+  {
+    "grammar": "で",
+    "meaning": "At, In",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "に",
+    "meaning": "In, At, To, For, On",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "か",
+    "meaning": "Or",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "と",
+    "meaning": "With",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "でしょう",
+    "meaning": "Right?, Probably, Isn't it?",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "だろう",
+    "meaning": "Right?, Probably, Isn't it?",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "がある がある",
+    "meaning": "To be, There is",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "がいる がいる",
+    "meaning": "To be, There is, To remain (in a state)",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "この",
+    "meaning": "This",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "その",
+    "meaning": "That",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "あの",
+    "meaning": "That (over there)",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "～んです・のです んです・のです",
+    "meaning": "Explanatory, Emphasis, The fact is",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "の (Questions)",
+    "meaning": "Contextual and Explanatory Questions",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "い-Adjective (Past)",
+    "meaning": "Was, Were (Past tense)",
+    "level": "N5",
+    "lesson": "Lesson 3 – Remaining Particles Needed in Their Basic Uses"
+  },
+  {
+    "grammar": "の のは・のが",
+    "meaning": "Verb nominalizer, The one who..., That which...",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "い-Adjective + Noun い-Adjective + (Noun)",
+    "meaning": "Describing a noun",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "な-Adjective + Noun な-Adjective + (Noun)",
+    "meaning": "Describing a noun",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "へいく へいく",
+    "meaning": "To go to, To head toward",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "する",
+    "meaning": "To do, To make into",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "くる くる",
+    "meaning": "To come",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "る-Verb (Past)",
+    "meaning": "る - Verbs (Past tense)",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "う-Verb (Past)",
+    "meaning": "う - Verbs (Past tense)",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "好き すき",
+    "meaning": "Like, Fond of",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "きらい きらい",
+    "meaning": "Dislike, Not fond of",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "のがすき のがすき",
+    "meaning": "Like doing, Love doing",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "がある + Noun がある + (Noun)",
+    "meaning": "Noun (B) that has Noun (A), Noun (B) with Noun (A)",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "い-Adjectives くない くない",
+    "meaning": "Not (Adjective)",
+    "level": "N5",
+    "lesson": "Lesson 4 – Different Verb Forms that Will Make Use of the Particles Just Taught"
+  },
+  {
+    "grammar": "で",
+    "meaning": "With, By (using)",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "ので",
+    "meaning": "Because, So, Since, The reason being",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "から",
+    "meaning": "Because, Since",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "から",
+    "meaning": "From",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "けど・だけど けど",
+    "meaning": "But, However",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "が",
+    "meaning": "But, However",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "る-Verb (Negative-Past)",
+    "meaning": "る - Verbs (Negative-past tense)",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "う-Verb (Negative-Past)",
+    "meaning": "う - Verbs (Negative-past tense)",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "Verb + て ～て (Conjunction)",
+    "meaning": "And, Then (Linking events)",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "ている① ～ている ①",
+    "meaning": "Is, Am, Are (~ing)",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "へ",
+    "meaning": "To, Toward",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "Verb + にいく ～にいく",
+    "meaning": "To go ~, To go in order to ~",
+    "level": "N5",
+    "lesson": "Lesson 5 – Basic Sentence Linking Structures て"
+  },
+  {
+    "grammar": "誰 だれ",
+    "meaning": "Who",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "なぜ",
+    "meaning": "Why",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "どうして",
+    "meaning": "Why",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "なんで",
+    "meaning": "Why",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "い-Adjective (Predicate) い-Adjective + です (Predicate)",
+    "meaning": "い-Adjective (Predicate)",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "な-Adjective だ な-Adjective + だ (Predicate)",
+    "meaning": "な-Adjective (Predicate)",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "だった・でした",
+    "meaning": "Was, Were (Past tense)",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "じゃない",
+    "meaning": "Is not, Isn't",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "じゃなかった",
+    "meaning": "Was not, Wasn't",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "い-Adjective くなかった くなかった",
+    "meaning": "Was not, Wasn't (Adjective)",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "と",
+    "meaning": "Quotation",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "って",
+    "meaning": "Casual quotation",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "Verbs (Non-past) Verb (Non-Past)",
+    "meaning": "(Non-past)",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "Verb［た・ている］+ Noun ～た + (Noun)",
+    "meaning": "Verb modified noun, Relative clause",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "が・の (Subject)",
+    "meaning": "Particle Swapping",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "の",
+    "meaning": "Possessive use (Noun omission)",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "な な (Prohibitive)",
+    "meaning": "Do not, Don't (Prohibitive)",
+    "level": "N5",
+    "lesson": "Lesson 6 – Filling in the Knowledge Gaps of the Basics"
+  },
+  {
+    "grammar": "だけ",
+    "meaning": "Only, Just",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "どれ",
+    "meaning": "Which (of three or more)",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "どこ",
+    "meaning": "Where",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "どの",
+    "meaning": "Which (of three or more), What (kind)",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "ている② ～ている ②",
+    "meaning": "State of being, Has (have) done",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "てから ～てから",
+    "meaning": "Once...is done, Once...happens, After doing",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "Verb + て+ B ～て (Sequence)",
+    "meaning": "And, And then, After that (sequence)",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "もう",
+    "meaning": "Already, Anymore",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "まだ",
+    "meaning": "Still",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "まだ～ていません",
+    "meaning": "Still haven't done (something)",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "てもいい ～てもいい",
+    "meaning": "It is alright/fine/okay even if, Can/may, ~ is also okay",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "たい",
+    "meaning": "Want to do",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "たり～たりする",
+    "meaning": "Things like ~ and ~",
+    "level": "N5",
+    "lesson": "Lesson 7 – Slightly More Advanced Linking and Identification Phrases"
+  },
+  {
+    "grammar": "けっこう けっこう",
+    "meaning": "Quite, A lot, Fairly, Rather",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "たくさん たくさん",
+    "meaning": "Many, A lot of, Plenty, Enough",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "まえに まえに",
+    "meaning": "Before, In front of",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "くらい ①",
+    "meaning": "About, Approximately",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "Noun + まで",
+    "meaning": "Until, Till, To (but no further than)",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "Verb + まで",
+    "meaning": "Until (something) happens",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "すぎる すぎる",
+    "meaning": "Too much, Very",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "にする",
+    "meaning": "To decide on, To choose, To make something into, To view something as",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "～になる・～くなる になる・くなる",
+    "meaning": "To become (Adjective)",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "のなかで～がいちばん～ のなかで～がいちばん",
+    "meaning": "Out of ~, ~ is the best/most ~",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "より～のほうが より～のほうが",
+    "meaning": "To be more ~ than ~",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "なにか・なにも なに + か",
+    "meaning": "Something, Nothing, Anything, Not anything, Some kind of, Not any kind of",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "誰か・どこか・誰も・どこも だれか・どこか・だれも・どこも",
+    "meaning": "Someone, Somewhere, Not anyone, Not anywhere",
+    "level": "N5",
+    "lesson": "Lesson 8 – Identifying Amounts and Locations"
+  },
+  {
+    "grammar": "ましょう",
+    "meaning": "Let's, Shall we (Polite volitional)",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "～ましょうか ましょうか",
+    "meaning": "Shall we, Shall I",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "ませんか",
+    "meaning": "Won't you, Would you not, Why don't we",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "Verb + てもいい ～てもいい (Verb)",
+    "meaning": "It's okay to, It's alright to, Can/may",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "てください ～てください",
+    "meaning": "Please do (Polite request)",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "ないでください ～ないでください",
+    "meaning": "Please don't (Polite request)",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "てはいけない ～てはいけない",
+    "meaning": "Must not, May not",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "なくてはいけない",
+    "meaning": "Must do, Have to do",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "なくてはならない",
+    "meaning": "Must do, Have to do",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "たほうがいい ～たほうがいい",
+    "meaning": "It'd be better to, Should do",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "ないほうがいい ないほうがいい",
+    "meaning": "It'd be better not to, Shouldn't do",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "なくちゃ・なきゃ",
+    "meaning": "Must do, Have to do",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "や",
+    "meaning": "Things like, And the like",
+    "level": "N5",
+    "lesson": "Lesson 9 – Suggesting and Requesting"
+  },
+  {
+    "grammar": "たことがある ～たことがある",
+    "meaning": "Have done before",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "ている③ ～ている ③",
+    "meaning": "Has/have done, Is ~ing (Repetition)",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "Adjective + て・Noun + で ～て (Adjectives and Nouns)",
+    "meaning": "And... (Conjunctive)",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "Adjective + て + B ～て (Qualities and States)",
+    "meaning": "And..., Both and (Conjunctive)",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "のがへた のがへた",
+    "meaning": "To be bad at, Poor at, Unskillful",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "のがじょうず のがじょうず",
+    "meaning": "To be good at, Proficient",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "Adjective + の(は) (Adjective) + のは",
+    "meaning": "The 'one' that... (Indefinite pronoun, Adjective nominalization)",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "あげる",
+    "meaning": "To give (away), To present, To provide",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "くれる",
+    "meaning": "To give (me), To be given",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "もらう もらう",
+    "meaning": "To receive, To get, To obtain",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "けれども",
+    "meaning": "But, Although",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "つもりだ",
+    "meaning": "To plan to, To intend to",
+    "level": "N5",
+    "lesson": "Lesson 10 – Giving, Receiving, and Describing Experiences"
+  },
+  {
+    "grammar": "でも",
+    "meaning": "Or something, Any... (with question words), No matter (who)",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "やすい ～やすい",
+    "meaning": "Easy to, Likely to",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "にくい",
+    "meaning": "Difficult to, Hard to",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "づらい",
+    "meaning": "Hard to, Tough to, Painful to, Difficult to",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "だんだん だんだん",
+    "meaning": "Gradually, Little by little, Step by step",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "どんどん",
+    "meaning": "Progressively, Rapidly increasing, More and more",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "～ら ら",
+    "meaning": "We, Them, They, These, Those",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "ていく ～ていく",
+    "meaning": "To ~ and go, To go on, To start",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "てくる ～てくる",
+    "meaning": "To come to, To become, To continue, To be starting to, Has been ~ing",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "かた かた",
+    "meaning": "Way of ~ing, How to ~, Manner of ~ing",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "だけで",
+    "meaning": "Just by, Just with",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "だが・ですが だが",
+    "meaning": "But, Still, However, Nevertheless",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "なくて なくて (Sequence)",
+    "meaning": "To not ~ and ~, Not ~ and ~ (Conjugations)",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "なくて なくて (Reasons and Causes)",
+    "meaning": "Not ~ and, Not so, Because not (Examples)",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "ないで",
+    "meaning": "Without doing, Not ~ and ~",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "Verb［れる・られる］ れる・られる (Passive)",
+    "meaning": "Was done to ~ by ~, Done without consent, Done to one's dismay",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "他動詞・自動詞 たどうし・じどうし",
+    "meaning": "Done through action vs. occurring on its own",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "なおす なおす",
+    "meaning": "To do over, To redo",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "ということ ということ",
+    "meaning": "~ing, The ~ that ~ (Nominalization)",
+    "level": "N4",
+    "lesson": "Lesson 1 – Ways of Doing and Being"
+  },
+  {
+    "grammar": "とき とき",
+    "meaning": "When, At the time of",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "まず",
+    "meaning": "To start with, Firstly",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "まで",
+    "meaning": "Even, To even, To the extent of",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "までに",
+    "meaning": "By ~, By the time that ~, Before ~",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "また",
+    "meaning": "Also, As well, Moreover, Again, Additionally",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "はじめる はじめる",
+    "meaning": "To start, To begin to",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "おわる おわる",
+    "meaning": "To finish, To end",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "ごろ ころ",
+    "meaning": "Around, About",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "あとで あとで",
+    "meaning": "After, Later",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "ていた ～ていた",
+    "meaning": "Was doing ~",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "に (Frequency)",
+    "meaning": "Times (In each time period), Every, Frequency of",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "とうとう とうとう",
+    "meaning": "Finally, After all",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "より",
+    "meaning": "More than, Over",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "ごとに ごとに",
+    "meaning": "Each, Every",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "なるべく",
+    "meaning": "As ~ as possible, Wherever practicable",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "るところだ ～るところだ",
+    "meaning": "About to, On the verge of",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "のに",
+    "meaning": "Despite, Although, Even though",
+    "level": "N4",
+    "lesson": "Lesson 2 – When and How Often"
+  },
+  {
+    "grammar": "とおもう とおもう",
+    "meaning": "I think",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "など など",
+    "meaning": "Such as, Things like, Etc., And so on",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "みたい",
+    "meaning": "Like, Similar to, Resembling",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "こと",
+    "meaning": "Converting a verb into a noun",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "そう",
+    "meaning": "Look like, Appear, Seem, Have a feeling that",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "さ",
+    "meaning": "Converting adjectives to nouns",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "とか～とか とか",
+    "meaning": "Among other things, For example, Such as",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "そういう",
+    "meaning": "Like that, Kind of",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "Verb[よう] う・よう (Volitional)",
+    "meaning": "Let's, I shall (Casual volitional)",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "ようだ ようだ",
+    "meaning": "It seems that, It appears that, It looks like",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "ぜんぜん ぜんぜん",
+    "meaning": "(Not) at all",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "かな",
+    "meaning": "I wonder",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "あまり～ない あまり～ない",
+    "meaning": "Not very, Not much, Not really, Hardly",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "ば",
+    "meaning": "If… then, (Conditional)",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "なら",
+    "meaning": "Were it, If, If it's the case, As for (Conditional)",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "がる",
+    "meaning": "To feel, To think, To act as if, To want, To desire",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "がする",
+    "meaning": "To give off, Smell, Sound, Taste, Sensation",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "する (Have/Wear)",
+    "meaning": "Have (a feature), Wear (an accessory)",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "たがる",
+    "meaning": "To want to (Third person)",
+    "level": "N4",
+    "lesson": "Lesson 3 – Seems Like, Could be"
+  },
+  {
+    "grammar": "かもしれない",
+    "meaning": "Might, Maybe, Probably",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "みたいに・みたいな みたいに",
+    "meaning": "Like, Similar to, Resembling",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "そうに・そうな そうに",
+    "meaning": "Seem, Look like, Sound",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "のように・のような のように",
+    "meaning": "Like (Noun), Similar to (Noun)",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "〜ようと思う・〜おうと思う う・よう + とおもう",
+    "meaning": "I think I will, I think I shall, Going to, Gonna (Volitional + と思う)",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "く・に",
+    "meaning": "～ly (Describing verbs), Adverbs",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "～にする・～くする にする・くする",
+    "meaning": "Adjective + する, To make something/someone (more)",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "くは",
+    "meaning": "Emphasis and Contrast",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "といい",
+    "meaning": "I hope, I wish, You should, It would be good",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "ようになる ようになる",
+    "meaning": "To reach the point that, To come to be that, To turn into",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "まい～のように まい～のように",
+    "meaning": "Almost every ~, Nearly every ~, On a ~ basis",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "じゃないか",
+    "meaning": "Isn't it?, Is it not?",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "らしい ①",
+    "meaning": "Seems like, Apparently, I heard",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "ておく ～ておく",
+    "meaning": "To do something in advance",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "がほしい がほしい",
+    "meaning": "To want something, To be in need of",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "てほしい ～てほしい",
+    "meaning": "I want you to",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "ときいた ときいた",
+    "meaning": "I heard that",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "聞こえる きこえる",
+    "meaning": "To be audible, To sound (like), (Can) hear, To be heard",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "見える みえる",
+    "meaning": "To be visible, To seem, To be in sight",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "だす だす",
+    "meaning": "To suddenly begin, To start doing",
+    "level": "N4",
+    "lesson": "Lesson 4 – Do it Like this, Did it Like that"
+  },
+  {
+    "grammar": "～代 だい",
+    "meaning": "Teens, Twenties, Thirties, 1910s, 20s/30s",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "かかる (Time/Price)",
+    "meaning": "Costs (money), Takes (time)",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "する (Cost)",
+    "meaning": "Cost (money), Run you about (a certain price)",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "Number + も",
+    "meaning": "Emphasis, As ~ as, Not even",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "ほとんど ほとんど",
+    "meaning": "Almost all, Most, Hardly any, Few (Adverbial noun)",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "そんな・こんな・あんな・どんな そんな",
+    "meaning": "Such a・Kind of, Something like ~",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "各 かく",
+    "meaning": "Each, Every, Respective, Various",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "の次に のつぎに",
+    "meaning": "Next to (rank), Second to, Ranked after",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "以上 ① いじょう ①",
+    "meaning": "More than (or equal to), Over・(and) above, Any more・Greater, Exceeding",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "いか いか",
+    "meaning": "Less than (or equal to), Under・(and) below, Any less・fewer, Not exceeding",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "いがい いがい",
+    "meaning": "Except・besides, Other than, With the exception of",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "ずっと ①",
+    "meaning": "Continuously, All throughout, Entire time, Ever (since), The whole time, All the way",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "だいたい だいたい",
+    "meaning": "Most・mostly, Adequately・generally, For the most part, Roughly・approximately, In the first place",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "のなかで のなかで",
+    "meaning": "In, Among, Within",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "ように・ような よう + に・な",
+    "meaning": "As・like, Just like",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "Number/Amount + は (Amount) + は",
+    "meaning": "At least, Sort of, Or so",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "なん + counter + か なん + (Counter) + か",
+    "meaning": "Some, Several, A few",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "真(っ) まっ",
+    "meaning": "Completely, Exactly, Right",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "Number + しか〜ない (Number) + しか〜ない",
+    "meaning": "No more than, Not exceeding, As few as・as little as, Only",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "～は～の一つだ は～のひとつだ",
+    "meaning": "〜 is one of (many) 〜",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "～ない～はない ない～はない",
+    "meaning": "There is not ~ that is not/does not",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "すこしも～ない すこしも～ない",
+    "meaning": "Not even a little, Not at all, Not in the least, Never",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "すくなくない すくなくない",
+    "meaning": "Quite a few, Quite a lot, Many, Not a few, Not a little",
+    "level": "N4",
+    "lesson": "Lesson 5 – Amounts/Counting"
+  },
+  {
+    "grammar": "ばあいは ばあいは",
+    "meaning": "In the event of, In the case of",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "Verb[て] ～て (Casual Request)",
+    "meaning": "Please do for me (Casual request)",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "てよかった ～てよかった",
+    "meaning": "I'm glad that",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "Verb［せる・させる］ せる・させる (Causative)",
+    "meaning": "To make/let/have (somebody do something)",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "といってもいい といってもいい",
+    "meaning": "You could say, You might say",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "ても ～ても・でも",
+    "meaning": "Even if, Even though",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "てしまう・ちゃう ～てしまう",
+    "meaning": "To do something by accident, To finish completely・totally, Unfortunately",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "Verb[て] + B ～て (Reasons and Causes)",
+    "meaning": "And・and so, Due to, Because of, Since, Conjunctive",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "Causative-Passive させられる (Causative-Passive)",
+    "meaning": "Verbs (Causative-passive voice), To be made to do something, To be forced to do",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "Verb[て]・Noun[で] + B ～て (Means and Manner)",
+    "meaning": "By, With, On, By means of, ~ing with",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "てある ～てある",
+    "meaning": "Something is done, Has been done, Remaining state",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "ように～てほしい ように～てほしい",
+    "meaning": "Want ~ to ~ like ~, Want ~ to be able to ~, Want ~ to ~ in the way of ~",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "ているあいだに ～ているあいだに",
+    "meaning": "While, During the time that ~",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "なくてもいい",
+    "meaning": "Don't have to",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "てみる ～てみる",
+    "meaning": "To try to",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "てすみません ～てすみません",
+    "meaning": "I'm sorry for",
+    "level": "N4",
+    "lesson": "Lesson 6 – て the Day Away"
+  },
+  {
+    "grammar": "てあげる ～てあげる",
+    "meaning": "To do something for someone, As a favor for",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "てくれる ～てくれる",
+    "meaning": "To do something for someone (usually you)",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "てもらう ～てもらう",
+    "meaning": "To get someone to do, To have someone do",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "なさい",
+    "meaning": "Command to do",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "Verb[て] + B ～て (Non-Sequence)",
+    "meaning": "Non-sequence, And, But (Contrast), Parallel action/state",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "Verb[ないで] ないで (Casual Request)",
+    "meaning": "(Please) do not (for me), Casual request",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "てくれてありがとう ～てくれてありがとう",
+    "meaning": "Thank you for ~ ing",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "てくれない・てもらえない ～て + くれない",
+    "meaning": "Won't you?, Will you?, Could you?, Can you?, Would you?",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "～のだろうか のだろうか",
+    "meaning": "I wonder...",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "お～になる お～になる",
+    "meaning": "To do (Honorific)",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "なさる",
+    "meaning": "To do (Honorific)",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "お～ください お～ください",
+    "meaning": "Please do (Honorific)",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "いらっしゃる",
+    "meaning": "To be (Honorific), To come (Honorific), To go (Honorific)",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "ございます ございます",
+    "meaning": "To be, To exist (Polite)",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "でございます でございます",
+    "meaning": "To be, Polite copula",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "お〜する",
+    "meaning": "I humbly do, I am obliged to do, Humble speech",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "いたす いたす",
+    "meaning": "To do (Humble), To venerably do",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "ていただけませんか ～ていただけませんか",
+    "meaning": "Won't you, Could you please (Humble request)",
+    "level": "N4",
+    "lesson": "Lesson 7 – Let's Get Polite"
+  },
+  {
+    "grammar": "たら",
+    "meaning": "When, From when, Just when, If",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "ほかに(も)・ほか(に)は ほかに",
+    "meaning": "Other, Another, Any other, Anything else, As well as, Besides, In addition",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "がひつよう がひつよう",
+    "meaning": "Need, Necessary",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "そんなに",
+    "meaning": "So (much), That much, Like that",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "ひつようがある ひつようがある",
+    "meaning": "It is necessary to",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "たとえば たとえば",
+    "meaning": "For example",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "れる・られる (Potential)",
+    "meaning": "To be able, Can (Potential)",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "んだけど・んですが んだけど",
+    "meaning": "But..., And...",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "はずだ はずだ",
+    "meaning": "Bound to (be), Expected to (be), Should be (able)",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "かどうか",
+    "meaning": "Whether or not, If...or not",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "と",
+    "meaning": "If, When, Whenever, And, [Conditional]",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "ないと",
+    "meaning": "Must, Have to",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "はずがない はずがない",
+    "meaning": "Hardly possible, Cannot be, Highly unlikely, Improbable",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "しか～ない しか～ない",
+    "meaning": "There's only, Nothing but",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "だけでなく",
+    "meaning": "Not only… but also",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "ことができる ことができる",
+    "meaning": "Can, Be able to",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "かい",
+    "meaning": "Question marker",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "もし",
+    "meaning": "If (For emphasis)",
+    "level": "N4",
+    "lesson": "Lesson 8 – Possibility vs Necessity"
+  },
+  {
+    "grammar": "し～し し (Reasons)",
+    "meaning": "And, Giving reasons",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "でできる・からできる でできる",
+    "meaning": "Made of, Made from, Produced from, Come from",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "ながら",
+    "meaning": "While ~ing, During, As",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "たところだ ～たところだ",
+    "meaning": "Just finished doing, Was just doing",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "ているところだ ～ているところだ",
+    "meaning": "In the process of doing ~ right now/at this moment",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "と～と、どちらが",
+    "meaning": "Between ~ which one",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "ようにする ようにする",
+    "meaning": "To try to, To make sure to, To endeavor to",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "なければいけない",
+    "meaning": "Must do, Have to do",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "なければならない",
+    "meaning": "Must do, Have to do",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "つづける つづける",
+    "meaning": "To continue",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "ようにいう ようにいう",
+    "meaning": "To tell, request, or order to do (in such a way)",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "よていだ よていだ",
+    "meaning": "Plan to, Intend to",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "ようにいのる ようにいのる",
+    "meaning": "Pray that/for, Hope that/for, Keep fingers crossed that",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "たばかり ～たばかり",
+    "meaning": "Just did, Something just happened",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "化する かする",
+    "meaning": "-ification, -ization, To make something, To change, To become, Transform into",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "命令形 めいれいけい",
+    "meaning": "(Verb)!, Do (something)!",
+    "level": "N4",
+    "lesson": "Lesson 9 – Do it Like this, Did it Like that - Advanced"
+  },
+  {
+    "grammar": "ように ように",
+    "meaning": "So that, In order to, In such a way that",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "かしら",
+    "meaning": "I wonder",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "らしい ②",
+    "meaning": "typical of, -ish・like, appropriate for, becoming of, befitting",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "って感じ ってかんじ",
+    "meaning": "Kind of thing, Kind of vibe, Kind of feeling",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "にみえる",
+    "meaning": "To look, To seem, To appear",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "とみえる とみえる",
+    "meaning": "It seems that, It can be deduced, One can conclude that",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "風 ふう",
+    "meaning": "-style, Way, Fashion",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "がみられる がみられる",
+    "meaning": "Can see, Can be seen, Can observe, Can be observed, Be evident, Chance to see something",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "にきがつく にきがつく",
+    "meaning": "To notice (that), To realize (that)",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "〜でも 〜でも でも〜でも",
+    "meaning": "Whether ~ or, Neither ~ or",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "それに",
+    "meaning": "And, Besides, Moreover, In addition",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "それで",
+    "meaning": "Because of that, So?, And then?, Therefore, With that",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "Question-phrase + か (Question-Phrase) + か",
+    "meaning": "Including questions within sentences",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "それでも",
+    "meaning": "But still, And yet, Even so, Nevertheless",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "たらどう",
+    "meaning": "Why don't you...?, What if you did...?",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "とかんがえられている とかんがえられている",
+    "meaning": "Is considered, Is thought of as",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "とされている",
+    "meaning": "To be considered, To be deemed, Be regarded as, Be accepted as, To be said, To be accredited with",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "といわれている といわれている",
+    "meaning": "It is said that, Is known as",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "ばよかった ばよかった",
+    "meaning": "Should have, I wish, It would have been better to",
+    "level": "N4",
+    "lesson": "Lesson 10 – Seems Like, Could Be - Advanced"
+  },
+  {
+    "grammar": "ばいい",
+    "meaning": "Can, Should, It'd be good if",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "たらいい・といい",
+    "meaning": "It would be nice if, It would be good if, Should, I hope",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "中 ちゅう",
+    "meaning": "During, While, Throughout, In the process of",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "の間に のあいだに",
+    "meaning": "While, During, Between, Period",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "うちに うちに",
+    "meaning": "While, During",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "ないうちに ないうちに",
+    "meaning": "Before it becomes, Before ~ occurs, Without",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "べき",
+    "meaning": "Must, Should , Ought to",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "べきではない",
+    "meaning": "Should not, Must not , Ought not to",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "って",
+    "meaning": "As for, Speaking of, Casual は (Sentence topic marker)",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "なかなか なかなか",
+    "meaning": "Very, Quite, Considerably",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "あまり あまり",
+    "meaning": "So much...that",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "なかなか～ない なかなか～ない",
+    "meaning": "Not really, Hardly, Not easily or readily, By no means, Far from",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "によると・によれば によると",
+    "meaning": "According to",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "によって・による による",
+    "meaning": "By means of, According to, Depending on, Because of, Due to",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "全く～ない まったく～ない",
+    "meaning": "Not~at all",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "ことだ ことだ",
+    "meaning": "Should, Ought",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "そうだ",
+    "meaning": "I heard that, It is said that",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "すると",
+    "meaning": "Having done..., If...is done..., (And/just) then, Thereupon, If so",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "そうすると",
+    "meaning": "Having done that..., If that is done..., (And/just) then, Thereupon, If so",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "のはXの方だ のは～のほうだ",
+    "meaning": "It is...that..., It is...who..., ...is the one that..., ...is the one who...",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "Noun＋型 (Noun) + がた",
+    "meaning": "Model, Type, Pattern, Kind, Shape, Size(d)",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "てごらん てごらん",
+    "meaning": "(Please) try to, (Please) look",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "させてもらう",
+    "meaning": "To have the honor of doing, To take the liberty of doing, To do (polite, formal)",
+    "level": "N3",
+    "lesson": "Lesson 1 – Possibilities and Time Frames"
+  },
+  {
+    "grammar": "Particle + の (Particle) + の",
+    "meaning": "Combined particles",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "である",
+    "meaning": "Formal or literary だ, Authoritative, Copula",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ところが",
+    "meaning": "Even so, However, Even though, But",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ところで",
+    "meaning": "By the way, Incidentally",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ほど ほど",
+    "meaning": "The more, About, To the extent that, So much… that",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ば〜ほど ば～ほど",
+    "meaning": "The more…the more",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ほど～ない ほど～ない",
+    "meaning": "Is not as…as, Isn't... like..., Not to the extent of...",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "では・それでは・じゃあ それでは",
+    "meaning": "If so, Well (then), In that case",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "のに",
+    "meaning": "In order to",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ため(に) ために",
+    "meaning": "For, For the sake of, In order to",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ために ために",
+    "meaning": "Due to, Because of, As a result of",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "という という",
+    "meaning": "Called, Named, Known as, As much as",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ということだ ということだ",
+    "meaning": "I heard that, Rumor has it that, It is said that, It means that",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "というのは というのは",
+    "meaning": "~ Known as ~ is, ~ Called ~ is, ~ Means ~, Because",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "的 てき",
+    "meaning": "~ly・~like・~al, Typical",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "もの・もん",
+    "meaning": "Because, Cause",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "ものだ",
+    "meaning": "Supposed to, Should, That's the way it is",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "最中に さいちゅうに",
+    "meaning": "In the middle of",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "上で うえで",
+    "meaning": "After, Upon",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "おかげで おかげで",
+    "meaning": "Thanks to, Because of",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "にもとづいて にもとづいて",
+    "meaning": "Based on, In accordance with",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "点 てん",
+    "meaning": "Aspect, Respect, Point, Way, In terms of, In that, From the point of view",
+    "level": "N3",
+    "lesson": "Lesson 2 – Extents and Reasons"
+  },
+  {
+    "grammar": "なぜなら〜から なぜなら + から",
+    "meaning": "Because, The reason is, That is because",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "こそ",
+    "meaning": "For sure, For certain, Even more so, Underlined or bolded text",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "からこそ",
+    "meaning": "Emphasized because, Precisely because",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ばかり",
+    "meaning": "Just, Only, Nothing but",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ばかりだ",
+    "meaning": "(Only) continue to, Keep on -ing, More and more",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ばかりに",
+    "meaning": "Simply because, Only because, Just because, Simply on account of",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ことがある ことがある",
+    "meaning": "Something is possible, Sometimes, Occasionally, There are times when",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ことにする ことにする",
+    "meaning": "To decide on, Have decided to",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ことなの ことなの",
+    "meaning": "(A) is (Description of A), (A) means that (Description of A)",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ことになる ことになる",
+    "meaning": "It will end up being, It is the result of, It has been decided that",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "～は～で有名 は～でゆうめい",
+    "meaning": "Is famous for",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ことはない ことはない",
+    "meaning": "There is no need to, Never happens",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "～と言っても といっても",
+    "meaning": "Although ~ might say that ~",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "といえば",
+    "meaning": "Speaking of, If it were the case that",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "合う あう",
+    "meaning": "To do for one another, Mutually, With",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "に合わせて・に合った にあわせて",
+    "meaning": "In accordance with, Matching, Fitting, Suitable for, Adjust or tune to",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "について",
+    "meaning": "Concerning, About, Regarding",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "～(の)姿 のすがた",
+    "meaning": "Figure, Shape, Appearance, Looks, Wearing, Dressed in, Presence",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "と言える といえる",
+    "meaning": "Would or could say that..., Can probably say that..., Fair to say that...",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "ちゃんと・きちんと ちゃんと",
+    "meaning": "Properly, Neatly, Orderly, Sufficiently, Decently",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "そのため(に) そのために",
+    "meaning": "For that reason, Because of that, To that end",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "その結果 そのけっか",
+    "meaning": "As a result",
+    "level": "N3",
+    "lesson": "Lesson 3 – Limitations and Results"
+  },
+  {
+    "grammar": "に比べて にくらべて",
+    "meaning": "Compared to, When compared to",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "どんなに〜ても どんなに～ても",
+    "meaning": "No matter how",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "いくら〜でも いくら～でも",
+    "meaning": "No matter how (much)",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "〜かは〜によって違う かは〜によってちがう",
+    "meaning": "Depends on, Changes depending on, Differ depending on",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "かなり",
+    "meaning": "Quite, Considerably, Pretty, Fairly",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "あまりに あまりに",
+    "meaning": "So much...that, (Way) too...",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "わけだ わけだ",
+    "meaning": "For that reason, No wonder, As you'd expect, Naturally, Thus, This is why",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "わけではない わけではない",
+    "meaning": "It doesn't mean that, It is not the case, It's not like",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "と同時に とどうじに",
+    "meaning": "At the same time as, The instant, The moment, As well as",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "ところだった ①",
+    "meaning": "Almost, Nearly, About to, On the verge of",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "だって",
+    "meaning": "I heard/was said, Because, But, Even or also, Even if or even though",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "んだって",
+    "meaning": "I heard that, He or She said that",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "関係がある かんけいがある",
+    "meaning": "(Not) involved with, (Not) concerned with, (No) connection with, (No) relationship with, (Not) related to",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "に関する・に関して にかんして",
+    "meaning": "Related to, About, Regarding",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "に対して にたいして",
+    "meaning": "In contrast to, While, In regard to, Whereas",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "くらい ②",
+    "meaning": "To the extent that, So…that, About the only thing that...",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "は～くらいです",
+    "meaning": "About the only, To the extent that",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "さ - Interjection さ (Interjection)",
+    "meaning": "All right, There we go, Now, You see, Well (I don't know, let me see)",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "さ - Filler さ (Filler)",
+    "meaning": "Like, You know, You see, Listen, Uhh",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "さ - Casual よ さ (Casual よ)",
+    "meaning": "Casual よ",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "それぞれ",
+    "meaning": "Each, Respectively",
+    "level": "N3",
+    "lesson": "Lesson 4 – Amounts and Comparisons"
+  },
+  {
+    "grammar": "まま(に) ままに (As Is)",
+    "meaning": "As is, While remaining, Left in a state",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "そこで",
+    "meaning": "Accordingly, Now, Therefore, To that end",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "しかない",
+    "meaning": "Have no choice but, Only, Just",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "てもかまわない ～てもかまわない",
+    "meaning": "It doesn't matter if, I don't mind",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "～ても～なくても",
+    "meaning": "Whether ~ or not",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "んじゃない",
+    "meaning": "Don't, Mustn't, Shouldn't have",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "わけがない わけがない",
+    "meaning": "There is no way, There is no reason, It is impossible, Cannot be",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "としたら・とすれば・とすると とすると",
+    "meaning": "If it were the case that, Assuming that...",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "として",
+    "meaning": "As (i.e. in the role of), For",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "にしては",
+    "meaning": "(Even) considering, (Even) for",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "にしても",
+    "meaning": "Even though, Even if, Even when, Also",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "～というのは事実だ というのはじじつだ",
+    "meaning": "It is a fact that ~, There is no doubt that",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "から言うと からいうと",
+    "meaning": "Speaking in terms of, From the point of view of",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "に取って にとって",
+    "meaning": "To, For, Concerning",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "ことから ことから",
+    "meaning": "From the fact that",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "というより というより",
+    "meaning": "...is more of a... than a..., Rather than saying that...",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "はもちろん",
+    "meaning": "Not only but also, Let alone, Not to mention, Of course",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "をはじめ をはじめ",
+    "meaning": "Not only...but also..., Starting with",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "て初めて ～てはじめて",
+    "meaning": "For the first time, Not until, Only after, Only when, Only because",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "さえ",
+    "meaning": "Even",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "さえ〜ば さえ～ば",
+    "meaning": "If only…then, As long as..., Provided..., Only thing ... needs for ... is ...",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "たものだ ～たものだ",
+    "meaning": "Used to",
+    "level": "N3",
+    "lesson": "Lesson 5 – Suppositions and Statements"
+  },
+  {
+    "grammar": "さて",
+    "meaning": "Well, Well then",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "むしろ",
+    "meaning": "Rather, Instead, Over",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "つまり",
+    "meaning": "In short, To sum up, In other words",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "即ち すなわち",
+    "meaning": "In other words, That is, Namely",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "却って かえって",
+    "meaning": "All the more, On the contrary, Conversely",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "まるで…ようだ まるで～ようだ",
+    "meaning": "It is entirely as if, It is just as though",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "ような気がする ようなきがする",
+    "meaning": "Have a feeling that",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "とても～ない",
+    "meaning": "Not ~ at all, Cannot ~ at all",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "別に〜ない べつに～ない",
+    "meaning": "Not really, Not particularly, It's not like...",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "ばかりでなく",
+    "meaning": "Not only…but also, As well as",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "ではなくて・じゃなくて ではなくて",
+    "meaning": "Not A but B, Conjunctive",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "だけでなく(て)～も だけでなくて～も",
+    "meaning": "Not only ~ but ~ also, Not just ~ but ~ also",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "だけしか だけしか～ない",
+    "meaning": "To emphasize '~only', Nothing but",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "は言うまでもない ① はいうまでもない ①",
+    "meaning": "It goes without saying (that), (It is) needless to say, I don't need to remind you",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "決して〜ない けっして〜ない",
+    "meaning": "Never, By no means",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "わけにはいかない わけにはいかない",
+    "meaning": "Cannot afford to, No way, Impossible to do",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "〜ようとしない う・よう + としない",
+    "meaning": "Not willing to, Not make an effort to, To not attempt or try to, Volitional + としない",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "もしかしたら",
+    "meaning": "Perhaps, Maybe, Possibly",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "たとえ〜ても",
+    "meaning": "Even if…is the case, Supposing that",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "ことに",
+    "meaning": "Extremely, Especially, To my ...",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "ことか ことか",
+    "meaning": "How…, What..., God knows...",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "～かというと ① かというと ①",
+    "meaning": "Why? Well..., Why? Because..., If you ask me why..., The reason why is..., It is because...",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "～かというと ② かというと ②",
+    "meaning": "If you ask me..., If I had to say, If I were to say, If I were to choose one, I'd rather",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "で言うと でいうと",
+    "meaning": "In, Of, According to",
+    "level": "N3",
+    "lesson": "Lesson 6 – Topic Changes and Counter Statements"
+  },
+  {
+    "grammar": "～ずつ ずつ",
+    "meaning": "One at a time, Per, Each, Gradually",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "ずっと ②",
+    "meaning": "By far, Way, Far...er, Far...more",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "だらけ",
+    "meaning": "Completely covered in, Full of",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "もっとも もっとも",
+    "meaning": "Although, But, However, For all that, Provided that",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "再び ふたたび",
+    "meaning": "Again, Once more, A second time",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "み み",
+    "meaning": "~ness, Used to indicate conditions or nature",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "と同じくらい とおなじくらい",
+    "meaning": "About the same as, About as, No less",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "と同じで・と違って とおなじで・とちがって",
+    "meaning": "Like, Similar to, Unlike, Dissimilar to",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "と並んで とならんで",
+    "meaning": "In line with, Comparable with, Along with, Just like, As … as",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "に違いない にちがいない",
+    "meaning": "There is no doubt that, I'm sure",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "当たり あたり",
+    "meaning": "Per~, A~, Apiece, Each",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "に当たる にあたる",
+    "meaning": "Correspond to, Amounts to, Equals to, Is appropriate",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "に限る にかぎる",
+    "meaning": "Nothing better than, There's nothing like, Limited to",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "とは限らない とはかぎらない",
+    "meaning": "Not necessarily so, Is not always true, There is no guarantee that",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "めったに〜ない めったに〜ない",
+    "meaning": "Hardly, Rarely, Seldom",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "割に わりに",
+    "meaning": "Although, Despite, Rather...for, Unexpectedly, Comparatively, Considering",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "Verb[volitional]とする う・よう + とする",
+    "meaning": "Try to, Attempt to, To be about to",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "Verb[volitional] + としたが う・よう + としたが",
+    "meaning": "Tried to ~ but ~, Was about to ~ but ~, Was going to ~ but ~",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "言うまでもない ② いうまでもない ②",
+    "meaning": "It goes without saying, It is needless to say, Of course, Obviously",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "そうもない",
+    "meaning": "Very unlikely to, Does not seem that, Does not appear that",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "ないことはない ないことはない",
+    "meaning": "Is not impossible, It doesn't mean that it isn't",
+    "level": "N3",
+    "lesson": "Lesson 7 – Precision and Frequency"
+  },
+  {
+    "grammar": "なんか・なんて なんて",
+    "meaning": "Such as, Things like, Emphasis",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "又〜も また〜も",
+    "meaning": "Moreover, Additionally, And also, In addition, Furthermore, Or",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "ついでに ついでに",
+    "meaning": "While you are at it, On the occasion",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "と共に とともに",
+    "meaning": "Together with, At the same time, As well as",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "につれて につれて",
+    "meaning": "As…then, In proportion to, (Along) with",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "直ちに ただちに",
+    "meaning": "At once, Immediately, As soon as",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "たとたんに たとたんに",
+    "meaning": "The instant or moment, As soon as, Just as",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "おきに おきに",
+    "meaning": "Repeated at intervals, Every other, Every, At intervals of",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "たびに たびに",
+    "meaning": "Each time, Every time, Whenever",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "あるいは あるいは",
+    "meaning": "Or, Possibly, Maybe, Perhaps, Or possibly",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "ながらも",
+    "meaning": "But, Even while, Even though, Despite, Although",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "において・における において",
+    "meaning": "In, On, At, Regarding, In terms of",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "第一 だいいち",
+    "meaning": "Start, First (point), Foremost, To begin with",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "ますます ますます",
+    "meaning": "Increasingly, More and more, Decreasingly, Less and less, Keep -ing",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "一方だ いっぽうだ",
+    "meaning": "More and more, Continue to, Keep on, -er and -er",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "一方で いっぽうで",
+    "meaning": "On the other hand, At the same time, While",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "遂に ついに",
+    "meaning": "Finally, At last",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "すでに すでに",
+    "meaning": "Already, Too late",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "ずに",
+    "meaning": "Without doing",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "ずにはいられない ずにはいられない",
+    "meaning": "Cannot help doing something, Cannot resist doing something",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "なし なし",
+    "meaning": "Without, No",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "あり",
+    "meaning": "Possibility, To have, With",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "考えられない かんがえられない",
+    "meaning": "Unthinkable, Inconceivable, Unimaginable, Cannot think",
+    "level": "N3",
+    "lesson": "Lesson 8 – Co-occurring and Increasing Actions"
+  },
+  {
+    "grammar": "必ずしも かならずしも",
+    "meaning": "Not always, Not entirely, Not necessarily",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "連用形 れんようけい",
+    "meaning": "Formal Conjunctive",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "向き むき",
+    "meaning": "Suitable for, Facing",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "向け むけ",
+    "meaning": "Intended for, Aimed at",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "上がる・上げる あがる",
+    "meaning": "Something is finished, To finish something, Something has come to an end, To do something completely, To do something through",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "切る きる",
+    "meaning": "To do something completely to the end, Utterly, Resolutely",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "切れない きれない",
+    "meaning": "Being unable to finish or complete",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "きり",
+    "meaning": "Only, Just, Since",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "かけ かけ",
+    "meaning": "Half-, Not yet finished, About to, Begin to",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "にかけて にかけて",
+    "meaning": "Over (a period), From ~ until, Through",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "たて たて",
+    "meaning": "Freshly ~ed, Just ~ed",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "込む ① こむ ①",
+    "meaning": "To go into, To put into",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "込む ② こむ ②",
+    "meaning": "Remain, To do thoroughly, Deeply, Intensely",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "ふりをする ふりをする",
+    "meaning": "To pretend, To act as if",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "できれば・できたら できれば",
+    "meaning": "If possible",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "でよければ でよければ",
+    "meaning": "If it is alright, If you don't mind, If you would like, If possible",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "次第 しだい",
+    "meaning": "As soon as",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "とおり とおり",
+    "meaning": "In that way, Exactly, Precisely, Just as",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "でもある",
+    "meaning": "Be also, It also is",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "どうしても",
+    "meaning": "Regardless of, No matter what",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "もしも～なら・もしも～でも もしも～なら",
+    "meaning": "If, Supposing",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "同士 どうし",
+    "meaning": "Fellow, With each other, Mutually, Between, Among, Together, With",
+    "level": "N3",
+    "lesson": "Lesson 9 – Do it this Way, Did it that Way"
+  },
+  {
+    "grammar": "がたい",
+    "meaning": "Hard to, Difficult to",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "まさか",
+    "meaning": "I never dreamed, Never, No way, Don't tell me, You don't say",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "前者は・後者は ぜんしゃは～こうしゃは",
+    "meaning": "The former ~ the latter, The first ~ the second",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "つい",
+    "meaning": "Accidentally, Unconsciously, Against one's better judgement",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "せいで",
+    "meaning": "Because of, Due to, Blame",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "くせに くせに",
+    "meaning": "Even though, And yet, Despite",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "がち",
+    "meaning": "Apt to do, Tend to do, Prone to do",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "ぎみ ぎみ",
+    "meaning": "Looking, Feeling a little, Touch of, Tending to, Slightly",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "っぽい",
+    "meaning": "-ish, -like, Characteristic of, Typical of, Tendency to",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "っぱなし",
+    "meaning": "Leaving something in a certain state, Left as is, Keep on -ing",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "わざわざ",
+    "meaning": "Expressly, Especially, Go out of one's way, Take the trouble to",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "一体 いったい",
+    "meaning": "(What) the heck?, (Who) in the world?, (Where) on earth?, (How many) f*ing...",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "折角 せっかく",
+    "meaning": "With trouble, At great pains, Take the trouble, Might as well..., Rare/long-awaited occasion",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "っけ",
+    "meaning": "What is…again?, Was it... that... ?, Did you say...?",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "代わりに かわりに",
+    "meaning": "Instead of, In place of, In exchange for",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "に代わって にかわって",
+    "meaning": "In place of, On behalf of, To succeed",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "どころか",
+    "meaning": "Far from, Anything but",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "という理由で というりゆうで",
+    "meaning": "For (that) reason; on the grounds of (that), With the reasoning, Under the pretext of, Due to",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "～は～となっている は～となっている",
+    "meaning": "It is (has been), Have/has become, Happen to be, Has been established",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "左右する さゆうする",
+    "meaning": "Influence, Impact, Control",
+    "level": "N3",
+    "lesson": "Lesson 10 – Labelling and Blame"
+  },
+  {
+    "grammar": "得る・得る える",
+    "meaning": "Is able to, Can, Possible",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "〜得ない えない",
+    "meaning": "Unable to, Cannot",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "ざるを得ない ざるをえない",
+    "meaning": "Can't help doing, Have no choice but",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "～ざる",
+    "meaning": "To not ~, Un~",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "つもりで",
+    "meaning": "With the intention of doing, Instead of..., Act as if or pretend, Believing that..., Thinking that...",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "どうせ",
+    "meaning": "Anyhow, At any rate, In any case, I have no doubt that, Probably",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "せめて",
+    "meaning": "At least",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "どうやら",
+    "meaning": "Apparently, Looks Like, Seems like",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "なにやら",
+    "meaning": "Something (or other), Some kind of",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "よりほかない よりほかない",
+    "meaning": "To have no choice but, No other way than, Have to",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "確かに たしかに",
+    "meaning": "Surely, Certainly",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "一応 ① いちおう ①",
+    "meaning": "Just in case, Just to be sure",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "一応 ② いちおう ②",
+    "meaning": "more or less, for the time being, tentatively, roughly",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "に相違ない にそういない",
+    "meaning": "Without a doubt, Certainly, Surely, Not mistaken",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "万が一 まんがいち",
+    "meaning": "Just in case, In the worst-case scenario, In the unlikely event, By any chance",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "ようがない・ようもない ようがない",
+    "meaning": "There's no way to, It's impossible to",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "にほかならない にほかならない",
+    "meaning": "Nothing but, None other than, Simply",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "っこない",
+    "meaning": "There is no chance of, There is no way of, Impossible",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "それなら",
+    "meaning": "Then, If that's the case",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "ものなら① ものなら ①",
+    "meaning": "If, If one could, If something would be possible",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "～を～に任せる にまかせる",
+    "meaning": "Leave 〜 up to, Entrust 〜 to",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "活かす いかす",
+    "meaning": "To make use of (something), To take full advantage of, To capitalize on, To leverage (skills), Bring out (the quality of)",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "おおよそ",
+    "meaning": "Approximately, Roughly, About, Outline, Gist",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "まい",
+    "meaning": "Won বোর্, Intend not to, Probably not",
+    "level": "N2",
+    "lesson": "Lesson 1 – Possibilities and Intentions"
+  },
+  {
+    "grammar": "上 じょう",
+    "meaning": "From the standpoint of",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "上に うえに",
+    "meaning": "As well, Besides, In addition to",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "以上 ② いじょう ②",
+    "meaning": "Since, Now that, As long as, If",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "以上に いじょうに",
+    "meaning": "More than, No less than, Even more",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "途中に・途中で とちゅうに",
+    "meaning": "On the way, Partway, In the middle of",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "中を なかを",
+    "meaning": "In, On, Into, Inside of",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "を中心に をちゅうしんに",
+    "meaning": "Focused on, Centered on or around, Mainly, Most notably",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "その上 そのうえ",
+    "meaning": "Besides, In addition, Furthermore",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "上は うえは",
+    "meaning": "Once, Since, Now that, As long as",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "の下で のもとで",
+    "meaning": "Under, Under the supervision of, On the basis of",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "後(の) Noun あとの + (Noun)",
+    "meaning": "…left, Rest, Remaining, In, …to, …else",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "手前 てまえ",
+    "meaning": "Before, In front of, From one's standpoint or side",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "を巡って をめぐって",
+    "meaning": "Concerning, In regard to, About, (Split) over",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "にわたって にわたって",
+    "meaning": "Across, Throughout, Extends, Over (a period of time or range)",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "に沿って にそって",
+    "meaning": "Along, In accordance with, In line with",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "た末・の末 ～たすえ",
+    "meaning": "After, As a conclusion of",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "にしたがって にしたがって",
+    "meaning": "As, Following, As then, According to, In accordance with",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "に伴って・に伴い にともなって",
+    "meaning": "As, Due, Along with, Hand-in-hand with, Resulted in, Be consequent upon",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "につき につき",
+    "meaning": "Due to, On account of, Each or every",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "につけ につけ",
+    "meaning": "Whenever, Every time something happens",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "にかかわる にかかわる",
+    "meaning": "To relate to, To have to do with, Concerning, Depends on",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "に向かって・に向けて にむかって",
+    "meaning": "Towards, To face, To head to",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "が気になる がきになる",
+    "meaning": "To be interested in, To be concerned about",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "に気をつける にきをつける",
+    "meaning": "Take care, Be careful, Pay attention, Make sure, Watch out",
+    "level": "N2",
+    "lesson": "Lesson 2 – Directions and Markers of Following"
+  },
+  {
+    "grammar": "も構わず もかまわず",
+    "meaning": "Without worrying about",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "かねる かねる",
+    "meaning": "Cannot, Be unable to, Hard to, Hesitant to",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "かねない かねない",
+    "meaning": "Might, Could be, Capable of, Possible",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "を除いて をのぞいて",
+    "meaning": "Except, With the exception of, Unless",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "にかかわらず にかかわらず",
+    "meaning": "Regardless of, Whether or, No matter, With or without",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "にもかかわらず にもかかわらず",
+    "meaning": "Despite, In spite of, Regardless, Nevertheless",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "に限って にかぎって",
+    "meaning": "Particularly when, Those who, Only when",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "に限らず にかぎらず",
+    "meaning": "Not just, Not only… but also",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "なお① なお ①",
+    "meaning": "Still, Even, Yet",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "なお② なお ②",
+    "meaning": "In addition, Incidentally, Furthermore, Moreover",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "限り かぎり",
+    "meaning": "As long as, While… is the case, Limited to",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "次第だ・次第で しだいだ",
+    "meaning": "Depending on, So",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "次第に しだいに",
+    "meaning": "Gradually",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "～てこそ",
+    "meaning": "Only if, Because, By, Unless, Until",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "を問わず をとわず",
+    "meaning": "Regardless of, Whether or not, No matter, With or without",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "よりしかたがない よりしかたがない",
+    "meaning": "There is no choice but, Can't be helped, Inevitable",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "に越したことはない にこしたことはない",
+    "meaning": "There is nothing better than, It is the best, Would be the best",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "要するに ようするに",
+    "meaning": "To sum up, In summary, In short",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "てからでないと",
+    "meaning": "(Not) unless ~ cannot, (Not) until ~ cannot",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "なくはない",
+    "meaning": "It's not that…, Kind of, might, Slightly, Somewhat, In some respects",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "ないことには～ない ないことには～ない",
+    "meaning": "Unless you do something",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "ないではいられない",
+    "meaning": "Cannot help doing something, Cannot resist doing something",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "ねばならない ねばなら + ぬ",
+    "meaning": "Must, Have to, Should",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "たまえ たまえ",
+    "meaning": "(Please) do!, Ask to, Beg to, (Order somebody to do something)",
+    "level": "N2",
+    "lesson": "Lesson 3 – Limitations and Restrictions"
+  },
+  {
+    "grammar": "～のうち(で) のうちで",
+    "meaning": "Of the, Among(st)",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "つつ",
+    "meaning": "While, And",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "つつ(も) つつも",
+    "meaning": "Even while ~ing, Even though ~ing, Despite ~ing, Although ~ing",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "に際して にさいして",
+    "meaning": "On the occasion of, At the time of",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "際に さいに",
+    "meaning": "When, At the time of, In case of, On the occasion of",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "にあたり・にあたって にあたって",
+    "meaning": "When, When doing something, On the occasion, At the time",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "を契機に をけいきに",
+    "meaning": "Lead to, As a good opportunity to, As a result of, As a trigger",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "つつある",
+    "meaning": "-ing, Be -ing",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "～ところに・～ところへ ～ところに",
+    "meaning": "At the time, When, While, Timing",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "か〜ないかのうちに か〜ないかのうちに",
+    "meaning": "Right after, As soon as, Just when, Barely",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "がけに がけに",
+    "meaning": "On the way to, As you go",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "ていては",
+    "meaning": "If one keeps doing something, When, If something is...",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "ところだった ②",
+    "meaning": "Was just about to do something, Was in the middle of...",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "どころではない",
+    "meaning": "This is not the time for…, Far from, Out of the question",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "ぶりに ぶりに",
+    "meaning": "For the first time in, Haven't done for some time",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "ては ～ては",
+    "meaning": "If, With, Since, Because",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "ては〜ては ～ては〜ては",
+    "meaning": "Repeating action, If, Since",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "も又 もまた",
+    "meaning": "Too, Also (with more emphasis than も alone), Again",
+    "level": "N2",
+    "lesson": "Lesson 4 – When or During"
+  },
+  {
+    "grammar": "結果・の結果 けっか",
+    "meaning": "As a result of",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "以来 いらい",
+    "meaning": "Since, Henceforth",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "に先立ち にさきだち",
+    "meaning": "Before, Prior to, In preference over",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "はたして はたして",
+    "meaning": "Wonder if ~ (really)?, Wonder how ~ (actually)?, Sure enough, As expected",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "甲斐がある かいがある",
+    "meaning": "To be (not) worth, To (not) pay off",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "やがて",
+    "meaning": "Before long, All too soon, In the end, Eventually",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "したがって したがって",
+    "meaning": "Therefore, Thus, As a result",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "あげく あげく",
+    "meaning": "After, In the end, After all, Eventually",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "きっかけ きっかけ",
+    "meaning": "Lead to, Because of, As a start or trigger of, An opportunity",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "にかけては",
+    "meaning": "When it comes to, Regarding, Concerning",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "とっくに とっくに",
+    "meaning": "Already, A long time ago, Long ago",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "未だに いまだに",
+    "meaning": "Still, Not yet, Even now",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "をもとに をもとに",
+    "meaning": "Based on, From, According to",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "からには",
+    "meaning": "As long as, Since, Given",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "いつの間にか いつのまにか",
+    "meaning": "Suddenly, Unnoticed, Without noticing, Too soon",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "一旦 いったん",
+    "meaning": "Once …, If … for a short time, Temporarily (stop), For now or the time being",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "はもとより はもとより",
+    "meaning": "Not only... but also, Let alone, Of course",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "そうにない",
+    "meaning": "Unlikely to, Showing no signs of",
+    "level": "N2",
+    "lesson": "Lesson 5 – It All Starts or Ends With"
+  },
+  {
+    "grammar": "に反して にはんして",
+    "meaning": "Go against, Contrary to",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "逆に ぎゃくに",
+    "meaning": "On the contrary",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "反面 はんめん",
+    "meaning": "While, On the other hand, Although, However, On the flip side",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "抜く ぬく",
+    "meaning": "All~, Completely, See through, Overcome, To the bitter end",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "抜きで ぬきで",
+    "meaning": "Without, Unless",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "いよいよ いよいよ",
+    "meaning": "At last, Finally, More and more",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "ずに済む ずにすむ",
+    "meaning": "Get by without doing something, To get away with",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "に応じて におうじて",
+    "meaning": "Depending or based on, According to, In response to, Suitable for or to",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "を通じて・を通して をつうじて",
+    "meaning": "Through, Via, Throughout",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "に応えて にこたえて",
+    "meaning": "In response to, Meet",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "それとも",
+    "meaning": "Or, Or else, Rather",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "にしたら",
+    "meaning": "From the point of view of",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "にしても～にしても",
+    "meaning": "Regardless of whether",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "としては",
+    "meaning": "As a, For a, As for",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "としても",
+    "meaning": "Even if (we assume), Assuming, Also as",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "それにしても",
+    "meaning": "Nevertheless, Even so",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "ぬ",
+    "meaning": "Classical negative, Classical verb [ない]",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "ことなく ことなく",
+    "meaning": "Without ~ing",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "にて",
+    "meaning": "In, At, With, Using, By",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "には",
+    "meaning": "In order to, In regard to, For",
+    "level": "N2",
+    "lesson": "Lesson 6 – For and Against, Through and Without"
+  },
+  {
+    "grammar": "思うように おもうように",
+    "meaning": "As one hopes, As desired, As one thought",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "かと思ったら・かと思うと かとおもうと",
+    "meaning": "Then again, Just when I thought, No sooner than",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "～ばと思います ～ばとおもいます",
+    "meaning": "I would appreciate it if, If you could, I would like to think that",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "というものでもない というものでもない",
+    "meaning": "There is no guarantee that…, Not necessarily",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "と考えられる とかんがえられる",
+    "meaning": "Can be considered as, Is thought to be, One can think that, It is conceivable that",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "という点から考えると というてんからかんがえると",
+    "meaning": "From the standpoint of, From the perspective of, From the viewpoint of, Think in terms of, Viewed from the angle of",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "ということは ということは",
+    "meaning": "That means, That is to say",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "ふうに ふうに",
+    "meaning": "~ way, In a way that suggests, Like ~",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "という風に というふうに",
+    "meaning": "As if to say, As if to suggest that, In such a way that, Things like",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "ものの",
+    "meaning": "Although, But, Even Though",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "というものだ というものだ",
+    "meaning": "Speaker's impression, Criticism or conclusion",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "から見ると からみると",
+    "meaning": "From the point of view of, By the look of",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "ところを見ると ところをみると",
+    "meaning": "Judging from, Seeing that",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "からすると・からすれば からすると",
+    "meaning": "Judging from, Considering",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "からして",
+    "meaning": "Even..., Judging from, Based on",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "からといって",
+    "meaning": "Just because",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "そういえば",
+    "meaning": "Speaking of which, By the way, Come to think of it",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "お～願う お～ねがう",
+    "meaning": "Please, Could you please",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "～て頂戴 ～てちょうだい",
+    "meaning": "Please do",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "とか",
+    "meaning": "I heard that… something like, They said ... or something",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "〜ようではないか う・よう + ではないか",
+    "meaning": "Let's do something, Why don't we",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "かのようだ かのようだ",
+    "meaning": "As if, Just like",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "のではないだろうか のではないでしょうか",
+    "meaning": "I think ... isn't it?, It might be that..., Don't you agree?",
+    "level": "N2",
+    "lesson": "Lesson 7 – Thoughts and Expressions"
+  },
+  {
+    "grammar": "て当然だ ～てとうぜんだ",
+    "meaning": "Natural, As a matter of course",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "のも当然だ のもとうぜんだ",
+    "meaning": "It is only natural that, It is no wonder",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "たった(の) たったの",
+    "meaning": "Only, Just, No more than",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "恐れがある おそれがある",
+    "meaning": "There is a risk or fear that, Be in danger of, Possibility of",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "おそらく おそらく",
+    "meaning": "Probably, Perhaps, (Most) likely, (I) fear that",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ものか",
+    "meaning": "Definitely not, Absolutely not, Impossible, Do you really think~?",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "おまけに おまけに",
+    "meaning": "In addition, On top of that, What is more, To make matters worse",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "に決まっている にきまっている",
+    "meaning": "Surely, Bound to, Certainly, Be decided",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ことになっている ことになっている",
+    "meaning": "To be expected to, To be scheduled to",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "気 き",
+    "meaning": "Feel like ~, Spirit",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "げ げ",
+    "meaning": "Seemingly, Giving appearance of, [Expresses emotions or feelings]",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ことだから ことだから",
+    "meaning": "It is exactly because",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ものだから",
+    "meaning": "Because, The reason is",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ものですから・もので ものですから",
+    "meaning": "Because, My excuse is, My explanation is",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ものがある",
+    "meaning": "Strong judgement, There is something, Feel strongly that",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "傾向がある けいこうがある",
+    "meaning": "Tendency, Trend, Inclination",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "～に値する ～にあたいする",
+    "meaning": "Be worthy of, Deserving of, Amounts to",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "てしょうがない ～てしょうがない",
+    "meaning": "Extremely, Very, Really, It can't be helped",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "だけましだ",
+    "meaning": "At least, It's better than..., One should feel grateful for",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "幸い・幸いなことに さいわいなことに",
+    "meaning": "Luckily, Fortunately",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ようでは・ようじゃ ようでは",
+    "meaning": "If, If it is true that",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "さすが さすが",
+    "meaning": "as one would expect, only natural, that is just like..., even",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "ことは〜が",
+    "meaning": "It is true...but, although, but",
+    "level": "N2",
+    "lesson": "Lesson 8 – It Is The Way It Is"
+  },
+  {
+    "grammar": "更に さらに",
+    "meaning": "Even more or further, Again, More and more",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "精々 せいぜい",
+    "meaning": "(At) most , (At) best, No more than, Barely",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "僅かに わずかに",
+    "meaning": "Only, Slightly, A little, Barely, Merely",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "弱 じゃく",
+    "meaning": "Just less than",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "強 きょう",
+    "meaning": "Just more than",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "および および",
+    "meaning": "And, As well as",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "たちまち たちまち",
+    "meaning": "Immediately, Quickly, Suddenly, In a moment or flash",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "いきなり",
+    "meaning": "For no reason, Suddenly, All of a sudden",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "といった",
+    "meaning": "Such as, Like, So much as",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "を込めて をこめて",
+    "meaning": "Full of, Filled with, With ～",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "に加えて にくわえて",
+    "meaning": "Not only...but also, In addition, Not to mention",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "何から何まで なにからなにまで",
+    "meaning": "Everything and anything, From A to Z, From head to toe, Everything",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "は別として はべつとして",
+    "meaning": "Apart from, (Setting) aside, Whether or, Except for, Save for",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "だけに",
+    "meaning": "As might be expected, Because, All the more because, It's only natural",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "だけは",
+    "meaning": "To do all that one can, As much or many ~ as one could",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "だけあって",
+    "meaning": "Is only natural, …Being the case, Because, As might be expected",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "何より なにより",
+    "meaning": "Be glad, Be relieved, Most, Best, Above all else, More than anything",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "何といっても なんといっても",
+    "meaning": "By any account, All the same, No doubt",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "か何か かなにか",
+    "meaning": "Or something, Or something like that",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "てならない ～てならない",
+    "meaning": "Very, Extremely, Can't help but do",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "のみ",
+    "meaning": "Only (formal)",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "のみならず",
+    "meaning": "Not only...but, Not just...but, What is more",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "それなのに",
+    "meaning": "And yet, Despite this",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "いわゆる",
+    "meaning": "What is called, So-called, Generally known",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "にすぎない にすぎない",
+    "meaning": "No more than, Just, Merely",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "も～ば～も",
+    "meaning": "…And…, Both ... and ..., ... And ... as well",
+    "level": "N2",
+    "lesson": "Lesson 9 – Extents and Intervals"
+  },
+  {
+    "grammar": "でしかない",
+    "meaning": "Merely, Nothing but, No more than",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "てたまらない ～てたまらない",
+    "meaning": "Can't help but want to, Very, Extremely",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "にせよ・にしろ にせよ",
+    "meaning": "Even if, Even though, No matter, Whether… or",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "何しろ なにしろ",
+    "meaning": "No wonder, After all, In fact, Because, At any rate",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "にしろ～にしろ にしろ〜にしろ",
+    "meaning": "Whether… or",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "はともかく はともかく",
+    "meaning": "Setting aside, Apart from",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "ならともかく",
+    "meaning": "If it's (A), sure, but (B), Putting aside (A), (B)",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "やら～やら やら〜やら",
+    "meaning": "Whether or, Things like, And … so on",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "しかしながら",
+    "meaning": "However, Nevertheless, But",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "ことにはならない ことにはならない",
+    "meaning": "Just because… doesn't mean…",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "だけのことはある",
+    "meaning": "No wonder, Not surprising that, As expected",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "てはならない ～てはならない",
+    "meaning": "Must not, Cannot, Should not",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "てはいられない ～てはいられない",
+    "meaning": "Can't afford to, Unable to",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "陸に～ない ろくに～ない",
+    "meaning": "Not well or properly, Not much or enough, Barely, Hardly",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "しかも",
+    "meaning": "Moreover, Furthermore",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "てでも ～てでも",
+    "meaning": "Even if I have to, By any or all means, No matter what",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "とも",
+    "meaning": "Even if, No matter",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "ないわけにはいかない ないわけにはいかない",
+    "meaning": "Can't not, No way to avoid",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "というわけではない というわけではない",
+    "meaning": "It is not that, It doesn't mean that, It is not always the case",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "のももっともだ のももっともだ",
+    "meaning": "May well, Have or has good reason for, No wonder, … Is only natural",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "たって",
+    "meaning": "Even if, Even though, No matter how",
+    "level": "N2",
+    "lesson": "Lesson 10 – Whether or Regardless"
+  },
+  {
+    "grammar": "に至るまで にいたるまで",
+    "meaning": "(Everything) from...to..., From…up until..., Starting with...ending with...",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "たところで ～たところで",
+    "meaning": "Even if ~ cannot or will not, Even though ~ not",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "如く・如き・如し ごとく",
+    "meaning": "Like, Similar to, As if, The same as",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "に足る にたる",
+    "meaning": "To be worthy of, To be enough, To be sufficient",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "極まりない・極まる きわまりない",
+    "meaning": "Extreme, Extremely",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "といえども",
+    "meaning": "Even (if), Although, Even though",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "を以て をもって",
+    "meaning": "By means of, With, By, Via, In view of",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "きらいがある きらいがある",
+    "meaning": "Have a tendency to, Tend to, Be slightly~",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "ならまだしも",
+    "meaning": "A is fine...but B is not, If it's ~ then it is ok...but ~ is not, It's different when...but, It's not so bad when...but",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "までもない",
+    "meaning": "There is no need to, Do not have to, It is not necessary to, Needless to",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "ともなると・にもなると となると",
+    "meaning": "When, If, Once, As",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "をいいことに をいいことに",
+    "meaning": "To take advantage of",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "如何 いかん",
+    "meaning": "Depending on",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "～るまでだ",
+    "meaning": "Just, Merely, Simply, Only",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "にあって",
+    "meaning": "At, In the (place or situation), Under ~ conditions or circumstances, During, Suited to",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "を余儀なくされる をよぎなくされる",
+    "meaning": "To be forced to do something",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "とは",
+    "meaning": "That..., (Surprised) that..., (Never expected) that..., (Shocked) that...",
+    "level": "N1",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "じゃあるまいし",
+    "meaning": "You are not ~ so..., it isn't ~ so...",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "てからというもの ～てからというもの",
+    "meaning": "After, Since, Ever since then",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "かたわら かたわら",
+    "meaning": "While, Besides, In addition to",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "を皮切りに をかわきりに",
+    "meaning": "Beginning of, Starting with",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "に至っては にいたっては",
+    "meaning": "When it comes to, As for, In particular, What is worse or more",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "なり",
+    "meaning": "As soon as, The moment, When",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "ともなく・ともなしに ともなく",
+    "meaning": "Absentmindedly, Mindlessly, Unconsciously, Without paying attention",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "塗れ まみれ",
+    "meaning": "Stained, Covered in, Smeared, Dirty with, Soaked in",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "ようが～まいが う・よう + が～まいが",
+    "meaning": "Even if, No matter what, Whether or not, [Emphatic], Volitional + が",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "からする",
+    "meaning": "About, Or more, Over, Starts at",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "にして① にして ①",
+    "meaning": "At, Over, In, Only (after, when, or because)",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "ものを",
+    "meaning": "But, Although, If only, I wish I had",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "であれ",
+    "meaning": "Even if, Even, No matter",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "をおいてほかに〜ない をおいてほかに〜ない",
+    "meaning": "No...but, Nothing else but, None other than",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "をもって",
+    "meaning": "As of, With, Effective from",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "とはいえ とはいえ",
+    "meaning": "Though, Although (I admit that), Be that as it may, Nonetheless",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "ならでは",
+    "meaning": "Unique to, Only, Impossible if not, Expected only of",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "～たはいいが",
+    "meaning": "It's all well and good but...",
+    "level": "N1",
+    "lesson": "Lesson 2"
+  },
+  {
+    "grammar": "すら",
+    "meaning": "Even",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "あっての",
+    "meaning": "Exist only because of or due to, Owe everything to",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "～たまでだ ～たまで + だ",
+    "meaning": "Just, Merely, Simply, Only",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "を経て をへて",
+    "meaning": "Via, Through, After (experience at job, university, etc.), Pass through",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "ながらに ながら + に",
+    "meaning": "While being, Born (with), Traditional (old-fashioned, as it was long ago), As always, While crying or in tears, (Burned) alive",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "たなり・なり ～たなり",
+    "meaning": "While... ~ing, Remaining, Not or ever since, Keep or leave",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "の極み のきわみ",
+    "meaning": "Ultimate, Extreme, Utter, Epitome, Peak",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "にしてみれば にして + みれば",
+    "meaning": "For (A), In the case of (A), From (A)'s point of view, In the eyes of (A)",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "だの",
+    "meaning": "Things like, And so on, Or something, And whatnot",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "あくまでも あくまでも",
+    "meaning": "To the (bitter) end, Stubbornly, Persistently",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "べく",
+    "meaning": "For the purpose of, In order to, To ensure",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "ところを",
+    "meaning": "When, While, In spite of (the circumstances), Regardless of (the circumstances)",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "からある",
+    "meaning": "As much as, As many as, At least",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "にして② にして ②",
+    "meaning": "To be ~ and ~, To be ~ as well as ~, Both ~ and ~",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "つ〜つ つ (Conjunctive)",
+    "meaning": "two contrasting actions",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "飽くまで(も) あくまで",
+    "meaning": "Just, Only, Merely, Strictly",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "であれ〜であれ",
+    "meaning": "Whether or, Or, No matter which, In either case",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "を境に をさかいに",
+    "meaning": "After (that moment), From (that time)",
+    "level": "N1",
+    "lesson": "Lesson 3"
+  },
+  {
+    "grammar": "たら最後 たらさいご",
+    "meaning": "Once, Now that, As soon as",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "いかなる いかなる",
+    "meaning": "What kind of, No matter what kind of, No … (with a negative verb), Any... (with a negative verb)",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "なりに",
+    "meaning": "In one's own way, Of someone's own, Do one's best in one's own way, As much as one can",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "れる・られる + ままに",
+    "meaning": "Do as (one is told or ordered…), In accordance with, In compliance with, Just like",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "にまつわる にまつわる",
+    "meaning": "Surrounding, Related or relating to, Associated with, Connected to",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "たる たるに",
+    "meaning": "To be (in a position of), As a, For",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "なら〜で",
+    "meaning": "If ~ should, Before ~ should",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "をものともせず",
+    "meaning": "Making nothing of, Ignoring, In defiance of, Regardless of, Disregarding",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "には当たらない にはあたらない",
+    "meaning": "No need to/for, Cannot, Not worth it to, Not suitable",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "ものと思う ものとおもう",
+    "meaning": "Think that, Believe that, Expect that, Have confidence that, Absolutely",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "を踏まえて をふまえて",
+    "meaning": "Based on, Considering, Keeping in mind, Taking into account, Therefore",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "ゆえに ゆえに",
+    "meaning": "Because, The reason is, Due to, Therefore, So",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "という という",
+    "meaning": "Every single, Each and every, Emphasis, Everything that could be called",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "にとどまらず にとどまらず",
+    "meaning": "Not limited to, Not only...but also, Not stopping at",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "と思いきや とおもいきや",
+    "meaning": "Thought...but, When...thought that...but, Despite having thought...",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "どうにも",
+    "meaning": "Cannot, There is no way one can, Nothing one can do, Cannot possibly not by any means, Cannot do no matter how hard one tries, Nothing will come out, It is meaningless to",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "ことだし",
+    "meaning": "(And) so, Because, Since",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "がん～",
+    "meaning": "Totally, Seriously, Completely, Furiously, Majorly",
+    "level": "N1",
+    "lesson": "Lesson 4"
+  },
+  {
+    "grammar": "か否か かいなか",
+    "meaning": "Whether or not",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "たら〜で",
+    "meaning": "Even if, If",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "べくして",
+    "meaning": "As expected, Meant to, Supposed to, Destined to, Sure to",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "まま(に) ままに (As Desired)",
+    "meaning": "As (one likes, feels or pleases), Spur of the moment, Wherever one fancies, Spontaneously, On a whim",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "かれ〜かれ",
+    "meaning": "Or, Either or",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "〜に〜ない ～に〜ない",
+    "meaning": "Cannot even...if wants, Would like to...but cannot, Wants to...but cannot",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "なくして(は) なくしては",
+    "meaning": "Without, If not for",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "のなんのって",
+    "meaning": "So much that, Extremely, Very",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "にかかっている",
+    "meaning": "To depend on",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "てやまない ～てやまない",
+    "meaning": "Never cease to, Always, Sincerely, Greatly, From the bottom of one's heart",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "ぐらいなら くらいなら",
+    "meaning": "Would rather...than, Rather than, Better off",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "ってば・ったら ってば",
+    "meaning": "I said...!, I told you...!, !",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "ずとも",
+    "meaning": "Even if not, Without, Don't have to",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "とあって",
+    "meaning": "Since...(it is no wonder that), Because...(it is no wonder that), Due to...(it is no wonder that)",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "でもなんでもない",
+    "meaning": "Not at all, By no means, Definitely not, Nothing like that, Not really",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "ぐるみで ぐるみで",
+    "meaning": "Whole, -wide, Across the, Entire, All of, With … altogether",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "そばから",
+    "meaning": "As soon as, Right after, Even if … still",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "訳あり(訳あって) わけあり(わけあって)",
+    "meaning": "～ with reasons, Due to reasons, Defective, Problematic, Unique",
+    "level": "N1",
+    "lesson": "Lesson 5"
+  },
+  {
+    "grammar": "に至って・に至り にいたって",
+    "meaning": "When it came to, Only when, Only after, Go as far as",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "だに + しない",
+    "meaning": "Not even, Not at all, Never could have",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "がてら",
+    "meaning": "On the occasion of, While … as well, While … (one is) at it, During, Along the way",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "んがため(に) んがために",
+    "meaning": "In order to, To, For the purpose of",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "いかん〜ず",
+    "meaning": "Regardless of (whatever … is), Irrespective of (whatever … is)",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "にも～ない う・よう + にも～ない",
+    "meaning": "Cannot... even if one wants or tries, Would like but cannot, Wants or tries but cannot",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "い-Adj[く] + もなんともない く + もなんともない",
+    "meaning": "Not... or anything, Not at all, Not, By no means, Definitely not, Nothing like that",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "Verb + だに (Verb) + だに",
+    "meaning": "Just, Even just, Even merely",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "～なり～なり",
+    "meaning": "Or, Either or",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "ないでもない",
+    "meaning": "Kind of, Might, Slightly, It’s not (impossible) that, Somewhat, In some respects",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "もさることながら",
+    "meaning": "It is a fact that, But, Even more than, It goes without saying, Not only but also,",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "ものと思っていた ものとおもっていた",
+    "meaning": "Was under the impression that, (Always) the thought used to think",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "でなくてなんだろう",
+    "meaning": "If … is not … then what is?",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "はさておき・はさておいて はさておき",
+    "meaning": "(Leaving or putting) aside, Apart",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "折には おりには",
+    "meaning": "When, Occasion, Opportunity, Time",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "とばかり（に） とばかりに",
+    "meaning": "As if (to say), Seeming that",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "わ〜わ",
+    "meaning": "~and ~and, Keep ~ing, One after another, So much, So many, One after the other",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "なりとも",
+    "meaning": "Even (a little), At least",
+    "level": "N1",
+    "lesson": "Lesson 6"
+  },
+  {
+    "grammar": "に至っても にいたっても",
+    "meaning": "Even when",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "を兼ねて をかねて",
+    "meaning": "And also, Also (partly) to, Also (partly) for (the purpose of), At the same time, To double as, When … also, While … as well, And as",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "Verb[ない]もの(だろう)か ないものだろうか",
+    "meaning": "(Why) can’t, Isn’t there, Wish that, If only",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "Verb[て] + みせる ～てみせる",
+    "meaning": "I will definitely, I will certainly, Just watch, Whatever it takes, I swear, for sure",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "相まって あいまって",
+    "meaning": "Combined with, Coupled with, Together with",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "に足りない にたりない",
+    "meaning": "To not be worthy, To not be enough, To not be sufficient, To lack",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "べからず",
+    "meaning": "Do not, Must not, Should not, Cannot (べからざる)",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "んばかりに",
+    "meaning": "As if, As if it were about to, About to",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "に則って・に則り にのっとって",
+    "meaning": "According to, In accordance with, Based on, In line with",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "Adj限りだ (Adjective) + かぎりだ",
+    "meaning": "Extremely, Really, Very, As ... as one can be",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "はおろか はおろか",
+    "meaning": "Let alone, Much less, Needless to say, Not to mention, Not only but also",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "めく・めいた めく",
+    "meaning": "Like, To show signs of, To have the appearance of, To come to a (state) similar to, Somewhat, An air of, Feels almost like",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "といわず といわず",
+    "meaning": "Not only A or B but every-; A, B and every-; Not only A or B but all over; A, B both, whether A or B",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "にもほどがある にもほどがある",
+    "meaning": "There is a limit to, You are too ..., How …!, How … one can be!",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "にもまして",
+    "meaning": "Even -er than, Even more than, More than anything, More than anybody, More than ever",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "まくる まくる",
+    "meaning": "Like crazy, Keep doing (without a second thought), Nothing but, On and on, Do … all around, To do a lot of, One after another, All over, Keep, Everything, Constantly, All the time",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "わ〜わ（で） わ〜わで",
+    "meaning": "And...so, And...because, Since",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "どうにか",
+    "meaning": "Somehow (or other)",
+    "level": "N1",
+    "lesson": "Lesson 7"
+  },
+  {
+    "grammar": "や否や やいなや",
+    "meaning": "As soon as, No sooner than, The minute",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "次第です しだいです",
+    "meaning": "Because the reason is, Therefore, The present situation is like this, This is how (it is), Those are the circumstances, This is why",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "というところ というところ",
+    "meaning": "I would say (about), I guess (about), It could be said that, About, At best",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "１～たりとも～ない",
+    "meaning": "Not even one, Not a single, No (at all)",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "ったらない・といったらない といっ + たらない",
+    "meaning": "Cannot tell, describe, say or express how, Words cannot express, Too … for words, Extremely",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "に照らして・に照らすと にてらして",
+    "meaning": "In light of, Based on, According to, Referencing, Comparing against, In view of",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "とあれば",
+    "meaning": "(Emphatic) if, If it is the case that, As (you wish)",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "さぞ",
+    "meaning": "You must be very, How … you must be, I dare to say, I am sure or certain that you must be very",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "ときたら ときたら ①",
+    "meaning": "When it comes to, That or this … of mine, That or this darn …, That or this blasted …",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "びる",
+    "meaning": "-like, Looking, Feeling, With an air of, To become",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "にしたところで",
+    "meaning": "Even, Even for, Even from the perspective of, Even in the case of",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "～ばこそ ばこそ",
+    "meaning": "Precisely because, Only because, Because, Due to, Only if",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "ても差し支えない てもさしつかえない",
+    "meaning": "May, Is it a bother if, Do you mind if, Is it a problem if",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "には及ばない① にはおよばない ①",
+    "meaning": "There is no need to, It is fine if you don’t, Unnecessary",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "に即して にそくして",
+    "meaning": "In line with, Based on, In accordance with",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "ないまでも",
+    "meaning": "May not … but (at least), Even though not, Even if not",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "をよそに をよそに",
+    "meaning": "Ignoring, Disregarding, Despite",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "に限ったことではない にかぎったことではない",
+    "meaning": "Not limited to, Not restricted to, Not only",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "とは比べものにならない とはくらべものにならない",
+    "meaning": "Nothing compared to, Cannot be compared to, Much more, Way better, Above comparison (beyond comparison), Far greater than",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "を顧みず をかえりみず",
+    "meaning": "Without regard for, Ignoring, Without concern for",
+    "level": "N1",
+    "lesson": "Lesson 8"
+  },
+  {
+    "grammar": "まじき",
+    "meaning": "Unbecoming of, Unworthy of, Not proper for, Should not, Must not, Cannot",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "の至り のいたり",
+    "meaning": "Utmost, Height of, Extreme, Heartiest, Such a, Very, really, Completely, Deeply",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "に恥じない にはじない",
+    "meaning": "Lives up to, Truly to …’s name, Worthy of, Not dishonor, Not putting to shame, Measure to",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "ずじまい",
+    "meaning": "Ended up not, Did not (in the end), Never did",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "に言わせれば・に言わせると・に言わせたら にいわせると",
+    "meaning": "If you ask, In … opinion, According to",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "ったら・といったら ったら",
+    "meaning": "Cannot tell, describe, say, express or find words for how, Words cannot express, Too … for words, Extremely",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "こととて",
+    "meaning": "Due to, Since, On account of, Because",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "ずくめ",
+    "meaning": "Completely, Entirely, All in, Nothing but, A real streak of, Without exception, Jet",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "には及ばない② にはおよばない ②",
+    "meaning": "To be no match (for), To not compare (with), To fall short (of), To not reach, Cannot win with, To be out of reach (for), To not be on par (with)",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "とは言うものの とはいうものの",
+    "meaning": "Although, But, Although I say, Although it is said, Having said that",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "が早いか がはやいか",
+    "meaning": "As soon as, No sooner than, The instant that, No sooner had",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "に難くない にかたくない",
+    "meaning": "Not hard to, Not difficult to, Easy to, Is obvious that",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "ならいざ知らず ならいざしらず",
+    "meaning": "Don’t know about it, Maybe it would or might be possible for",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "を禁じ得ない をきんじえない",
+    "meaning": "Cannot help feeling, Cannot but, Cannot hold back",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "にかこつけて にかこつけて",
+    "meaning": "In the name of, Using the excuse of, To use as a pretext of, Under the guise or pretense of",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "ようによっては ようによっては",
+    "meaning": "Depending on the way, Depending on how",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "べくもない",
+    "meaning": "No (doubt or hope), There is no way, It is impossible, Not a hope in hell",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "と来たら ときたら ②",
+    "meaning": "For …(is the best), When it comes to, Concerning",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "ものとして",
+    "meaning": "Assuming, Supposing, (Interpret) as, On the assumption, Regarding, Considering",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "を前提に をぜんていに",
+    "meaning": "On the premise of",
+    "level": "N1",
+    "lesson": "Lesson 9"
+  },
+  {
+    "grammar": "ずにはすまない",
+    "meaning": "Won't get away without, Won't get off without, Have to, Have no choice but to, Can’t not",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "に堪えない にたえない",
+    "meaning": "Cannot bear to, Cannot stand to, Too much to, Cannot go on doing, Cannot tolerate",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "始末だ しまつだ",
+    "meaning": "Ends up, Finally, In the end, (Unfortunately) As a result, This is what happened, To come about, To wind up",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "ものなら② ものなら ②",
+    "meaning": "If you were to do, If you try to, If … happens, Should there be",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "にひきかえ にひきかえ",
+    "meaning": "In stark contrast, In comparison, On the other hand, While, In sharp contrast",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "それまでだ",
+    "meaning": "If… then it is all in vain, It's done, It is useless, No point, It is a waste, That's it, It is all gone,",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "といおうか といおうか",
+    "meaning": "How to put it, How shall I put it, How should I put it, Or perhaps, Or maybe, Call it … or",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "ずにはおかない ずにはおかない",
+    "meaning": "Will definitely, Will certainly, Bound to, Not fail to",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "を限りに をかぎりに",
+    "meaning": "As of (the end of), (Starting) from, (No longer) after, By (the), Ending with",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "てはかなわない てはかなわない",
+    "meaning": "It's unbearable when, It'd be unbearable if, I can't stand it when, I couldn’t stand it if",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "かたがた かたがた",
+    "meaning": "Partly for (the purpose of), In addition to, Along with, By the way, And also to, Incidentally, While",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "を余儀なくさせる をよぎなくさせる",
+    "meaning": "Force to, To compel, Make unavoidable",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "～てやる",
+    "meaning": "Just wait and see, Just you wait, To do a favor, For you, Definitely, For sure",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "ただ〜のみ",
+    "meaning": "Nothing but, Should, Have to, Only, All that remains,",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "ものとする",
+    "meaning": "Shall, To assume, To suppose, To consider",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "との",
+    "meaning": "That, To",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "以前 いぜん",
+    "meaning": "Before, Not even, Before even, Precede, Far from",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "ともあろう",
+    "meaning": "Of all people, Such,",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "こそすれ〜ない",
+    "meaning": "And certainly not, But certainly not, But, Although, Even though",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "並み なみ",
+    "meaning": "As, On par with, Worthy of",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "に先駆けて にさきがけて",
+    "meaning": "First, Prior to, Pioneer, Ahead of",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "を機に をきに",
+    "meaning": "Opportunity, Occasion",
+    "level": "N1",
+    "lesson": "Lesson 10"
+  },
+  {
+    "grammar": "ぞ",
+    "meaning": "Strong emphasis (toward anyone), !",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "ぜ",
+    "meaning": "Strong emphasis (friendly or familiar), !",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "わ",
+    "meaning": "You know?, Oh?, Ever so, Oh how I ever (emphasis)",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "い",
+    "meaning": "So?, Well? (friendly or familiar)",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "ん (Slang)",
+    "meaning": "Slang abbreviation",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "つ (Slang)",
+    "meaning": "Called, Said that (slang abbreviation)",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "～やがる",
+    "meaning": "To have the nerve to (A), To have the gall to (A), To freaking (A)",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "がいい",
+    "meaning": "You should, It would be good to",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "かろう",
+    "meaning": "Probably, Right?",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "やや",
+    "meaning": "A little bit, Marginally, Slightly",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "いずれも",
+    "meaning": "All (positive), None (negative), Both, Whatever, Whatsoever",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "あわよくば",
+    "meaning": "If luck is on my side, If the time is right, If possible, all going well",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "むず",
+    "meaning": "Shall, Isn't it?, I wonder",
+    "level": "Non-JLPT",
+    "lesson": "Lesson 1"
+  },
+  {
+    "grammar": "だ ⇒ や",
+    "meaning": "To be, Am, Are, Is",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "よ ⇒ で・わ",
+    "meaning": "Emphasis (sentence ending particle)",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "だよね・でしょう ⇒ やん",
+    "meaning": "Right?, Don't you think?",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "じゃないか ⇒ やんか",
+    "meaning": "Isn't it?, Doesn't it?, Don't you?",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "のだ ⇒ ねん たんだ ⇒ てん",
+    "meaning": "Explanatory",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "ね ⇒ な",
+    "meaning": "Right?, Okay?, Isn't it?",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "ない ⇒ へん",
+    "meaning": "Not, Will not, Did not, Has not",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "じゃない ⇒ ちゃう",
+    "meaning": "To be not, Am not, Are not, Is not",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "くない ⇒ ない",
+    "meaning": "Is not",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "ている ⇒ てる ている ⇒ とる",
+    "meaning": "Does, Is doing",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "ているの ⇒ てん ているん ⇒ てん",
+    "meaning": "Explanatory",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "とく・たる・てまう ておく・てあげる・てしまう",
+    "meaning": "To do in advance, To do for, To unfortunately do",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "命令形 ⇒ ます形 + 長音 めいれいけい ⇒ ますけい + ちょうおん",
+    "meaning": "Do (something)! (imperative)",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "ないで ⇒ んといて",
+    "meaning": "Don't (please), Please do not",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "辞書形 + な ⇒ ます形 + な じしょけい + な ⇒ ますけい + な",
+    "meaning": "Do not, Don't (prohibitive)",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "ないで・な ⇒ なさんな",
+    "meaning": "(Please) do not, Do not, Don't (prohibitive)",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "Verb よう・う ⇒ Verb よ・お う・よう ⇒ お・よ",
+    "meaning": "Will, Let's, Shall?",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "と思う ⇒ 思う とおもう ⇒ おもう",
+    "meaning": "Think (that)",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "させる ⇒ さす",
+    "meaning": "To make someone do something (causative)",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "[い] Adjective - [く] change い-Adjective (く Change)",
+    "meaning": "And (adverb)",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  },
+  {
+    "grammar": "ないといけない ⇒ なあかん",
+    "meaning": "Have to, Must, Should, Have no choice but to",
+    "level": "関西弁",
+    "lesson": "Lesson 2 – 関西弁"
+  }
+]
