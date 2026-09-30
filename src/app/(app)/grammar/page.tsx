@@ -10,11 +10,11 @@ import {
   Search,
   Volume2,
   Plus,
-  BookOpen,
   CheckCheck,
   Sparkles,
   LayoutGrid,
   ListTree,
+  ArrowRight,
 } from 'lucide-react'
 import { addCustomSRSCard, speakJapanese } from '@/data/srs-deck'
 import { GrammarPointInspector } from '@/components/bunpro/grammar-point-inspector'
@@ -100,13 +100,12 @@ export default function GrammarPage() {
       exampleSentence: item.lesson || undefined,
     })
     if (res.added) {
-      toast.success(`Added "${item.grammar}" to your SRS Practice deck!`)
+      toast.success(`Added "${item.grammar}" to your Anki Deck!`)
     } else {
-      toast.info(`"${item.grammar}" is already in your SRS deck!`)
+      toast.info(`"${item.grammar}" is already in your Anki Deck!`)
     }
   }
 
-  // If a grammar point is selected, show the full Bunpro 3-Tab Structured Inspector
   if (activeGrammar) {
     return (
       <GrammarPointInspector
@@ -121,16 +120,14 @@ export default function GrammarPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-12">
-      {/* Header + Quick Demo Banner */}
+      {/* Header + Quick Demo Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight mb-1">
-            Bunpro Grammar Curriculum & Dictionary
+            Grammar Path
           </h1>
           <p className="text-muted-foreground text-sm">
-            Click any of the {grammarData.length} grammar points to open its
-            structured Details, Nuance Graph (Synonyms/Antonyms + Cram!), Vocab
-            Coverage, and Audio Examples.
+            Step-by-step Japanese grammar units from N5 to N1 ({grammarData.length} points). Tap any card to learn, compare, and practice!
           </p>
         </div>
 
@@ -142,10 +139,10 @@ export default function GrammarPage() {
               ) || (grammarData[1] as GrammarPointSummary)
             handleSelectGrammar(desu)
           }}
-          className="bg-[#e15b64] hover:bg-[#d04a53] text-white shrink-0 gap-1.5"
+          className="shrink-0 gap-1.5 font-bold border-b-4"
         >
           <Sparkles className="h-4 w-4" />
-          Inspect 「です」 (Full Demo)
+          Start with 「です」
         </Button>
       </div>
 
@@ -161,30 +158,30 @@ export default function GrammarPage() {
               className="pl-9"
             />
           </div>
-          <div className="inline-flex rounded-md border bg-muted/40 p-1 self-start">
+          <div className="inline-flex rounded-xl border bg-muted/40 p-1 self-start">
             <button
               type="button"
               onClick={() => setViewMode('lessons')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
                 viewMode === 'lessons'
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <ListTree className="h-3.5 w-3.5" />
-              By Lesson
+              Units
             </button>
             <button
               type="button"
               onClick={() => setViewMode('grid')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
                 viewMode === 'grid'
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <LayoutGrid className="h-3.5 w-3.5" />
-              Compact Grid
+              All Cards
             </button>
           </div>
         </div>
@@ -201,11 +198,7 @@ export default function GrammarPage() {
                 size="sm"
                 variant={selectedLevel === level ? 'default' : 'outline'}
                 onClick={() => setSelectedLevel(level)}
-                className={`h-8 text-xs ${
-                  selectedLevel === level
-                    ? 'bg-[#e15b64] hover:bg-[#d04a53] text-white'
-                    : ''
-                }`}
+                className="h-8 text-xs font-bold"
               >
                 {level}{' '}
                 <span className="ml-1 opacity-75 text-[11px]">({count})</span>
@@ -219,9 +212,7 @@ export default function GrammarPage() {
       <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span>
           Showing {filteredPoints.length} grammar points ·{' '}
-          <strong className="text-emerald-600 dark:text-emerald-400">
-            {masteredSet.size} Mastered
-          </strong>
+          <strong className="text-primary">{masteredSet.size} Mastered</strong>
         </span>
         {searchQuery && (
           <button
@@ -240,20 +231,21 @@ export default function GrammarPage() {
           {selectedLevel}.
         </Card>
       ) : viewMode === 'lessons' ? (
-        <div className="space-y-6">
-          {groupedByLesson.map((group) => (
+        <div className="space-y-8">
+          {groupedByLesson.map((group, gIdx) => (
             <div key={group.lessonTitle} className="space-y-3">
-              <div className="flex items-center justify-between border-b pb-2">
-                <div className="flex items-center gap-2">
-                  <span className="h-6 w-6 rounded bg-[#e15b64]/15 text-[#e15b64] flex items-center justify-center text-xs font-bold">
-                    文
+              {/* Duolingo-Style Unit Banner */}
+              <div className="rounded-2xl bg-primary/10 border border-primary/20 px-5 py-3.5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="h-8 w-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center text-xs font-extrabold">
+                    {gIdx + 1}
                   </span>
-                  <h2 className="font-bold text-base sm:text-lg">
+                  <h2 className="font-extrabold text-sm sm:text-base">
                     {group.lessonTitle}
                   </h2>
                 </div>
-                <Badge variant="outline" className="text-xs">
-                  {group.items.length} points
+                <Badge variant="secondary" className="text-xs font-bold">
+                  {group.items.length} steps
                 </Badge>
               </div>
 
@@ -264,22 +256,22 @@ export default function GrammarPage() {
                     <Card
                       key={`${item.level}-${item.grammar}-${index}`}
                       onClick={() => handleSelectGrammar(item)}
-                      className={`cursor-pointer transition-all hover:shadow-md flex flex-col justify-between ${
+                      className={`cursor-pointer transition-all hover:border-primary/60 border-b-4 flex flex-col justify-between ${
                         isMastered
                           ? 'border-emerald-500/50 bg-emerald-500/[0.03]'
-                          : 'hover:border-[#e15b64]/60'
+                          : ''
                       }`}
                     >
                       <CardHeader className="pb-2">
                         <div className="flex items-start justify-between gap-2">
-                          <CardTitle className="text-lg font-bold leading-snug text-foreground group-hover:text-[#e15b64]">
+                          <CardTitle className="text-lg font-extrabold leading-snug">
                             {item.grammar}
                           </CardTitle>
                           <div className="flex items-center gap-1 shrink-0">
                             {isMastered && (
-                              <Badge className="bg-emerald-600 text-white text-[10px] px-1.5">
+                              <Badge variant="secondary" className="text-[10px] px-1.5 text-emerald-600 dark:text-emerald-400">
                                 <CheckCheck className="h-3 w-3 mr-0.5" />
-                                Mastered
+                                Done
                               </Badge>
                             )}
                             <Badge variant="secondary" className="text-[11px]">
@@ -293,9 +285,8 @@ export default function GrammarPage() {
                           {item.meaning}
                         </p>
                         <div className="flex items-center justify-between pt-2 border-t">
-                          <span className="text-xs font-semibold text-[#e15b64] flex items-center gap-1">
-                            <BookOpen className="h-3.5 w-3.5" />
-                            Inspect Details &rarr;
+                          <span className="text-xs font-extrabold text-primary flex items-center gap-1">
+                            Start Lesson <ArrowRight className="h-3.5 w-3.5" />
                           </span>
                           <div className="flex items-center gap-1">
                             <Button
@@ -315,9 +306,9 @@ export default function GrammarPage() {
                               variant="outline"
                               className="h-7 px-2 text-xs"
                               onClick={(e) => handleAddGrammarToSRS(e, item)}
-                              title="Add to SRS Practice Deck"
+                              title="Add to Anki Deck"
                             >
-                              <Plus className="h-3 w-3 mr-1" /> SRS
+                              <Plus className="h-3 w-3 mr-1" /> Deck
                             </Button>
                           </div>
                         </div>
@@ -337,15 +328,15 @@ export default function GrammarPage() {
               <Card
                 key={`${item.level}-${item.grammar}-${index}`}
                 onClick={() => handleSelectGrammar(item)}
-                className={`cursor-pointer transition-all hover:shadow-md flex flex-col justify-between ${
+                className={`cursor-pointer transition-all hover:border-primary/60 border-b-4 flex flex-col justify-between ${
                   isMastered
                     ? 'border-emerald-500/50 bg-emerald-500/[0.03]'
-                    : 'hover:border-[#e15b64]/60'
+                    : ''
                 }`}
               >
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-lg font-bold leading-snug">
+                    <CardTitle className="text-lg font-extrabold leading-snug">
                       {item.grammar}
                     </CardTitle>
                     <Badge variant="secondary" className="shrink-0">
@@ -358,7 +349,7 @@ export default function GrammarPage() {
                     {item.meaning}
                   </p>
                   <div className="flex items-center justify-between pt-2 border-t">
-                    <span className="text-xs text-[#e15b64] font-semibold">
+                    <span className="text-xs text-primary font-extrabold">
                       {item.lesson ? item.lesson.split(' – ')[0] : item.level}{' '}
                       &rarr;
                     </span>
@@ -380,9 +371,9 @@ export default function GrammarPage() {
                         variant="outline"
                         className="h-7 px-2 text-xs"
                         onClick={(e) => handleAddGrammarToSRS(e, item)}
-                        title="Add to SRS Practice Deck"
+                        title="Add to Anki Deck"
                       >
-                        <Plus className="h-3 w-3 mr-1" /> SRS
+                        <Plus className="h-3 w-3 mr-1" /> Deck
                       </Button>
                     </div>
                   </div>

@@ -24,6 +24,7 @@ import {
   Plus,
   CheckCircle2,
   AlertTriangle,
+  Trophy,
 } from 'lucide-react'
 import {
   getKanaPool,
@@ -40,6 +41,12 @@ import {
   loadUserStats,
   saveUserStats,
 } from '@/data/srs-deck'
+import {
+  loadQuizRuns,
+  recordQuizRun,
+  getCurrentLeague,
+  type QuizRunRecord,
+} from '@/data/quiz-leaderboard'
 import { toast } from 'sonner'
 
 type GameMode =
@@ -48,6 +55,7 @@ type GameMode =
   | 'audio-dictation'
   | 'sentence-builder'
   | 'memory-match'
+  | 'leaderboard'
 
 interface LearningArcadeProps {
   initialScript?: 'hiragana' | 'katakana' | 'both'
@@ -109,14 +117,12 @@ export function LearningArcade({
 
   // Initialize / Reset Queue
   function initQueue(customScope?: KanaDeckScope) {
-    const activePool = getKanaPool(script, customScope || scope)
-    // Shuffle copy
-    const shuffled = [...activePool].sort(
-      (a, b) =>
-        ((a.kana.charCodeAt(0) * 17) % 31) -
-        ((b.kana.charCodeAt(0) * 17) % 31)
-    )
-    setQueue(shuffled)
+    const activePool = [...getKanaPool(script, customScope || scope)]
+    for (let i = activePool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[activePool[i], activePool[j]] = [activePool[j], activePool[i]]
+    }
+    setQueue(activePool)
     setCurrentIndex(0)
     setSelectedOption(null)
     setTypedInput('')
@@ -128,9 +134,14 @@ export function LearningArcade({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [script, scope])
 
-  // Initialize Memory Match Grid
+  // Initialize Memory Match Grid with random pairs and random card positions
   function initMemoryBoard() {
-    const pairs = basePool.slice(0, 6)
+    const poolCopy = [...basePool]
+    for (let i = poolCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[poolCopy[i], poolCopy[j]] = [poolCopy[j], poolCopy[i]]
+    }
+    const pairs = poolCopy.slice(0, 6)
     const deck: {
       id: string
       pairId: string
@@ -140,23 +151,25 @@ export function LearningArcade({
     }[] = []
     pairs.forEach((p, idx) => {
       deck.push({
-        id: `k-${idx}`,
+        id: `k-${idx}-${Date.now()}`,
         pairId: p.kana,
         label: p.kana,
         type: 'kana',
         matched: false,
       })
       deck.push({
-        id: `r-${idx}`,
+        id: `r-${idx}-${Date.now()}`,
         pairId: p.kana,
         label: cleanRomaji(p.romaji),
         type: 'romaji',
         matched: false,
       })
     })
-    // Deterministic-friendly shuffle
-    const shuffled = deck.sort((a, b) => a.label.localeCompare(b.label))
-    setMatchCards(shuffled)
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[deck[i], deck[j]] = [deck[j], deck[i]]
+    }
+    setMatchCards(deck)
     setFlippedIds([])
     setMatchMoves(0)
   }
@@ -331,10 +344,51 @@ export function LearningArcade({
   const allMatched =
     matchCards.length > 0 && matchCards.every((c) => c.matched)
 
+  const [leaderboardRuns, setLeaderboardRuns] = useState<QuizRunRecord[]>([])
+
+  useEffect(() => {
+    setLeaderboardRuns(loadQuizRuns())
+  }, [gameMode, score])
+
+  function handleSaveRunToLeaderboard() {
+    if (score <= 0) {
+      toast.info('Answer a few questions first to earn points for the leaderboard!')
+      return
+    }
+    const modeTitleMap: Record<GameMode, string> = {
+      'speed-typing': 'Speed Recall Typing',
+      'confusion-pairs': 'Confusion Pairs',
+      'audio-dictation': 'Audio Dictation',
+      'sentence-builder': 'Sentence Builder',
+      'memory-match': 'Memory Blitz',
+      leaderboard: 'Quiz Arcade',
+    }
+    const totalAttempts = Math.max(1, currentIndex + missedItems.length)
+    const acc = Math.max(
+      50,
+      Math.min(
+        100,
+        Math.round(
+          ((totalAttempts - missedItems.length) / totalAttempts) * 100
+        )
+      )
+    )
+    const updated = recordQuizRun({
+      modeName: modeTitleMap[gameMode],
+      score,
+      accuracy: acc,
+      xpEarned: Math.max(10, Math.round(score / 2)),
+      streak,
+    })
+    setLeaderboardRuns(updated)
+    toast.success(`Posted ${score} pts in ${modeTitleMap[gameMode]} to the Leaderboard! 🏆`)
+    setGameMode('leaderboard')
+  }
+
   return (
     <div className="space-y-6">
       {/* Top Game Mode Selector */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         {(
           [
             {
@@ -366,6 +420,12 @@ export function LearningArcade({
               label: 'Memory Blitz',
               sub: 'Pair Match',
               icon: Grid,
+            },
+            {
+              id: 'leaderboard',
+              label: 'Leaderboard',
+              sub: 'Top Scores & League',
+              icon: Trophy,
             },
           ] as const
         ).map((m) => {
@@ -427,7 +487,7 @@ export function LearningArcade({
             ))}
           </div>
 
-          {gameMode !== 'sentence-builder' && (
+          {gameMode !== 'sentence-builder' && gameMode !== 'leaderboard' && (
             <select
               value={scope}
               onChange={(e) => setScope(e.target.value as KanaDeckScope)}
@@ -442,7 +502,7 @@ export function LearningArcade({
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           <Badge variant="secondary" className="gap-1">
             <Flame className="h-3.5 w-3.5 text-orange-500 fill-orange-500" />
             Combo: {streak}x
@@ -451,6 +511,16 @@ export function LearningArcade({
             <Sparkles className="h-3.5 w-3.5 text-yellow-500" />
             Score: {score}
           </Badge>
+          {gameMode !== 'leaderboard' && score > 0 && (
+            <Button
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={handleSaveRunToLeaderboard}
+            >
+              <Trophy className="h-3.5 w-3.5" />
+              Post Score
+            </Button>
+          )}
         </div>
       </div>
 
@@ -867,6 +937,74 @@ export function LearningArcade({
                     </button>
                   )
                 })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* GAME MODE 6: QUIZ LEADERBOARD */}
+      {gameMode === 'leaderboard' && (
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Trophy className="h-6 w-6 text-primary" />
+                <div>
+                  <CardTitle className="text-xl">
+                    Quiz Arcade Leaderboard
+                  </CardTitle>
+                  <CardDescription>
+                    Your personal high scores, streaks, and League standing
+                  </CardDescription>
+                </div>
+              </div>
+              <Badge variant="secondary" className="text-xs font-bold">
+                {getCurrentLeague(loadUserStats().xp).badge}{' '}
+                {getCurrentLeague(loadUserStats().xp).name}
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {leaderboardRuns.length === 0 ? (
+              <div className="text-center py-8 space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  No quiz scores posted yet! Play any quiz mode above and click{' '}
+                  <strong>Post Score</strong> to record your run.
+                </p>
+                <Button size="sm" onClick={() => setGameMode('speed-typing')}>
+                  Start Speed Recall &rarr;
+                </Button>
+              </div>
+            ) : (
+              <div className="divide-y">
+                {leaderboardRuns.map((run, idx) => (
+                  <div
+                    key={run.id}
+                    className="py-3 flex items-center justify-between gap-3 text-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="h-7 w-7 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
+                        #{idx + 1}
+                      </span>
+                      <div>
+                        <p className="font-bold">
+                          {run.playerName} — {run.modeName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {run.timestamp} · Best Combo {run.streak}x ·{' '}
+                          {run.accuracy}% accuracy
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <Badge className="font-bold">{run.score} pts</Badge>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        +{run.xpEarned} XP
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </CardContent>

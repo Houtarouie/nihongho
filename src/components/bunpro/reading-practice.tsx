@@ -23,6 +23,8 @@ import {
   addCustomSRSCard,
   loadUserStats,
   saveUserStats,
+  speakJapanese,
+  stopJapaneseSpeech,
 } from '@/data/srs-deck'
 import { toast } from 'sonner'
 
@@ -104,9 +106,7 @@ export function BunproReadingPractice() {
   // Stop speech when leaving passage
   useEffect(() => {
     return () => {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel()
-      }
+      stopJapaneseSpeech()
     }
   }, [selectedPassage])
 
@@ -115,36 +115,31 @@ export function BunproReadingPractice() {
     idx: number,
     autoContinue: boolean
   ) {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
     const sentence = passage.sentences[idx]
     if (!sentence) {
       setIsPlaying(false)
       return
     }
     setActiveSentenceIdx(idx)
-    window.speechSynthesis.cancel()
-    const cleanText = sentence.japanese.replace(/\[[^\]]+\]/g, '').trim()
-    const utterance = new SpeechSynthesisUtterance(cleanText)
-    utterance.lang = 'ja-JP'
-    utterance.rate = speechRate
-    utterance.onend = () => {
-      if (autoContinue && idx + 1 < passage.sentences.length) {
-        playSentenceAtIndex(passage, idx + 1, true)
-      } else {
-        setIsPlaying(false)
-      }
-    }
-    utterance.onerror = () => setIsPlaying(false)
     setIsPlaying(true)
-    window.speechSynthesis.speak(utterance)
+    const cleanText = sentence.japanese.replace(/\[[^\]]+\]/g, '').trim()
+    speakJapanese(cleanText, {
+      rate: speechRate,
+      onEnd: () => {
+        if (autoContinue && idx + 1 < passage.sentences.length) {
+          playSentenceAtIndex(passage, idx + 1, true)
+        } else {
+          setIsPlaying(false)
+        }
+      },
+      onError: () => setIsPlaying(false),
+    })
   }
 
   function togglePlayAll() {
     if (!selectedPassage) return
     if (isPlaying) {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel()
-      }
+      stopJapaneseSpeech()
       setIsPlaying(false)
     } else {
       const startIdx =
@@ -202,16 +197,14 @@ export function BunproReadingPractice() {
           <button
             type="button"
             onClick={() => {
-              if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-                window.speechSynthesis.cancel()
-              }
+              stopJapaneseSpeech()
               setIsPlaying(false)
               setSelectedPassage(null)
               setQuizAnswerIdx(null)
             }}
-            className="flex items-center gap-2.5 text-lg sm:text-xl font-bold hover:text-rose-500 transition-colors"
+            className="flex items-center gap-2.5 text-lg sm:text-xl font-bold hover:text-primary transition-colors"
           >
-            <ArrowLeft className="h-5 w-5 text-rose-500" />
+            <ArrowLeft className="h-5 w-5 text-primary" />
             <span>
               [{selectedPassage.level}] Lesson {selectedPassage.lessonNumber}
             </span>
@@ -224,7 +217,7 @@ export function BunproReadingPractice() {
               onClick={() => setIsVertical(false)}
               className={`transition-colors ${
                 !isVertical
-                  ? 'text-rose-500 font-bold'
+                  ? 'text-primary font-bold'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -247,7 +240,7 @@ export function BunproReadingPractice() {
               onClick={() => setIsVertical(true)}
               className={`transition-colors ${
                 isVertical
-                  ? 'text-rose-500 font-bold'
+                  ? 'text-primary font-bold'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -267,7 +260,7 @@ export function BunproReadingPractice() {
                   furiganaMode
                 )}
                 {highlightGrammar && (
-                  <sup className="text-xs font-semibold text-rose-500 ml-1">
+                  <sup className="text-xs font-semibold text-primary ml-1">
                     (1)
                   </sup>
                 )}
@@ -286,7 +279,7 @@ export function BunproReadingPractice() {
                 onClick={() => setShowAllTranslations((v) => !v)}
                 className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
                   showAllTranslations
-                    ? 'border-rose-500/50 bg-rose-500/10 text-rose-500'
+                    ? 'border-primary/50 bg-primary/10 text-primary'
                     : 'bg-muted/40 hover:bg-muted'
                 }`}
               >
@@ -314,7 +307,7 @@ export function BunproReadingPractice() {
                   type="checkbox"
                   checked={highlightGrammar}
                   onChange={(e) => setHighlightGrammar(e.target.checked)}
-                  className="h-3.5 w-3.5 accent-rose-500 rounded"
+                  className="h-3.5 w-3.5 accent-primary rounded"
                 />
               </label>
             </div>
@@ -324,7 +317,7 @@ export function BunproReadingPractice() {
               <button
                 type="button"
                 onClick={togglePlayAll}
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted hover:bg-rose-500 hover:text-white transition-colors"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-white transition-colors"
                 title={isPlaying ? 'Pause audio' : 'Play passage audio'}
               >
                 {isPlaying ? (
@@ -337,7 +330,7 @@ export function BunproReadingPractice() {
               {/* Segmented Track with Sentence Tick Marks */}
               <div className="relative flex-1 h-2.5 rounded-full bg-muted overflow-visible flex items-center">
                 <div
-                  className="h-full rounded-l-full bg-rose-500 transition-all duration-300"
+                  className="h-full rounded-l-full bg-primary transition-all duration-300"
                   style={{ width: `${progressPct}%` }}
                 />
                 {/* Sentence segment dividers */}
@@ -359,7 +352,7 @@ export function BunproReadingPractice() {
                 })}
                 {/* Scrubber Thumb */}
                 <div
-                  className="absolute h-4 w-4 -translate-x-1/2 rounded-full bg-rose-500 shadow ring-2 ring-background transition-all duration-300"
+                  className="absolute h-4 w-4 -translate-x-1/2 rounded-full bg-primary shadow ring-2 ring-background transition-all duration-300"
                   style={{ left: `${progressPct}%` }}
                 />
               </div>
@@ -411,7 +404,7 @@ export function BunproReadingPractice() {
                       }
                       className={`group cursor-pointer rounded-lg p-2 transition-colors ${
                         isActive
-                          ? 'bg-rose-500/10 text-rose-500 dark:text-rose-400'
+                          ? 'bg-primary/10 text-primary dark:text-rose-400'
                           : 'hover:bg-muted/40'
                       }`}
                     >
@@ -420,7 +413,7 @@ export function BunproReadingPractice() {
                           <span
                             className={`text-xs transition-opacity ${
                               isActive
-                                ? 'opacity-100 text-rose-500'
+                                ? 'opacity-100 text-primary'
                                 : 'opacity-0 group-hover:opacity-60'
                             }`}
                           >
@@ -445,7 +438,7 @@ export function BunproReadingPractice() {
                                   e.stopPropagation()
                                   if (note) setSelectedGrammarNote(note)
                                 }}
-                                className="text-xs font-bold text-rose-500 hover:underline px-0.5"
+                                className="text-xs font-bold text-primary hover:underline px-0.5"
                                 title={
                                   note
                                     ? `${note.grammar}: ${note.meaning}`
@@ -529,11 +522,11 @@ export function BunproReadingPractice() {
                       onClick={() => setSelectedGrammarNote(g)}
                       className={`rounded-lg border px-2.5 py-1.5 text-xs text-left transition-all ${
                         selectedGrammarNote?.num === g.num
-                          ? 'border-rose-500 bg-rose-500/10 text-rose-500 font-semibold'
-                          : 'bg-background hover:border-rose-500/40'
+                          ? 'border-primary bg-primary/10 text-primary font-semibold'
+                          : 'bg-background hover:border-primary/40'
                       }`}
                     >
-                      <span className="font-bold text-rose-500 mr-1">
+                      <span className="font-bold text-primary mr-1">
                         ({g.num}) {g.grammar}
                       </span>
                       <span className="text-muted-foreground">
@@ -563,9 +556,9 @@ export function BunproReadingPractice() {
                   <line x1="40" y1="55" x2="95" y2="55" className="stroke-muted-foreground/40" />
                   {/* Desk & Stack of Books */}
                   <line x1="60" y1="150" x2="300" y2="150" strokeWidth="2.5" />
-                  <rect x="150" y="138" width="60" height="12" rx="2" className="fill-rose-500/20 stroke-rose-500" />
+                  <rect x="150" y="138" width="60" height="12" rx="2" className="fill-primary/20 stroke-primary" />
                   <rect x="154" y="126" width="54" height="12" rx="2" className="fill-primary/10" />
-                  <rect x="152" y="114" width="58" height="12" rx="2" className="fill-rose-500/20 stroke-rose-500" />
+                  <rect x="152" y="114" width="58" height="12" rx="2" className="fill-primary/20 stroke-primary" />
                   <rect x="156" y="102" width="50" height="12" rx="2" className="fill-primary/10" />
                   {/* Left Student */}
                   <circle cx="105" cy="82" r="20" />
@@ -666,7 +659,7 @@ export function BunproReadingPractice() {
         </p>
         <p>
           If you&apos;re learning via the{' '}
-          <span className="text-rose-500 font-medium">
+          <span className="text-primary font-medium">
             default JLPT grammar Decks
           </span>
           , only the grammar taught in each of their respective Lessons will show up on each page. This ensures that whether you&apos;re doing beginner or high-level practice, you&apos;ll never encounter items that you have not learned yet.
@@ -694,9 +687,9 @@ export function BunproReadingPractice() {
                       setActiveSentenceIdx(0)
                       setSelectedGrammarNote(p.grammarNotes[0] || null)
                     }}
-                    className="group flex items-center justify-between rounded-lg border bg-card px-4 py-4 text-left font-bold text-sm shadow-sm transition-all hover:border-rose-500/60 hover:bg-muted/40"
+                    className="group flex items-center justify-between rounded-lg border bg-card px-4 py-4 text-left font-bold text-sm shadow-sm transition-all hover:border-primary/60 hover:bg-muted/40"
                   >
-                    <span className="group-hover:text-rose-500 transition-colors">
+                    <span className="group-hover:text-primary transition-colors">
                       [{level}] Lesson {lessonNum}
                     </span>
                     {isDone && (

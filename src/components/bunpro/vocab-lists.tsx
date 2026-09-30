@@ -24,7 +24,7 @@ import { toast } from 'sonner'
 const LIST_CATEGORIES = [
   'All',
   'JLPT',
-  'Bunpro Core',
+  'Essential Core',
   'Textbook (Genki)',
   'Community',
 ] as const
@@ -92,7 +92,7 @@ export function BunproVocabLists() {
     })
     syncSRSState()
     if (res.added) {
-      toast.success(`Added "${item.word}" to your Anki/Bunpro SRS queue!`)
+      toast.success(`Added "${item.word}" to your Anki SRS queue!`)
     } else {
       toast.info(`"${item.word}" is already in your SRS queue!`)
     }
@@ -214,7 +214,7 @@ export function BunproVocabLists() {
           return (
             <Card
               key={item.id}
-              className="hover:border-rose-500/40 transition-colors"
+              className="hover:border-primary/40 transition-colors"
             >
               <CardHeader className="pb-2">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -227,7 +227,7 @@ export function BunproVocabLists() {
                         </rt>
                       </ruby>
                     </CardTitle>
-                    <span className="text-sm font-medium text-rose-500">
+                    <span className="text-sm font-medium text-primary">
                       {item.meaning}
                     </span>
                     <Badge variant="outline" className="text-[10px]">
@@ -291,7 +291,7 @@ export function BunproVocabLists() {
                       <button
                         type="button"
                         onClick={() => speakJapanese(sent.japanese)}
-                        className="text-muted-foreground hover:text-rose-500 shrink-0 mt-0.5"
+                        className="text-muted-foreground hover:text-primary shrink-0 mt-0.5"
                         title="Play example sentence"
                       >
                         <Volume2 className="h-4 w-4" />

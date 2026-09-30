@@ -1,292 +1,190 @@
 'use client'
 
-import { useState } from 'react'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card'
+import { useState, useRef } from 'react'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
+import { Upload, Download, CheckCircle2, FileArchive } from 'lucide-react'
 import {
-  Download,
-  Upload,
-  RefreshCw,
-  CheckCircle2,
-  AlertCircle,
-} from 'lucide-react'
-import {
-  addCustomSRSCard,
-  loadSRSCards,
+  importAnkiDeckCards,
   type SRSCard,
 } from '@/data/srs-deck'
-import { exportToAnkiTSV, parseAnkiTSV } from '@/lib/anki/importer'
 import {
-  pingAnkiConnect,
-  pushCardsToAnkiConnect,
-  pullCardsFromAnkiConnect,
-} from '@/lib/anki/ankiconnect'
+  exportToAnkiTSV,
+  parseAnkiTSV,
+  parseAnkiApkgBinary,
+} from '@/lib/anki/importer'
 import { toast } from 'sonner'
 
 interface AnkiSyncModalProps {
   cards: SRSCard[]
   onCardsChanged: (next: SRSCard[]) => void
+  onImportSuccess?: (deckName: string) => void
 }
 
-export function AnkiSyncPanel({ cards, onCardsChanged }: AnkiSyncModalProps) {
-  const [importText, setImportText] = useState('')
-  const [ankiStatus, setAnkiStatus] = useState<{
-    checked: boolean
-    connected: boolean
-    decks: string[]
-    error?: string
-  }>({ checked: false, connected: false, decks: [] })
-  const [targetDeck, setTargetDeck] = useState('Nihongo::Japanese')
-  const [isSyncing, setIsSyncing] = useState(false)
+export function AnkiSyncPanel({
+  cards,
+  onCardsChanged,
+  onImportSuccess,
+}: AnkiSyncModalProps) {
+  const [customDeckName, setCustomDeckName] = useState('')
+  const [isImporting, setIsImporting] = useState(false)
+  const [lastImportedDeck, setLastImportedDeck] = useState<{
+    name: string
+    count: number
+  } | null>(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-  function handleExportTSV() {
+  async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsImporting(true)
+    const rawName =
+      customDeckName.trim() ||
+      file.name.replace(/\.(apkg|colpkg|txt|tsv|csv|json)$/i, '').trim() ||
+      'Imported Deck'
+    const fullDeckName = rawName.startsWith('Japanese::')
+      ? rawName
+      : `Japanese::${rawName}`
+
+    try {
+      if (/\.(apkg|colpkg)$/i.test(file.name)) {
+        const parsedCards = await parseAnkiApkgBinary(file, fullDeckName)
+        if (parsedCards.length === 0) {
+          toast.error(
+            'Could not find readable text cards in this .apkg file. Make sure it is a standard Anki 2.1 .apkg deck.'
+          )
+          setIsImporting(false)
+          return
+        }
+        const { allCards, addedCount } = importAnkiDeckCards(
+          fullDeckName,
+          parsedCards
+        )
+        onCardsChanged(allCards)
+        setLastImportedDeck({ name: fullDeckName, count: addedCount })
+        toast.success(
+          `Imported "${fullDeckName}" (${addedCount} cards with English translations)!`
+        )
+        if (onImportSuccess) onImportSuccess(fullDeckName)
+      } else {
+        const text = await file.text()
+        const parsed = parseAnkiTSV(text, fullDeckName)
+        if (parsed.length === 0) {
+          toast.error('No valid cards found in this file.')
+          setIsImporting(false)
+          return
+        }
+        const { allCards, addedCount } = importAnkiDeckCards(
+          fullDeckName,
+          parsed
+        )
+        onCardsChanged(allCards)
+        setLastImportedDeck({ name: fullDeckName, count: addedCount })
+        toast.success(`Imported "${fullDeckName}" (${addedCount} cards)!`)
+        if (onImportSuccess) onImportSuccess(fullDeckName)
+      }
+    } catch {
+      toast.error('Failed to read deck file.')
+    } finally {
+      setIsImporting(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  function handleExportCollection() {
     const content = exportToAnkiTSV(cards)
-    const blob = new Blob([content], { type: 'text/tab-separated-values;charset=utf-8;' })
+    const blob = new Blob([content], {
+      type: 'text/tab-separated-values;charset=utf-8;',
+    })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `nihongo-anki-deck-${new Date().toISOString().split('T')[0]}.txt`
+    a.download = `nihongo-deck-export-${new Date().toISOString().split('T')[0]}.txt`
     a.click()
     URL.revokeObjectURL(url)
-    toast.success('Exported Anki .txt deck file! Import it directly in Desktop Anki (File -> Import).')
-  }
-
-  function handleImportTSV() {
-    if (!importText.trim()) {
-      toast.error('Paste Anki TSV/CSV lines or upload a .txt file first.')
-      return
-    }
-    const parsed = parseAnkiTSV(importText)
-    if (parsed.length === 0) {
-      toast.error('No valid tab- or comma-separated notes found.')
-      return
-    }
-    let added = 0
-    for (const item of parsed) {
-      const res = addCustomSRSCard(item)
-      if (res.added) added++
-    }
-    onCardsChanged(loadSRSCards())
-    setImportText('')
-    toast.success(`Imported ${parsed.length} notes (${added} new cards added)!`)
-  }
-
-  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setImportText(reader.result)
-        toast.info(`Loaded "${file.name}". Click "Import Notes" to add to deck.`)
-      }
-    }
-    reader.readAsText(file)
-  }
-
-  async function handleCheckAnkiConnect() {
-    setIsSyncing(true)
-    const status = await pingAnkiConnect()
-    setAnkiStatus({ checked: true, ...status })
-    setIsSyncing(false)
-    if (status.connected) {
-      toast.success(`Connected to Desktop Anki! Found ${status.decks.length} decks.`)
-    } else {
-      toast.error('Desktop Anki not detected on 127.0.0.1:8765.')
-    }
-  }
-
-  async function handlePushToDesktopAnki() {
-    setIsSyncing(true)
-    try {
-      const res = await pushCardsToAnkiConnect(targetDeck, cards)
-      toast.success(
-        `Pushed ${res.addedCount} new cards to Desktop Anki deck "${targetDeck}"!`
-      )
-    } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : 'Failed to push to AnkiConnect'
-      )
-    } finally {
-      setIsSyncing(false)
-    }
-  }
-
-  async function handlePullFromDesktopAnki() {
-    setIsSyncing(true)
-    try {
-      const notes = await pullCardsFromAnkiConnect(targetDeck)
-      if (notes.length === 0) {
-        toast.info(`No notes found in Desktop Anki deck "${targetDeck}".`)
-      } else {
-        let added = 0
-        for (const n of notes) {
-          const res = addCustomSRSCard({
-            front: n.front,
-            reading: n.reading,
-            meaning: n.meaning,
-            category: 'vocabulary',
-            jlptLevel: 'N5',
-            deckName: `Japanese::${targetDeck}`,
-            tags: n.tags,
-          })
-          if (res.added) added++
-        }
-        onCardsChanged(loadSRSCards())
-        toast.success(`Pulled ${notes.length} notes (${added} new) from Desktop Anki!`)
-      }
-    } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : 'Failed to pull from AnkiConnect'
-      )
-    } finally {
-      setIsSyncing(false)
-    }
+    toast.success('Exported your collection!')
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      {/* 1. Anki File Import / Export (.txt / .tsv) */}
+    <div className="max-w-xl mx-auto py-4">
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">
-            Anki Deck File Import &amp; Export (.txt / .tsv)
-          </CardTitle>
-          <CardDescription>
-            Export your deck for Desktop Anki / AnkiDroid, or import any Anki Tab-Separated deck file.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Button onClick={handleExportTSV} className="w-full" variant="outline">
-            <Download className="h-4 w-4 mr-2" /> Export All {cards.length} Cards as Anki .txt
-          </Button>
-
-          <div className="space-y-2 pt-2 border-t">
-            <Label htmlFor="anki-file">Upload Anki .txt / .tsv / .csv File</Label>
-            <Input
-              id="anki-file"
-              type="file"
-              accept=".txt,.tsv,.csv"
-              onChange={handleFileUpload}
-            />
+        <CardContent className="p-6 sm:p-8 space-y-6">
+          <div className="text-center space-y-1.5">
+            <div className="mx-auto h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-2">
+              <FileArchive className="h-6 w-6" />
+            </div>
+            <h2 className="text-xl font-bold">Import Anki Deck (.apkg)</h2>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Select a pre-installed <code className="font-mono">.apkg</code>{' '}
+              deck file from your computer to add it directly to your Decks.
+            </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="anki-paste">
-              Or Paste Tab/Comma-Separated Notes (Front [tab] Meaning [tab] Reading)
-            </Label>
-            <Textarea
-              id="anki-paste"
-              placeholder={"桜[さくら]\tCherry blossom\tさくら\n約束[やくそく]\tPromise\tやくそく"}
-              value={importText}
-              onChange={(e) => setImportText(e.target.value)}
-              className="min-h-[100px] font-mono text-xs"
+            <label
+              htmlFor="deck-name-override"
+              className="text-xs font-medium text-muted-foreground"
+            >
+              Deck Name (Optional — uses file name automatically if left blank)
+            </label>
+            <Input
+              id="deck-name-override"
+              value={customDeckName}
+              onChange={(e) => setCustomDeckName(e.target.value)}
+              placeholder="e.g. Core 2K, N5 Vocab..."
             />
           </div>
 
-          <Button onClick={handleImportTSV} className="w-full">
-            <Upload className="h-4 w-4 mr-2" /> Import Notes into Anki Deck
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* 2. Live Desktop AnkiConnect Sync (http://127.0.0.1:8765) */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">
-              AnkiConnect Live Desktop Sync
-            </CardTitle>
-            {ankiStatus.checked &&
-              (ankiStatus.connected ? (
-                <Badge className="bg-green-600 text-white gap-1">
-                  <CheckCircle2 className="h-3 w-3" /> Connected
-                </Badge>
-              ) : (
-                <Badge variant="secondary" className="gap-1">
-                  <AlertCircle className="h-3 w-3" /> Offline
-                </Badge>
-              ))}
-          </div>
-          <CardDescription>
-            Sync directly with Desktop Anki running the official AnkiConnect add-on (code <code className="font-mono font-bold">2055492159</code>).
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={handleCheckAnkiConnect}
-            disabled={isSyncing}
+          {/* Clean 1-Click .apkg Dropzone */}
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className="rounded-2xl border-2 border-dashed border-border hover:border-primary/60 bg-muted/20 hover:bg-muted/40 p-8 text-center cursor-pointer transition-all space-y-2"
           >
-            <RefreshCw
-              className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".apkg,.colpkg,.txt,.tsv,.csv"
+              onChange={handleFileSelect}
+              className="hidden"
             />
-            Test Connection to Desktop Anki (Port 8765)
-          </Button>
+            <Upload className="h-7 w-7 text-primary mx-auto" />
+            <p className="text-sm font-semibold">
+              {isImporting
+                ? 'Extracting .apkg deck...'
+                : 'Click to select your .apkg file'}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Supports <code className="font-mono">.apkg</code>,{' '}
+              <code className="font-mono">.colpkg</code>, and{' '}
+              <code className="font-mono">.txt / .csv</code>
+            </p>
+          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="target-deck">Desktop Anki Deck Name</Label>
-            <Input
-              id="target-deck"
-              value={targetDeck}
-              onChange={(e) => setTargetDeck(e.target.value)}
-              placeholder="Nihongo::Japanese"
-            />
-            {ankiStatus.decks.length > 0 && (
-              <div className="flex flex-wrap gap-1 pt-1">
-                {ankiStatus.decks.slice(0, 6).map((d) => (
-                  <button
-                    key={d}
-                    type="button"
-                    onClick={() => setTargetDeck(d)}
-                    className="text-[11px] px-2 py-0.5 rounded bg-muted hover:bg-primary/10 hover:text-primary"
-                  >
-                    {d}
-                  </button>
-                ))}
+          {lastImportedDeck && (
+            <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-3.5 flex items-center justify-between text-xs text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0" />
+                <span>
+                  Imported <strong>{lastImportedDeck.name}</strong> (
+                  {lastImportedDeck.count} cards)
+                </span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="pt-2 border-t flex items-center justify-between text-xs text-muted-foreground">
+            <span>{cards.length} total cards in your collection</span>
             <Button
-              onClick={handlePushToDesktopAnki}
-              disabled={isSyncing}
-              variant="default"
+              size="sm"
+              variant="ghost"
+              onClick={handleExportCollection}
+              className="h-8 text-xs gap-1.5"
             >
-              Push to Anki
+              <Download className="h-3.5 w-3.5" />
+              Export Backup (.txt)
             </Button>
-            <Button
-              onClick={handlePullFromDesktopAnki}
-              disabled={isSyncing}
-              variant="secondary"
-            >
-              Pull from Anki
-            </Button>
-          </div>
-
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground space-y-1">
-            <p className="font-semibold text-foreground">
-              How to enable AnkiConnect in Desktop Anki:
-            </p>
-            <p>1. Open Anki &rarr; Tools &rarr; Add-ons &rarr; Get Add-ons.</p>
-            <p>
-              2. Enter code <code className="font-mono font-bold">2055492159</code> and restart Anki.
-            </p>
-            <p>
-              3. Add your site URL to <code className="font-mono">webCorsOriginList</code> in AnkiConnect config.
-            </p>
           </div>
         </CardContent>
       </Card>

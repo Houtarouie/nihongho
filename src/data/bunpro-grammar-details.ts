@@ -100,10 +100,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-1',
         japaneseHtml:
-          '<ruby>大学生<rt>だいがくせい</rt></ruby><span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>大学生<rt>だいがくせい</rt></ruby><span class="text-primary font-bold">です</span>。',
         plainJapanese: '大学生です。',
         englishHtml:
-          'I <span class="text-[#e15b64] underline decoration-dotted font-semibold">am</span> a college student.',
+          'I <span class="text-primary underline decoration-dotted font-semibold">am</span> a college student.',
         plainEnglish: 'I am a college student.',
         clozePrompt: '大学生____。',
         clozeAnswer: 'です',
@@ -113,10 +113,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-2',
         japaneseHtml:
-          '<ruby>店<rt>みせ</rt></ruby><span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>店<rt>みせ</rt></ruby><span class="text-primary font-bold">です</span>。',
         plainJapanese: '店です。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> a store.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> a store.',
         plainEnglish: 'It is a store.',
         clozePrompt: '店____。',
         clozeAnswer: 'です',
@@ -126,10 +126,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-3',
         japaneseHtml:
-          '<ruby>綺麗<rt>きれい</rt></ruby><span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>綺麗<rt>きれい</rt></ruby><span class="text-primary font-bold">です</span>。',
         plainJapanese: '綺麗です。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> beautiful.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> beautiful.',
         plainEnglish: 'It is beautiful.',
         clozePrompt: '綺麗____。',
         clozeAnswer: 'です',
@@ -139,10 +139,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-4',
         japaneseHtml:
-          '<ruby>面白<rt>おもしろ</rt></ruby>い<span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>面白<rt>おもしろ</rt></ruby>い<span class="text-primary font-bold">です</span>。',
         plainJapanese: '面白いです。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> funny.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> funny.',
         plainEnglish: 'It is funny.',
         clozePrompt: '面白い____。',
         clozeAnswer: 'です',
@@ -154,10 +154,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-ex-1',
         japaneseHtml:
-          'あなた<span class="text-[#e15b64] font-bold">です</span>。',
+          'あなた<span class="text-primary font-bold">です</span>。',
         plainJapanese: 'あなたです。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> you.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> you.',
         plainEnglish: 'It is you.',
         clozePrompt: 'あなた____。',
         clozeAnswer: 'です',
@@ -166,10 +166,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-ex-2',
         japaneseHtml:
-          'ペン<span class="text-[#e15b64] font-bold">です</span>。',
+          'ペン<span class="text-primary font-bold">です</span>。',
         plainJapanese: 'ペンです。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> a pen.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> a pen.',
         plainEnglish: 'It is a pen.',
         clozePrompt: 'ペン____。',
         clozeAnswer: 'です',
@@ -178,10 +178,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-ex-3',
         japaneseHtml:
-          'さくら<span class="text-[#e15b64] font-bold">です</span>。',
+          'さくら<span class="text-primary font-bold">です</span>。',
         plainJapanese: 'さくらです。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> Sakura.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> Sakura.',
         plainEnglish: 'It is Sakura.',
         clozePrompt: 'さくら____。',
         clozeAnswer: 'です',
@@ -190,10 +190,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-ex-4',
         japaneseHtml:
-          '<ruby>大学生<rt>だいがくせい</rt></ruby><span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>大学生<rt>だいがくせい</rt></ruby><span class="text-primary font-bold">です</span>。',
         plainJapanese: '大学生です。',
         englishHtml:
-          'I <span class="text-[#e15b64] underline decoration-dotted font-semibold">am</span> a college student.',
+          'I <span class="text-primary underline decoration-dotted font-semibold">am</span> a college student.',
         plainEnglish: 'I am a college student.',
         clozePrompt: '大学生____。',
         clozeAnswer: 'です',
@@ -202,10 +202,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-ex-5',
         japaneseHtml:
-          '<ruby>店<rt>みせ</rt></ruby><span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>店<rt>みせ</rt></ruby><span class="text-primary font-bold">です</span>。',
         plainJapanese: '店です。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> a store.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> a store.',
         plainEnglish: 'It is a store.',
         clozePrompt: '店____。',
         clozeAnswer: 'です',
@@ -214,10 +214,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-ex-6',
         japaneseHtml:
-          '<ruby>綺麗<rt>きれい</rt></ruby><span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>綺麗<rt>きれい</rt></ruby><span class="text-primary font-bold">です</span>。',
         plainJapanese: '綺麗です。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> beautiful.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> beautiful.',
         plainEnglish: 'It is beautiful.',
         clozePrompt: '綺麗____。',
         clozeAnswer: 'です',
@@ -226,10 +226,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       {
         id: 'desu-ex-7',
         japaneseHtml:
-          '<ruby>面白<rt>おもしろ</rt></ruby>い<span class="text-[#e15b64] font-bold">です</span>。',
+          '<ruby>面白<rt>おもしろ</rt></ruby>い<span class="text-primary font-bold">です</span>。',
         plainJapanese: '面白いです。',
         englishHtml:
-          'It <span class="text-[#e15b64] underline decoration-dotted font-semibold">is</span> funny.',
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> funny.',
         plainEnglish: 'It is funny.',
         clozePrompt: '面白い____。',
         clozeAnswer: 'です',
@@ -237,10 +237,10 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       },
     ],
     topicCard: {
-      title: 'Welcome to Bunpro! 文プロへようこそ！',
+      title: 'Welcome to Japanese Grammar! 日本語へようこそ！',
       subtitle: 'N5 Topic',
       description:
-        "Welcome to the start of the Bunpro learning path! The goal of this first Topic is to learn how to make declarative statements using the Japanese equivalents of 'is'. This is fundamental to almost any language, and is achieved in Japanese through the use of だ and です.",
+        "Welcome to the start of the N5 learning path! The goal of this first Topic is to learn how to make declarative statements using the Japanese equivalents of 'is'. This is fundamental to almost any language, and is achieved in Japanese through the use of だ and です.",
       readTime: '2m',
     },
     synonyms: [
@@ -342,13 +342,51 @@ const CURATED_GRAMMAR_DETAILS: Record<string, Partial<GrammarPointRichDetail>> =
       wordType: 'Dependent Word',
       wordTypeTooltip:
         '付属語 (Fuzokugo) — Attaches directly to nouns and な-adjective stems.',
-      register: 'Casual',
+      register: 'Standard',
       registerTooltip:
         '常体 (Jōtai) — Used with close friends, family, and inside subordinate clauses.',
     },
     aboutParagraphs: [
-      "だ is the plain, casual auxiliary verb used to declare that something 'is' a certain way. It pairs with Nouns and な-Adjectives in casual conversation and is also required inside many grammatical subordinate clauses (such as 〜と思う).",
+      "だ is the plain, standard auxiliary verb used to declare that something 'is' a certain way. It pairs with Nouns and な-Adjectives in casual conversation and is also required inside many grammatical subordinate clauses (such as 〜と思う).",
       'Be careful: unlike です, だ cannot follow an い-Adjective directly because い-Adjectives already have their own built-in assertive conjugation.',
+    ],
+    aboutExamples: [
+      {
+        id: 'da-1',
+        japaneseHtml:
+          '<ruby>本<rt>ほん</rt></ruby><span class="text-primary font-bold">だ</span>。',
+        plainJapanese: '本だ。',
+        englishHtml:
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> a book.',
+        plainEnglish: 'It is a book.',
+        clozePrompt: '本____。',
+        clozeAnswer: 'だ',
+        clozeHint: 'Standard copula',
+      },
+      {
+        id: 'da-2',
+        japaneseHtml:
+          '<ruby>学生<rt>がくせい</rt></ruby><span class="text-primary font-bold">だ</span>。',
+        plainJapanese: '学生だ。',
+        englishHtml:
+          'I <span class="text-primary underline decoration-dotted font-semibold">am</span> a student.',
+        plainEnglish: 'I am a student.',
+        clozePrompt: '学生____。',
+        clozeAnswer: 'だ',
+        clozeHint: 'Standard copula',
+      },
+      {
+        id: 'da-3',
+        japaneseHtml:
+          '<ruby>静<rt>しず</rt></ruby>か<span class="text-primary font-bold">だ</span>。',
+        plainJapanese: '静かだ。',
+        englishHtml:
+          'It <span class="text-primary underline decoration-dotted font-semibold">is</span> quiet.',
+        plainEnglish: 'It is quiet.',
+        clozePrompt: '静か____。',
+        clozeAnswer: 'だ',
+        clozeHint: 'Standard copula',
+      },
     ],
     synonyms: [
       {

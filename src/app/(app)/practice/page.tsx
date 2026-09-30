@@ -36,6 +36,7 @@ import {
   calculateSM2,
   getIntervalLabels,
   addCustomSRSCard,
+  importAnkiDeckCards,
   loadUserStats,
   saveUserStats,
   loadDeckOptions,
@@ -80,6 +81,9 @@ export default function PracticePage() {
   const [categoryFilter, setCategoryFilter] = useState<'all' | CardCategory>(
     'all'
   )
+  const [selectedDeckName, setSelectedDeckName] = useState<string | null>(null)
+  const [customDecks, setCustomDecks] = useState<string[]>([])
+  const [newDeckInput, setNewDeckInput] = useState('')
   const [cramMode, setCramMode] = useState(false)
   const [showAnswer, setShowAnswer] = useState(false)
   const [sessionReviewed, setSessionReviewed] = useState(0)
@@ -97,15 +101,90 @@ export default function PracticePage() {
   const [newReading, setNewReading] = useState('')
   const [newMeaning, setNewMeaning] = useState('')
   const [newCategory, setNewCategory] = useState<CardCategory>('vocabulary')
+  const [newCustomDeckTarget, setNewCustomDeckTarget] = useState<string>('')
   const [newLevel, setNewLevel] = useState('N5')
   const [newExample, setNewExample] = useState('')
   const [newTags, setNewTags] = useState('N5')
 
   useEffect(() => {
-    setCards(loadSRSCards())
+    const loaded = loadSRSCards()
+    setCards(loaded)
     setDeckOptions(loadDeckOptions())
     setReviewLogs(loadReviewLogs())
+    try {
+      const raw = localStorage.getItem('nihongo_custom_anki_decks_v1')
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) setCustomDecks(parsed)
+      }
+    } catch {
+      // ignore
+    }
+
+    // Auto-repair any previously imported .apkg deck whose cards lacked English translations
+    const brokenDeckCard = loaded.find(
+      (c) => c.deckName && !/[a-zA-Z]{2,}/.test(c.meaning || '')
+    )
+    if (brokenDeckCard?.deckName) {
+      fetch(
+        `/api/anki-repair?deckName=${encodeURIComponent(brokenDeckCard.deckName)}`
+      )
+        .then((r) => r.json())
+        .then((data) => {
+          if (Array.isArray(data?.cards) && data.cards.length > 0) {
+            const { allCards } = importAnkiDeckCards(
+              brokenDeckCard.deckName!,
+              data.cards
+            )
+            setCards(allCards)
+          }
+        })
+        .catch(() => {
+          // ignore
+        })
+    }
   }, [])
+
+  function handleCreateCustomDeck(e: React.FormEvent) {
+    e.preventDefault()
+    const clean = newDeckInput.trim()
+    if (!clean) return
+    const fullTitle = clean.startsWith('Japanese::')
+      ? clean
+      : `Japanese::${clean}`
+    const updated = Array.from(new Set([...customDecks, fullTitle]))
+    setCustomDecks(updated)
+    try {
+      localStorage.setItem(
+        'nihongo_custom_anki_decks_v1',
+        JSON.stringify(updated)
+      )
+    } catch {
+      // ignore
+    }
+    setNewDeckInput('')
+    setNewCustomDeckTarget(fullTitle)
+    toast.success(
+      `Created deck "${fullTitle}"! You can now add cards to it or install notes into it.`
+    )
+  }
+
+  function handleDeleteCustomDeck(deckTitle: string) {
+    const updatedDecks = customDecks.filter((d) => d !== deckTitle)
+    setCustomDecks(updatedDecks)
+    try {
+      localStorage.setItem(
+        'nihongo_custom_anki_decks_v1',
+        JSON.stringify(updatedDecks)
+      )
+    } catch {
+      // ignore
+    }
+    const nextCards = cards.filter((c) => c.deckName !== deckTitle)
+    updateCards(nextCards)
+    if (selectedDeckName === deckTitle) setSelectedDeckName(null)
+    toast.info(`Removed deck "${deckTitle}".`)
+  }
 
   function updateCards(next: SRSCard[]) {
     setCards(next)
@@ -117,11 +196,21 @@ export default function PracticePage() {
     const now = Date.now() + 60 * 1000
     return cards
       .filter((c) => (c.queue || 'active') === 'active')
-      .filter((c) => categoryFilter === 'all' || c.category === categoryFilter)
+      .filter((c) =>
+        selectedDeckName
+          ? c.deckName === selectedDeckName
+          : categoryFilter === 'all' || c.category === categoryFilter
+      )
       .filter((c) => cramMode || c.dueDate <= now)
       .sort((a, b) => a.dueDate - b.dueDate)
       .slice(0, deckOptions.maxReviewsPerDay)
-  }, [cards, categoryFilter, cramMode, deckOptions.maxReviewsPerDay])
+  }, [
+    cards,
+    categoryFilter,
+    selectedDeckName,
+    cramMode,
+    deckOptions.maxReviewsPerDay,
+  ])
 
   const currentCard = queue[0] || null
 
@@ -157,6 +246,33 @@ export default function PracticePage() {
       }
     })
   }, [cards])
+
+  // Installed & Custom Decks rows
+  const customDeckRows = useMemo(() => {
+    const now = Date.now() + 60 * 1000
+    const defaultNames = new Set(Object.values(CATEGORY_TO_DECK))
+    const allDeckNames = new Set<string>(customDecks)
+    cards.forEach((c) => {
+      if (c.deckName && !defaultNames.has(c.deckName)) {
+        allDeckNames.add(c.deckName)
+      }
+    })
+    return Array.from(allDeckNames).map((deckName) => {
+      const subset = cards.filter(
+        (c) => (c.queue || 'active') === 'active' && c.deckName === deckName
+      )
+      const dueSubset = subset.filter((c) => c.dueDate <= now)
+      return {
+        deckName,
+        newCount: dueSubset.filter((c) => c.status === 'new').length,
+        learnCount: dueSubset.filter((c) => c.status === 'learning').length,
+        reviewCount: dueSubset.filter(
+          (c) => c.status === 'review' || c.status === 'mastered'
+        ).length,
+        totalCount: subset.length,
+      }
+    })
+  }, [cards, customDecks])
 
   const handleRate = useCallback(
     (rating: CardRating) => {
@@ -280,6 +396,7 @@ export default function PracticePage() {
       toast.error('Please enter both the Front and Meaning fields.')
       return
     }
+    const targetDeck = newCustomDeckTarget.trim() || undefined
     addCustomSRSCard({
       front: newFront.trim().slice(0, 200),
       reading:
@@ -288,6 +405,7 @@ export default function PracticePage() {
       category: newCategory,
       jlptLevel: newLevel,
       noteType: newNoteType,
+      deckName: targetDeck,
       exampleSentence: newExample.trim().slice(0, 200) || undefined,
       tags: newTags
         .split(/\s+/)
@@ -299,7 +417,14 @@ export default function PracticePage() {
     setNewReading('')
     setNewMeaning('')
     setNewExample('')
-    toast.success(`Added ${newNoteType.toUpperCase()} note to Anki deck!`)
+    toast.success(
+      `Added ${newNoteType.toUpperCase()} note to ${
+        targetDeck || CATEGORY_TO_DECK[newCategory]
+      }!`
+    )
+    if (targetDeck) {
+      setSelectedDeckName(targetDeck)
+    }
     setActiveTab('study')
   }
 
@@ -359,7 +484,7 @@ export default function PracticePage() {
             </Badge>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            Decks, Cloze, Type-in-Answer, Furigana Ruby, Card Browser, Heatmap &amp; AnkiConnect.
+            Create your own decks, install Anki <code className="font-mono">.apkg</code> decks, and review with FSRS/SM-2.
           </p>
         </div>
 
@@ -372,7 +497,7 @@ export default function PracticePage() {
               { id: 'add', label: 'Add', icon: Plus },
               { id: 'browse', label: 'Browse', icon: Search },
               { id: 'stats', label: 'Stats', icon: BarChart3 },
-              { id: 'sync', label: 'Sync', icon: RefreshCw },
+              { id: 'sync', label: 'Install / Sync', icon: RefreshCw },
             ] as const
           ).map((t) => {
             const Icon = t.icon
@@ -398,12 +523,40 @@ export default function PracticePage() {
       {/* TAB 1: ANKI DECKS TREE & DECK OPTIONS */}
       {activeTab === 'decks' && (
         <div className="space-y-6">
+          {/* Create Your Own Custom Deck & Install Anki Deck Bar */}
+          <Card className="border-primary/20 bg-primary/5">
+            <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <form
+                onSubmit={handleCreateCustomDeck}
+                className="flex flex-1 items-center gap-2"
+              >
+                <Input
+                  value={newDeckInput}
+                  onChange={(e) => setNewDeckInput(e.target.value)}
+                  placeholder="Create your own deck (e.g. My Anime Deck, N4 Verbs)..."
+                  className="bg-background"
+                />
+                <Button type="submit" size="sm" className="shrink-0">
+                  <Plus className="h-4 w-4 mr-1" /> Create Deck
+                </Button>
+              </form>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setActiveTab('sync')}
+                className="shrink-0"
+              >
+                📥 Install Anki Deck (.apkg / Shared)
+              </Button>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <CardTitle className="text-lg">Anki Decks</CardTitle>
                 <CardDescription>
-                  Click any deck to start reviewing due cards, or configure FSRS/SM-2 deck options.
+                  Click any deck (built-in or user-installed) to start reviewing due cards.
                 </CardDescription>
               </div>
               <div className="flex gap-2">
@@ -437,11 +590,14 @@ export default function PracticePage() {
                   <div
                     key={row.category}
                     onClick={() => {
+                      setSelectedDeckName(null)
                       setCategoryFilter(row.category)
                       setActiveTab('study')
                     }}
                     className={`grid grid-cols-12 items-center px-4 py-3 text-sm cursor-pointer transition-colors hover:bg-muted/40 ${
-                      categoryFilter === row.category ? 'bg-primary/5 font-semibold' : ''
+                      !selectedDeckName && categoryFilter === row.category
+                        ? 'bg-primary/5 font-semibold'
+                        : ''
                     }`}
                   >
                     <div className="col-span-6 sm:col-span-7 flex items-center gap-2 truncate">
@@ -460,6 +616,65 @@ export default function PracticePage() {
                     </div>
                     <div className="col-span-2 sm:col-span-1 text-center font-bold text-green-600 dark:text-green-400">
                       {row.reviewCount}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Installed & Custom User Decks */}
+                {customDeckRows.map((cRow) => (
+                  <div
+                    key={cRow.deckName}
+                    onClick={() => {
+                      setSelectedDeckName(cRow.deckName)
+                      setActiveTab('study')
+                    }}
+                    className={`grid grid-cols-12 items-center px-4 py-3 text-sm cursor-pointer transition-colors hover:bg-muted/40 ${
+                      selectedDeckName === cRow.deckName
+                        ? 'bg-primary/5 font-semibold'
+                        : ''
+                    }`}
+                  >
+                    <div className="col-span-6 sm:col-span-7 flex items-center justify-between gap-2 truncate pr-2">
+                      <div className="truncate">
+                        <span>└─ 📦 {cRow.deckName}</span>
+                        <span className="text-xs text-muted-foreground ml-1.5">
+                          ({cRow.totalCount} cards)
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 px-2 text-[11px]"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setNewCustomDeckTarget(cRow.deckName)
+                            setActiveTab('add')
+                          }}
+                        >
+                          + Add Card
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 px-2 text-[11px] text-muted-foreground hover:text-destructive"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDeleteCustomDeck(cRow.deckName)
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="col-span-2 text-center font-bold text-blue-600 dark:text-blue-400">
+                      {cRow.newCount}
+                    </div>
+                    <div className="col-span-2 text-center font-bold text-orange-500">
+                      {cRow.learnCount}
+                    </div>
+                    <div className="col-span-2 sm:col-span-1 text-center font-bold text-green-600 dark:text-green-400">
+                      {cRow.reviewCount}
                     </div>
                   </div>
                 ))}
@@ -845,26 +1060,29 @@ export default function PracticePage() {
                         </p>
                       </div>
 
-                      {currentCard.exampleSentence && (
+                      {(currentCard.exampleSentence ||
+                        currentCard.exampleTranslation) && (
                         <div className="rounded-lg bg-muted/60 p-3 text-sm max-w-md mx-auto">
-                          <div className="flex items-center justify-center gap-2">
-                            <p className="font-medium text-foreground">
-                              {renderAnkiText(currentCard.exampleSentence)}
-                            </p>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                speakJapanese(currentCard.exampleSentence!)
-                              }}
-                              className="text-muted-foreground hover:text-primary shrink-0"
-                              title="Play sentence audio"
-                            >
-                              <Volume2 className="h-4 w-4" />
-                            </button>
-                          </div>
+                          {currentCard.exampleSentence && (
+                            <div className="flex items-center justify-center gap-2">
+                              <p className="font-medium text-foreground">
+                                {renderAnkiText(currentCard.exampleSentence)}
+                              </p>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  speakJapanese(currentCard.exampleSentence!)
+                                }}
+                                className="text-muted-foreground hover:text-primary shrink-0"
+                                title="Play sentence audio"
+                              >
+                                <Volume2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          )}
                           {currentCard.exampleTranslation && (
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                               {currentCard.exampleTranslation}
                             </p>
                           )}
@@ -1050,6 +1268,35 @@ export default function PracticePage() {
                 </div>
               </div>
 
+              {/* Optional Custom Deck Target */}
+              <div className="space-y-1.5">
+                <Label htmlFor="custom-deck-target">
+                  Custom Deck Name (Optional — leave blank to use default category deck)
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="custom-deck-target"
+                    value={newCustomDeckTarget}
+                    onChange={(e) => setNewCustomDeckTarget(e.target.value)}
+                    placeholder="e.g. Japanese::My Custom Deck"
+                  />
+                  {customDeckRows.length > 0 && (
+                    <select
+                      value={newCustomDeckTarget}
+                      onChange={(e) => setNewCustomDeckTarget(e.target.value)}
+                      className="h-9 rounded-md border border-input bg-background px-2 text-xs"
+                    >
+                      <option value="">Default Deck</option>
+                      {customDeckRows.map((d) => (
+                        <option key={d.deckName} value={d.deckName}>
+                          {d.deckName}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              </div>
+
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="front">
@@ -1139,9 +1386,26 @@ export default function PracticePage() {
         <AnkiStats cards={cards} reviewLogs={reviewLogs} />
       )}
 
-      {/* TAB 6: ANKI IMPORT/EXPORT & ANKICONNECT SYNC */}
+      {/* TAB 6: ANKI .APKG IMPORT */}
       {activeTab === 'sync' && (
-        <AnkiSyncPanel cards={cards} onCardsChanged={updateCards} />
+        <AnkiSyncPanel
+          cards={cards}
+          onCardsChanged={updateCards}
+          onImportSuccess={(deckName) => {
+            const updated = Array.from(new Set([...customDecks, deckName]))
+            setCustomDecks(updated)
+            try {
+              localStorage.setItem(
+                'nihongo_custom_anki_decks_v1',
+                JSON.stringify(updated)
+              )
+            } catch {
+              // ignore
+            }
+            setSelectedDeckName(deckName)
+            setActiveTab('decks')
+          }}
+        />
       )}
     </div>
   )

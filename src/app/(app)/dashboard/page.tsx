@@ -8,8 +8,6 @@ import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import {
   Flame,
-  MessageSquare,
-  Heart,
   Sparkles,
   BookOpen,
   PenTool,
@@ -26,7 +24,6 @@ import {
 export default function DashboardPage() {
   const [stats, setStats] = useState<UserStudyStats>(DEFAULT_USER_STATS)
   const [dueCount, setDueCount] = useState<number>(28)
-  const [friendLiked, setFriendLiked] = useState(false)
 
   useEffect(() => {
     function sync() {
@@ -53,7 +50,7 @@ export default function DashboardPage() {
       {/* Header section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
         <div className="space-y-1">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5 text-orange-500 bg-orange-500/10 px-2.5 py-1 rounded-full text-sm font-bold">
               <Flame className="h-4 w-4 fill-orange-500" />
               <span>{stats.currentStreak} day streak</span>
@@ -81,32 +78,46 @@ export default function DashboardPage() {
 
       {/* Quick Access Cards */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Link href="/learn?lesson=hiragana">
+        <Link href="/learn">
           <Card className="hover:border-primary/50 transition-all cursor-pointer h-full">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
                 <p className="text-xs text-muted-foreground font-medium">
-                  Kana Charts
+                  Writing Systems & Drills
                 </p>
                 <p className="text-lg font-bold mt-0.5">Hiragana & Katakana</p>
               </div>
-              <span className="text-2xl font-bold text-primary bg-primary/10 h-10 w-10 rounded-lg flex items-center justify-center">
+              <span className="text-2xl font-bold text-primary bg-primary/10 h-10 w-10 rounded-xl flex items-center justify-center">
                 あ
               </span>
             </CardContent>
           </Card>
         </Link>
 
-        <Link href="/reading">
-          <Card className="hover:border-[#e15b64]/60 transition-all cursor-pointer h-full border-[#e15b64]/20">
+        <Link href="/grammar">
+          <Card className="hover:border-primary/50 transition-all cursor-pointer h-full">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs text-[#e15b64] font-semibold">
-                  Graded Reader & Decks
+                <p className="text-xs text-muted-foreground font-medium">
+                  JLPT N5–N1 Library
                 </p>
-                <p className="text-lg font-bold mt-0.5">Reading & Vocab Lists</p>
+                <p className="text-lg font-bold mt-0.5">979 Grammar Points</p>
               </div>
-              <span className="text-2xl font-bold text-[#e15b64] bg-[#e15b64]/10 h-10 w-10 rounded-lg flex items-center justify-center">
+              <BookOpen className="h-9 w-9 text-primary p-2 bg-primary/10 rounded-xl" />
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/reading">
+          <Card className="hover:border-primary/50 transition-all cursor-pointer h-full">
+            <CardContent className="p-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground font-medium">
+                  Graded Passages & Vocab
+                </p>
+                <p className="text-lg font-bold mt-0.5">Reading & Vocab</p>
+              </div>
+              <span className="text-2xl font-bold text-primary bg-primary/10 h-10 w-10 rounded-xl flex items-center justify-center">
                 単
               </span>
             </CardContent>
@@ -121,26 +132,12 @@ export default function DashboardPage() {
                   Spaced Repetition
                 </p>
                 <p className="text-lg font-bold mt-0.5">
-                  {dueCount} Cards Due Today
+                  {dueCount} Cards Due
                 </p>
               </div>
-              <span className="text-2xl font-bold text-blue-600 bg-blue-500/10 h-10 w-10 rounded-lg flex items-center justify-center">
+              <span className="text-2xl font-bold text-primary bg-primary/10 h-10 w-10 rounded-xl flex items-center justify-center">
                 語
               </span>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Link href="/grammar">
-          <Card className="hover:border-primary/50 transition-all cursor-pointer h-full">
-            <CardContent className="p-4 flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground font-medium">
-                  JLPT N5–N1 Reference
-                </p>
-                <p className="text-lg font-bold mt-0.5">979 Grammar Points</p>
-              </div>
-              <BookOpen className="h-8 w-8 text-primary p-1.5 bg-primary/10 rounded-lg" />
             </CardContent>
           </Card>
         </Link>
@@ -182,70 +179,19 @@ export default function DashboardPage() {
             <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6">
               <div>
                 <Badge className="mb-2">Up Next in Curriculum</Badge>
-                <h3 className="font-bold text-xl">「〜たい」 (Want to do)</h3>
+                <h3 className="font-bold text-xl">「です / だ」 (To be, Is)</h3>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  Learn how to conjugate polite verbs to express your desires.
+                  Practice declarative sentences with minimalist fill-in-the-blank drills.
                 </p>
               </div>
-              <Link href="/learn?lesson=tai-form">
-                <Button className="shrink-0">Continue Lesson &rarr;</Button>
+              <Link href="/grammar">
+                <Button className="shrink-0">Start Practice &rarr;</Button>
               </Link>
             </CardContent>
           </Card>
         </div>
 
         <StudyLogger />
-      </section>
-
-      {/* Friends Activity */}
-      <section className="flex flex-col gap-4 mt-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Friends Activity</h2>
-          <Link
-            href="/community"
-            className="text-sm text-primary hover:underline"
-          >
-            View Community Feed &rarr;
-          </Link>
-        </div>
-        <Card>
-          <CardContent className="p-6 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                T
-              </div>
-              <div>
-                <p className="font-medium text-sm">Takeshi (@takeshi_jp)</p>
-                <p className="text-xs text-muted-foreground">2 hours ago · N5</p>
-              </div>
-            </div>
-            <p className="text-sm">
-              Finally understood は vs が today! Thanks to the new grammar lesson and SRS flashcards.
-            </p>
-            <div className="flex gap-4 text-muted-foreground">
-              <button
-                type="button"
-                onClick={() => setFriendLiked((v) => !v)}
-                className={`flex items-center gap-1.5 text-xs transition-colors ${
-                  friendLiked
-                    ? 'text-red-500 font-semibold'
-                    : 'hover:text-foreground'
-                }`}
-              >
-                <Heart
-                  className={`h-4 w-4 ${friendLiked ? 'fill-red-500' : ''}`}
-                />{' '}
-                {friendLiked ? 13 : 12}
-              </button>
-              <Link
-                href="/community"
-                className="flex items-center gap-1.5 text-xs hover:text-foreground"
-              >
-                <MessageSquare className="h-4 w-4" /> 3 comments
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
       </section>
     </div>
   )

@@ -12,7 +12,7 @@ export interface BunproVocabItem {
   partOfSpeech: string
   pitchAccent: string // e.g. "[0] 平板 (Heiban)" or "[2] 中高 (Nakadaka)"
   jlptLevel: 'N5' | 'N4' | 'N3' | 'N2' | 'N1'
-  listCategory: 'JLPT' | 'Bunpro Core' | 'Textbook (Genki)' | 'Community'
+  listCategory: 'JLPT' | 'Essential Core' | 'Textbook (Genki)' | 'Community'
   sentences: VocabExampleSentence[]
 }
 
@@ -90,7 +90,7 @@ export const BUNPRO_VOCAB_ITEMS: BunproVocabItem[] = [
     partOfSpeech: 'Noun',
     pitchAccent: '[0] 平板 / [1] 頭高',
     jlptLevel: 'N5',
-    listCategory: 'Bunpro Core',
+    listCategory: 'Essential Core',
     sentences: [
       {
         japanese: '毎朝[まいあさ]、電車[でんしゃ]で会社[かいしゃ]へ行[い]きます。',
@@ -133,7 +133,7 @@ export const BUNPRO_VOCAB_ITEMS: BunproVocabItem[] = [
     partOfSpeech: 'Noun / Suru-Verb',
     pitchAccent: '[1] 頭高',
     jlptLevel: 'N4',
-    listCategory: 'Bunpro Core',
+    listCategory: 'Essential Core',
     sentences: [
       {
         japanese: '旅行[りょこう]の準備[じゅんび]はもう終[お]わりましたか。',
@@ -218,7 +218,7 @@ export const BUNPRO_VOCAB_ITEMS: BunproVocabItem[] = [
     partOfSpeech: 'Noun / Suru-Verb',
     pitchAccent: '[0] 平板',
     jlptLevel: 'N3',
-    listCategory: 'Bunpro Core',
+    listCategory: 'Essential Core',
     sentences: [
       {
         japanese: '念[ねん]のため、もういちど予定[よてい]を確認[かくにん]しましょう。',
@@ -304,7 +304,7 @@ export const BUNPRO_VOCAB_ITEMS: BunproVocabItem[] = [
     partOfSpeech: 'な-Adjective / Noun',
     pitchAccent: '[0] 平板',
     jlptLevel: 'N1',
-    listCategory: 'Bunpro Core',
+    listCategory: 'Essential Core',
     sentences: [
       {
         japanese: '信頼関係[しんらいかんけい]はチームワークにおいて不可欠[ふかけつ]な要素[ようそ]である。',

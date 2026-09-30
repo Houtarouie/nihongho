@@ -629,10 +629,17 @@ export function addCustomSRSCard(card: {
   tags?: string[]
 }): { added: boolean; card: SRSCard } {
   const cards = loadSRSCards()
+  const targetDeck = card.deckName || CATEGORY_TO_DECK[card.category]
   const existing = cards.find(
-    (c) => c.front === card.front && c.category === card.category
+    (c) => c.front === card.front && (c.deckName === targetDeck || c.category === card.category)
   )
   if (existing) {
+    existing.reading = card.reading || existing.reading
+    existing.meaning = card.meaning || existing.meaning
+    existing.exampleSentence = card.exampleSentence ?? existing.exampleSentence
+    existing.exampleTranslation =
+      card.exampleTranslation ?? existing.exampleTranslation
+    existing.deckName = targetDeck
     existing.dueDate = Date.now()
     existing.queue = 'active'
     saveSRSCards(cards)
@@ -642,7 +649,7 @@ export function addCustomSRSCard(card: {
   const newCard: SRSCard = {
     ...card,
     id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    deckName: card.deckName || CATEGORY_TO_DECK[card.category],
+    deckName: targetDeck,
     noteType: card.noteType || (card.front.includes('{{c1::') ? 'cloze' : 'basic'),
     flag: 0,
     queue: 'active',
@@ -659,6 +666,53 @@ export function addCustomSRSCard(card: {
   const updated = [newCard, ...cards]
   saveSRSCards(updated)
   return { added: true, card: newCard }
+}
+
+/**
+ * Bulk imports an array of parsed Anki cards into a target deck in a single localStorage write,
+ * replacing any previously broken cards in that deck that lacked English translations.
+ */
+export function importAnkiDeckCards(
+  deckName: string,
+  incoming: {
+    front: string
+    reading: string
+    meaning: string
+    category: CardCategory
+    jlptLevel: string
+    noteType?: AnkiNoteType
+    exampleSentence?: string
+    exampleTranslation?: string
+    tags?: string[]
+  }[]
+): { allCards: SRSCard[]; addedCount: number } {
+  // Keep cards from other decks (and purge any old cards from this same deckName so re-import is clean)
+  const existingOtherDecks = loadSRSCards().filter(
+    (c) => c.deckName !== deckName
+  )
+  const now = Date.now()
+  const newDeckCards: SRSCard[] = incoming.map((card, idx) => ({
+    ...card,
+    id: `anki-${now}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
+    deckName,
+    noteType:
+      card.noteType || (card.front.includes('{{c1::') ? 'cloze' : 'basic'),
+    flag: 0,
+    queue: 'active',
+    lapses: 0,
+    tags: card.tags || [card.jlptLevel, card.category],
+    interval: 0,
+    repetition: 0,
+    efactor: 2.5,
+    stability: 1.0,
+    difficulty: 5.0,
+    dueDate: now + idx,
+    status: 'new',
+  }))
+
+  const allCards = [...newDeckCards, ...existingOtherDecks]
+  saveSRSCards(allCards)
+  return { allCards, addedCount: newDeckCards.length }
 }
 
 /**
@@ -839,21 +893,86 @@ export function saveUserStats(stats: Partial<UserStudyStats>): UserStudyStats {
   return updated
 }
 
-export function speakJapanese(text: string) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
+let activeJapaneseAudio: HTMLAudioElement | null = null
+
+export function stopJapaneseSpeech() {
+  if (typeof window === 'undefined') return
   try {
-    window.speechSynthesis.cancel()
-    // Strip Anki furigana [reading], cloze {{c1::ans::hint}}, and parenthetical romaji for clean speech
-    const cleanText = text
-      .replace(/\{\{c\d+::([^}:]+)(?:::[^}]+)?\}\}/g, '$1')
-      .replace(/\[[^\]]+\]/g, '')
-      .replace(/\s*\(.*?\)\s*/g, '')
-      .trim()
-    const utterance = new SpeechSynthesisUtterance(cleanText)
-    utterance.lang = 'ja-JP'
-    utterance.rate = 0.9
-    window.speechSynthesis.speak(utterance)
+    if (activeJapaneseAudio) {
+      activeJapaneseAudio.pause()
+      activeJapaneseAudio.currentTime = 0
+      activeJapaneseAudio = null
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel()
+    }
   } catch {
-    // ignore speech errors on unsupported browsers
+    // ignore
   }
 }
+
+export function speakJapanese(
+  text: string,
+  options?: { rate?: number; onEnd?: () => void; onError?: () => void }
+) {
+  if (typeof window === 'undefined') return
+  // Strip Anki furigana [reading], cloze {{c1::ans::hint}}, HTML, and parenthetical romaji for clean speech
+  const cleanText = text
+    .replace(/\{\{c\d+::([^}:]+)(?:::[^}]+)?\}\}/g, '$1')
+    .replace(/\[[^\]]+\]/g, '')
+    .replace(/\s*\(.*?\)\s*/g, '')
+    .replace(/<[^>]+>/g, '')
+    .trim()
+
+  if (!cleanText) {
+    options?.onEnd?.()
+    return
+  }
+
+  stopJapaneseSpeech()
+
+  try {
+    const audio = new Audio(
+      `/api/tts?text=${encodeURIComponent(cleanText)}`
+    )
+    if (options?.rate) {
+      audio.playbackRate = Math.max(0.5, Math.min(2.0, options.rate))
+    }
+    activeJapaneseAudio = audio
+
+    if (options?.onEnd) {
+      audio.onended = () => options.onEnd?.()
+    }
+
+    const fallbackToWebSpeech = () => {
+      try {
+        if (!('speechSynthesis' in window)) {
+          options?.onError?.()
+          return
+        }
+        const utterance = new SpeechSynthesisUtterance(cleanText)
+        utterance.lang = 'ja-JP'
+        utterance.rate = options?.rate ?? 0.9
+        const voices = window.speechSynthesis.getVoices()
+        const jaVoice = voices.find((v) =>
+          v.lang.toLowerCase().startsWith('ja')
+        )
+        if (jaVoice) utterance.voice = jaVoice
+        if (options?.onEnd) utterance.onend = () => options.onEnd?.()
+        if (options?.onError) utterance.onerror = () => options.onError?.()
+        window.speechSynthesis.speak(utterance)
+      } catch {
+        options?.onError?.()
+      }
+    }
+
+    audio.onerror = () => fallbackToWebSpeech()
+    const playPromise = audio.play()
+    if (playPromise !== undefined) {
+      playPromise.catch(() => fallbackToWebSpeech())
+    }
+  } catch {
+    options?.onError?.()
+  }
+}
+
