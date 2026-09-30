@@ -4,24 +4,24 @@ import { useState } from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { ImagePlus, Send, Loader2 } from 'lucide-react'
+import { Send } from 'lucide-react'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-export function PostComposer() {
+interface PostComposerProps {
+  onCreatePost?: (content: string, jlptLevel: string) => void
+}
+
+export function PostComposer({ onCreatePost }: PostComposerProps) {
   const [content, setContent] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [jlptLevel, setJlptLevel] = useState('N5')
 
-  async function handleSubmit() {
-    if (!content.trim()) return
-    setIsSubmitting(true)
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
+  function handleSubmit() {
+    const trimmed = content.trim()
+    if (!trimmed) return
+    onCreatePost?.(trimmed.slice(0, 1000), jlptLevel)
     setContent('')
-    toast.success("Post created!")
-    setIsSubmitting(false)
+    toast.success('Post shared with the community!')
   }
 
   return (
@@ -33,26 +33,31 @@ export function PostComposer() {
         </Avatar>
         <div className="flex-1 space-y-2">
           <Textarea
-            placeholder="What did you learn today?"
-            className="min-h-[100px] resize-none border-none focus-visible:ring-0 p-0 shadow-none text-base"
+            placeholder="What did you learn in Japanese today? (e.g. Practiced Hiragana or learned 〜たい form!)"
+            className="min-h-[90px] resize-none border-none focus-visible:ring-0 p-0 shadow-none text-base"
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            maxLength={1000}
           />
-          
-          {/* Mock image attachment area */}
         </div>
       </CardContent>
-      <CardFooter className="px-4 py-3 bg-muted/50 border-t flex justify-between items-center">
-        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-          <ImagePlus className="h-5 w-5 mr-2" />
-          Photo
-        </Button>
-        <Button 
-          size="sm" 
-          onClick={handleSubmit} 
-          disabled={!content.trim() || isSubmitting}
-        >
-          {isSubmitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
+      <CardFooter className="px-4 py-3 bg-muted/40 border-t flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">Level tag:</span>
+          <select
+            value={jlptLevel}
+            onChange={(e) => setJlptLevel(e.target.value)}
+            className="rounded-md border border-input bg-background px-2 py-1 text-xs font-medium"
+          >
+            <option value="N5">JLPT N5</option>
+            <option value="N4">JLPT N4</option>
+            <option value="N3">JLPT N3</option>
+            <option value="N2">JLPT N2</option>
+            <option value="N1">JLPT N1</option>
+          </select>
+        </div>
+        <Button size="sm" onClick={handleSubmit} disabled={!content.trim()}>
+          <Send className="h-4 w-4 mr-2" />
           Post Learning
         </Button>
       </CardFooter>

@@ -73,12 +73,12 @@ CREATE TABLE public.study_sessions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
   session_date DATE DEFAULT CURRENT_DATE,
-  duration_mins INTEGER DEFAULT 0,
-  vocabulary_count INTEGER DEFAULT 0,
-  kanji_count INTEGER DEFAULT 0,
-  grammar_count INTEGER DEFAULT 0,
-  listening_mins INTEGER DEFAULT 0,
-  reading_mins INTEGER DEFAULT 0,
+  duration_mins INTEGER DEFAULT 0 CHECK (duration_mins >= 0),
+  vocabulary_count INTEGER DEFAULT 0 CHECK (vocabulary_count >= 0),
+  kanji_count INTEGER DEFAULT 0 CHECK (kanji_count >= 0),
+  grammar_count INTEGER DEFAULT 0 CHECK (grammar_count >= 0),
+  listening_mins INTEGER DEFAULT 0 CHECK (listening_mins >= 0),
+  reading_mins INTEGER DEFAULT 0 CHECK (reading_mins >= 0),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -130,7 +130,7 @@ CREATE TABLE public.user_lessons (
   UNIQUE(user_id, lesson_id)
 );
 
--- Setup basic Row Level Security (RLS)
+-- Enable Row Level Security (RLS) on ALL tables
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.follows ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
@@ -138,7 +138,9 @@ ALTER TABLE public.post_images ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.likes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.study_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.vocabulary ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_vocabulary ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lessons ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_lessons ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: Anyone can view profiles, only user can update their own
@@ -152,18 +154,46 @@ CREATE POLICY "Users can insert their own posts." ON public.posts FOR INSERT WIT
 CREATE POLICY "Users can update their own posts." ON public.posts FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can delete their own posts." ON public.posts FOR DELETE USING (auth.uid() = user_id);
 
+-- Post Images: Viewable by everyone, managed by post owner
+CREATE POLICY "Post images are viewable by everyone." ON public.post_images FOR SELECT USING (true);
+CREATE POLICY "Users can insert images for own posts." ON public.post_images FOR INSERT WITH CHECK (
+  EXISTS (SELECT 1 FROM public.posts WHERE id = post_id AND user_id = auth.uid())
+);
+CREATE POLICY "Users can delete images for own posts." ON public.post_images FOR DELETE USING (
+  EXISTS (SELECT 1 FROM public.posts WHERE id = post_id AND user_id = auth.uid())
+);
+
+-- Likes: Viewable by everyone, users can only insert/delete their own likes
+CREATE POLICY "Likes are viewable by everyone." ON public.likes FOR SELECT USING (true);
+CREATE POLICY "Users can insert their own likes." ON public.likes FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can delete their own likes." ON public.likes FOR DELETE USING (auth.uid() = user_id);
+
+-- Comments: Viewable by everyone, users can only insert/update/delete their own comments
+CREATE POLICY "Comments are viewable by everyone." ON public.comments FOR SELECT USING (true);
+CREATE POLICY "Users can insert their own comments." ON public.comments FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update their own comments." ON public.comments FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete their own comments." ON public.comments FOR DELETE USING (auth.uid() = user_id);
+
 -- Follows: Anyone can view, only follower can insert/delete
 CREATE POLICY "Follows are viewable by everyone." ON public.follows FOR SELECT USING (true);
 CREATE POLICY "Users can manage their follows." ON public.follows FOR ALL USING (auth.uid() = follower_id);
+
+-- Public Curriculum & Vocabulary: Read-only for everyone
+CREATE POLICY "Vocabulary is viewable by everyone." ON public.vocabulary FOR SELECT USING (true);
+CREATE POLICY "Lessons are viewable by everyone." ON public.lessons FOR SELECT USING (true);
 
 -- User learning data: Only user can view and manage their own data
 CREATE POLICY "Users can manage their study sessions." ON public.study_sessions FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "Users can manage their vocab progress." ON public.user_vocabulary FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "Users can manage their lesson progress." ON public.user_lessons FOR ALL USING (auth.uid() = user_id);
 
--- Create a trigger to automatically create a profile for new users
+-- Create a trigger to automatically create a profile for new users (with explicit search_path)
 CREATE OR REPLACE FUNCTION public.handle_new_user() 
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
   INSERT INTO public.profiles (id, username, display_name, avatar_url)
   VALUES (
@@ -174,7 +204,7 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users

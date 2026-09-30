@@ -6,10 +6,16 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  // Guard against missing or invalid environment variables so middleware never crashes
+  if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith('http')) {
+    return supabaseResponse
+  }
+
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
         get(name: string) {
           return request.cookies.get(name)?.value
@@ -45,28 +51,12 @@ export async function updateSession(request: NextRequest) {
           })
         },
       },
-    }
-  )
+    })
 
-  // IMPORTANT: Avoid writing any logic between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
-
-  await supabase.auth.getUser()
-
-  // Demo mode: Do not redirect to login so users can view the app without Supabase connected
-  /*
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/signup') &&
-    request.nextUrl.pathname !== '/'
-  ) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    await supabase.auth.getUser()
+  } catch {
+    // Prevent middleware crash if Supabase is unreachable
   }
-  */
 
   return supabaseResponse
 }
