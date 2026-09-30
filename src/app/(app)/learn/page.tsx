@@ -20,6 +20,7 @@ import {
   ArrowLeft,
   Trophy,
   HelpCircle,
+  Gamepad2,
 } from 'lucide-react'
 import {
   HIRAGANA_GOJUON,
@@ -38,12 +39,14 @@ import {
   loadUserStats,
   saveUserStats,
 } from '@/data/srs-deck'
+import { LearningArcade } from '@/components/games/learning-arcade'
 import { toast } from 'sonner'
 
 type ActiveView =
   | 'overview'
   | 'hiragana'
   | 'katakana'
+  | 'arcade'
   | 'lesson-greetings-aisatsu'
   | 'lesson-self-introduction'
   | 'lesson-wa-vs-ga'
@@ -57,16 +60,10 @@ export default function LearnPage() {
   const [selectedKana, setSelectedKana] = useState<KanaItem | null>(null)
   const [completedLessons, setCompletedLessons] = useState<string[]>([])
 
-  // Kana Quiz state
-  const [quizIndex, setQuizIndex] = useState(0)
-  const [quizScore, setQuizScore] = useState(0)
-  const [quizAnswered, setQuizAnswered] = useState<string | null>(null)
-
   useEffect(() => {
     const stats = loadUserStats()
     setCompletedLessons(stats.completedLessons || [])
 
-    // Check URL hash or query param for direct navigation from Dashboard
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search)
       const lessonParam = params.get('lesson')
@@ -76,6 +73,8 @@ export default function LearnPage() {
         setActiveView('hiragana')
       } else if (lessonParam === 'katakana') {
         setActiveView('katakana')
+      } else if (lessonParam === 'arcade') {
+        setActiveView('arcade')
       }
     }
   }, [])
@@ -118,41 +117,11 @@ export default function LearnPage() {
       exampleSentence: item.example,
     })
     if (res.added) {
-      toast.success(`Added "${item.kana}" to your SRS Practice deck!`)
+      toast.success(`Added "${item.kana}" to your Anki SRS deck!`)
     } else {
-      toast.info(`"${item.kana}" is already in your SRS deck (marked due now).`)
+      toast.info(`"${item.kana}" is already in your Anki SRS deck.`)
     }
   }
-
-  // Flatten kana for quiz
-  const quizPool = useMemo(() => {
-    const rows =
-      activeView === 'katakana' ? KATAKANA_GOJUON : HIRAGANA_GOJUON
-    const flat: KanaItem[] = []
-    rows.forEach((r) =>
-      r.items.forEach((i) => {
-        if (i) flat.push(i)
-      })
-    )
-    // Deterministic shuffle per view
-    return [...flat].sort((a, b) => a.romaji.localeCompare(b.romaji))
-  }, [activeView])
-
-  const currentQuizItem = quizPool[quizIndex % Math.max(1, quizPool.length)]
-
-  const quizOptions = useMemo(() => {
-    if (!currentQuizItem) return []
-    const others = quizPool
-      .filter((k) => k.romaji !== currentQuizItem.romaji)
-      .slice(0, 12)
-    const picked = [
-      currentQuizItem.romaji,
-      others[(quizIndex * 3) % others.length]?.romaji || 'ka',
-      others[(quizIndex * 5 + 1) % others.length]?.romaji || 'shi',
-      others[(quizIndex * 7 + 2) % others.length]?.romaji || 'to',
-    ]
-    return Array.from(new Set(picked)).sort()
-  }, [currentQuizItem, quizPool, quizIndex])
 
   function renderKanaGrid(rows: KanaRow[], scriptLabel: string) {
     const isYoon = kanaSubTab === 'yoon'
@@ -184,7 +153,10 @@ export default function LearnPage() {
                   </div>
                   {selectedKana.example && (
                     <p className="text-sm text-muted-foreground mt-1">
-                      Example word: <span className="font-medium text-foreground">{selectedKana.example}</span>
+                      Example word:{' '}
+                      <span className="font-medium text-foreground">
+                        {selectedKana.example}
+                      </span>
                     </p>
                   )}
                 </div>
@@ -194,7 +166,7 @@ export default function LearnPage() {
                 variant="outline"
                 onClick={() => handleAddKanaToSRS(selectedKana, scriptLabel)}
               >
-                <Plus className="h-4 w-4 mr-1" /> Add to SRS Deck
+                <Plus className="h-4 w-4 mr-1" /> Add to Anki SRS
               </Button>
             </CardContent>
           </Card>
@@ -219,17 +191,17 @@ export default function LearnPage() {
                     <button
                       key={item.kana}
                       onClick={() => handleKanaClick(item, scriptLabel)}
-                      className={`group relative flex flex-col items-center justify-center rounded-xl border p-3 transition-all hover:border-primary hover:shadow-sm ${
+                      className={`group relative flex flex-col items-center justify-center rounded-xl border p-2.5 sm:p-3 transition-all hover:border-primary hover:shadow-sm ${
                         selectedKana?.kana === item.kana
                           ? 'border-primary bg-primary/10 ring-1 ring-primary'
                           : 'bg-card'
                       }`}
                     >
-                      <Volume2 className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 absolute top-2 right-2 transition-opacity" />
+                      <Volume2 className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 absolute top-1.5 right-1.5 transition-opacity" />
                       <span className="text-2xl sm:text-3xl font-bold">
                         {item.kana}
                       </span>
-                      <span className="text-xs font-medium text-muted-foreground mt-1">
+                      <span className="text-[11px] font-medium text-muted-foreground mt-0.5">
                         {item.romaji}
                       </span>
                     </button>
@@ -248,14 +220,12 @@ export default function LearnPage() {
     )
   }
 
-  // Active Lesson Lookup
   const activeLesson = useMemo(() => {
     if (!activeView.startsWith('lesson-')) return null
     const id = activeView.replace('lesson-', '')
     return CURRICULUM_LESSONS.find((l) => l.id === id) || null
   }, [activeView])
 
-  // Calculate dynamic progress percentages
   const section1Progress =
     (completedLessons.includes('hiragana-chart') ? 50 : 0) +
     (completedLessons.includes('katakana-chart') ? 50 : 0)
@@ -268,16 +238,16 @@ export default function LearnPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
       {/* Top Navigation Pills */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Japanese Curriculum & Kana Charts
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            Kana Charts, Curriculum &amp; Quiz Arcade
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Interactive Hiragana & Katakana charts with audio pronunciation and structured JLPT N5 lessons.
+          <p className="text-muted-foreground text-xs sm:text-sm mt-1">
+            Interactive Hiragana &amp; Katakana charts, active-recall quizzes, and learning games.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           <Button
             variant={activeView === 'overview' ? 'default' : 'outline'}
             size="sm"
@@ -294,7 +264,7 @@ export default function LearnPage() {
               setSelectedKana(HIRAGANA_GOJUON[0].items[0])
             }}
           >
-            あ Hiragana Chart
+            あ Hiragana
           </Button>
           <Button
             variant={activeView === 'katakana' ? 'default' : 'outline'}
@@ -305,10 +275,41 @@ export default function LearnPage() {
               setSelectedKana(KATAKANA_GOJUON[0].items[0])
             }}
           >
-            ア Katakana Chart
+            ア Katakana
+          </Button>
+          <Button
+            variant={activeView === 'arcade' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setActiveView('arcade')}
+          >
+            <Gamepad2 className="h-4 w-4 mr-1" /> Quiz &amp; Games
           </Button>
         </div>
       </div>
+
+      {/* VIEW 0: DEDICATED QUIZ & GAMES ARCADE */}
+      {activeView === 'arcade' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Gamepad2 className="h-5 w-5 text-primary" /> Evidence-Based Quiz &amp; Games Arcade
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Powered by Active Production (Tofugu method), Confusion-Pair Discrimination, Audio Dictation, Sentence Scramble, and Adaptive Weak-Spot Requeueing.
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setActiveView('overview')}
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" /> Back
+            </Button>
+          </div>
+          <LearningArcade initialScript="hiragana" />
+        </div>
+      )}
 
       {/* VIEW 1: HIRAGANA OR KATAKANA INTERACTIVE CHART */}
       {(activeView === 'hiragana' || activeView === 'katakana') && (
@@ -349,22 +350,19 @@ export default function LearnPage() {
             </Button>
           </div>
 
-          {/* Sub-tabs for Gojuon / Dakuten / Yoon / Quiz */}
+          {/* Sub-tabs for Gojuon / Dakuten / Yoon / Quiz & Games */}
           <div className="flex flex-wrap gap-2 bg-muted p-1 rounded-lg">
             {(
               [
                 { id: 'gojuon', label: 'Basic (Gojūon - 46)' },
                 { id: 'dakuten', label: 'Voiced (Dakuten - 25)' },
                 { id: 'yoon', label: 'Combo (Yōon - 33)' },
-                { id: 'quiz', label: '⚡ Interactive Quiz' },
+                { id: 'quiz', label: '🎮 Interactive Quiz & Games' },
               ] as const
             ).map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => {
-                  setKanaSubTab(tab.id)
-                  setQuizAnswered(null)
-                }}
+                onClick={() => setKanaSubTab(tab.id)}
                 className={`flex-1 min-w-[130px] rounded-md py-1.5 px-3 text-xs sm:text-sm font-medium transition-all ${
                   kanaSubTab === tab.id
                     ? 'bg-background text-foreground shadow-sm'
@@ -377,67 +375,9 @@ export default function LearnPage() {
           </div>
 
           {kanaSubTab === 'quiz' ? (
-            <Card className="max-w-lg mx-auto">
-              <CardHeader className="text-center">
-                <div className="flex justify-between items-center text-xs text-muted-foreground mb-2">
-                  <span>Question {(quizIndex % quizPool.length) + 1}</span>
-                  <Badge variant="secondary">Score: {quizScore}</Badge>
-                </div>
-                <CardTitle className="text-6xl font-bold py-6">
-                  {currentQuizItem?.kana}
-                </CardTitle>
-                <CardDescription>
-                  Select the correct Romaji reading for this character:
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  {quizOptions.map((opt) => {
-                    const isCorrect = opt === currentQuizItem?.romaji
-                    const isSelected = quizAnswered === opt
-                    let btnVariant: 'outline' | 'default' | 'destructive' =
-                      'outline'
-                    if (quizAnswered) {
-                      if (isCorrect) btnVariant = 'default'
-                      else if (isSelected) btnVariant = 'destructive'
-                    }
-                    return (
-                      <Button
-                        key={opt}
-                        variant={btnVariant}
-                        className="h-12 text-lg font-semibold"
-                        disabled={!!quizAnswered}
-                        onClick={() => {
-                          setQuizAnswered(opt)
-                          speakJapanese(currentQuizItem.kana)
-                          if (opt === currentQuizItem.romaji) {
-                            setQuizScore((s) => s + 1)
-                            toast.success('Correct! 🎉')
-                          } else {
-                            toast.error(
-                              `Not quite! ${currentQuizItem.kana} is "${currentQuizItem.romaji}".`
-                            )
-                          }
-                        }}
-                      >
-                        {opt}
-                      </Button>
-                    )
-                  })}
-                </div>
-                {quizAnswered && (
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      setQuizAnswered(null)
-                      setQuizIndex((i) => i + 1)
-                    }}
-                  >
-                    Next Character &rarr;
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
+            <LearningArcade
+              initialScript={activeView === 'katakana' ? 'katakana' : 'hiragana'}
+            />
           ) : (
             renderKanaGrid(
               activeView === 'hiragana'
@@ -501,7 +441,7 @@ export default function LearnPage() {
 
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary" /> Key Expressions & Examples
+                  <Sparkles className="h-5 w-5 text-primary" /> Key Expressions &amp; Examples
                 </h3>
                 <div className="grid gap-4">
                   {activeLesson.keyPoints.map((pt, idx) => (
@@ -538,9 +478,9 @@ export default function LearnPage() {
                                   exampleSentence: pt.note,
                                 })
                                 if (res.added) {
-                                  toast.success('Added to your SRS review deck!')
+                                  toast.success('Added to your Anki SRS deck!')
                                 } else {
-                                  toast.info('Already in your SRS deck!')
+                                  toast.info('Already in your Anki SRS deck!')
                                 }
                               }}
                             >
@@ -564,160 +504,188 @@ export default function LearnPage() {
 
       {/* VIEW 3: CURRICULUM OVERVIEW */}
       {activeView === 'overview' && (
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Section 1: Kana */}
-          <Card className="border-primary/40 shadow-sm">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-xl">
-                    1. Hiragana & Katakana
-                  </CardTitle>
-                  <CardDescription>
-                    Full Gojūon, Dakuten & Yōon charts with native audio.
-                  </CardDescription>
+        <div className="space-y-6">
+          {/* Featured Quiz & Games Banner */}
+          <Card className="border-primary/40 bg-primary/5">
+            <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Badge>New Active-Recall Arcade</Badge>
+                  <span className="text-xs text-muted-foreground">
+                    5 Evidence-Based Modes
+                  </span>
                 </div>
-                {section1Progress === 100 ? (
-                  <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
-                ) : (
-                  <Badge variant="secondary">{section1Progress}%</Badge>
-                )}
+                <h2 className="text-xl font-bold">
+                  Interactive Quiz &amp; Japanese Learning Games
+                </h2>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Practice with Speed Recall Typing (no guessing!), Look-Alike Confusion Pairs (シ vs ツ), Audio Dictation, Sentence Builder, and Memory Blitz.
+                </p>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Progress value={section1Progress} className="h-2" />
-              <div className="grid gap-2">
-                <Button
-                  variant="default"
-                  className="justify-start"
-                  onClick={() => {
-                    setActiveView('hiragana')
-                    setKanaSubTab('gojuon')
-                    setSelectedKana(HIRAGANA_GOJUON[0].items[0])
-                  }}
-                >
-                  <BookOpen className="mr-2 h-4 w-4" /> Open Interactive Hiragana Chart (あ〜ん)
-                </Button>
-                <Button
-                  variant="outline"
-                  className="justify-start"
-                  onClick={() => {
-                    setActiveView('katakana')
-                    setKanaSubTab('gojuon')
-                    setSelectedKana(KATAKANA_GOJUON[0].items[0])
-                  }}
-                >
-                  <BookOpen className="mr-2 h-4 w-4" /> Open Interactive Katakana Chart (ア〜ン)
-                </Button>
-              </div>
+              <Button
+                onClick={() => setActiveView('arcade')}
+                className="shrink-0"
+              >
+                <Gamepad2 className="h-4 w-4 mr-2" /> Play Quiz &amp; Games &rarr;
+              </Button>
             </CardContent>
           </Card>
 
-          {/* Section 2: Greetings & Intro */}
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-xl">
-                    2. Basic Greetings & Intro
-                  </CardTitle>
-                  <CardDescription>
-                    Introduce yourself and master daily Japanese expressions.
-                  </CardDescription>
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Section 1: Kana */}
+            <Card className="border-primary/40 shadow-sm">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-xl">
+                      1. Hiragana &amp; Katakana
+                    </CardTitle>
+                    <CardDescription>
+                      Full Gojūon, Dakuten &amp; Yōon charts with native audio.
+                    </CardDescription>
+                  </div>
+                  {section1Progress === 100 ? (
+                    <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
+                  ) : (
+                    <Badge variant="secondary">{section1Progress}%</Badge>
+                  )}
                 </div>
-                {section2Progress === 100 ? (
-                  <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
-                ) : (
-                  <Badge variant="secondary">{section2Progress}%</Badge>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Progress value={section2Progress} className="h-2" />
-              <div className="grid gap-2">
-                <Button
-                  variant="default"
-                  className="justify-start"
-                  onClick={() => setActiveView('lesson-greetings-aisatsu')}
-                >
-                  <BookOpen className="mr-2 h-4 w-4" /> Greetings (挨拶 - Aisatsu)
-                </Button>
-                <Button
-                  variant="outline"
-                  className="justify-start"
-                  onClick={() => setActiveView('lesson-self-introduction')}
-                >
-                  <BookOpen className="mr-2 h-4 w-4" /> Self Introduction (自己紹介)
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Progress value={section1Progress} className="h-2" />
+                <div className="grid gap-2">
+                  <Button
+                    variant="default"
+                    className="justify-start"
+                    onClick={() => {
+                      setActiveView('hiragana')
+                      setKanaSubTab('gojuon')
+                      setSelectedKana(HIRAGANA_GOJUON[0].items[0])
+                    }}
+                  >
+                    <BookOpen className="mr-2 h-4 w-4" /> Open Interactive Hiragana Chart (あ〜ん)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="justify-start"
+                    onClick={() => {
+                      setActiveView('katakana')
+                      setKanaSubTab('gojuon')
+                      setSelectedKana(KATAKANA_GOJUON[0].items[0])
+                    }}
+                  >
+                    <BookOpen className="mr-2 h-4 w-4" /> Open Interactive Katakana Chart (ア〜ン)
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
-          {/* Section 3: Sentence Structure */}
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-xl">
-                    3. Sentence Structure & Particles
-                  </CardTitle>
-                  <CardDescription>
-                    Master SOV word order, は vs が, を, に, and で.
-                  </CardDescription>
+            {/* Section 2: Greetings & Intro */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-xl">
+                      2. Basic Greetings &amp; Intro
+                    </CardTitle>
+                    <CardDescription>
+                      Introduce yourself and master daily Japanese expressions.
+                    </CardDescription>
+                  </div>
+                  {section2Progress === 100 ? (
+                    <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
+                  ) : (
+                    <Badge variant="secondary">{section2Progress}%</Badge>
+                  )}
                 </div>
-                {section3Progress === 100 ? (
-                  <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
-                ) : (
-                  <Badge variant="secondary">{section3Progress}%</Badge>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Progress value={section3Progress} className="h-2" />
-              <div className="grid gap-2">
-                <Button
-                  variant="outline"
-                  className="justify-start"
-                  onClick={() => setActiveView('lesson-wa-vs-ga')}
-                >
-                  <BookOpen className="mr-2 h-4 w-4" /> は vs が & Essential Particles
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Progress value={section2Progress} className="h-2" />
+                <div className="grid gap-2">
+                  <Button
+                    variant="default"
+                    className="justify-start"
+                    onClick={() => setActiveView('lesson-greetings-aisatsu')}
+                  >
+                    <BookOpen className="mr-2 h-4 w-4" /> Greetings (挨拶 - Aisatsu)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="justify-start"
+                    onClick={() => setActiveView('lesson-self-introduction')}
+                  >
+                    <BookOpen className="mr-2 h-4 w-4" /> Self Introduction (自己紹介)
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
-          {/* Section 4: Verb Conjugation & ~tai */}
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-xl">
-                    4. Expressing Desires (〜たい)
-                  </CardTitle>
-                  <CardDescription>
-                    Conjugate verbs to express what you want to do.
-                  </CardDescription>
+            {/* Section 3: Sentence Structure */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-xl">
+                      3. Sentence Structure &amp; Particles
+                    </CardTitle>
+                    <CardDescription>
+                      Master SOV word order, は vs が, を, に, and で.
+                    </CardDescription>
+                  </div>
+                  {section3Progress === 100 ? (
+                    <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
+                  ) : (
+                    <Badge variant="secondary">{section3Progress}%</Badge>
+                  )}
                 </div>
-                {section4Progress === 100 ? (
-                  <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
-                ) : (
-                  <Badge variant="secondary">{section4Progress}%</Badge>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Progress value={section4Progress} className="h-2" />
-              <div className="grid gap-2">
-                <Button
-                  variant="outline"
-                  className="justify-start"
-                  onClick={() => setActiveView('lesson-tai-form')}
-                >
-                  <HelpCircle className="mr-2 h-4 w-4" /> Lesson: 「〜たい」 Want to do
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Progress value={section3Progress} className="h-2" />
+                <div className="grid gap-2">
+                  <Button
+                    variant="outline"
+                    className="justify-start"
+                    onClick={() => setActiveView('lesson-wa-vs-ga')}
+                  >
+                    <BookOpen className="mr-2 h-4 w-4" /> は vs が &amp; Essential Particles
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Section 4: Verb Conjugation & ~tai */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-xl">
+                      4. Expressing Desires (〜たい)
+                    </CardTitle>
+                    <CardDescription>
+                      Conjugate verbs to express what you want to do.
+                    </CardDescription>
+                  </div>
+                  {section4Progress === 100 ? (
+                    <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
+                  ) : (
+                    <Badge variant="secondary">{section4Progress}%</Badge>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Progress value={section4Progress} className="h-2" />
+                <div className="grid gap-2">
+                  <Button
+                    variant="outline"
+                    className="justify-start"
+                    onClick={() => setActiveView('lesson-tai-form')}
+                  >
+                    <HelpCircle className="mr-2 h-4 w-4" /> Lesson: 「〜たい」 Want to do
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       )}
     </div>
