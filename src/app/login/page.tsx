@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { Loader2, UserCheck } from 'lucide-react'
 import { saveUserStats } from '@/data/srs-deck'
+import { ThemeToggle } from '@/components/layout/theme-toggle'
 
 const PRESET_ACCOUNTS = [
   {
@@ -114,7 +115,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-muted/40 px-4 py-10">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-muted/40 px-4 py-10">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-primary">Nihongo</h1>
