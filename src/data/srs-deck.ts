@@ -882,13 +882,36 @@ export function getIntervalLabels(
   }
 }
 
+/**
+ * Returns today's date formatted as YYYY-MM-DD in the user's local timezone.
+ */
+export function getLocalTodayDate(): string {
+  const d = new Date()
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+/**
+ * Returns yesterday's date formatted as YYYY-MM-DD in the user's local timezone.
+ */
+export function getLocalYesterdayDate(): string {
+  const d = new Date()
+  d.setDate(d.getDate() - 1)
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 export function loadUserStats(): UserStudyStats {
   if (typeof window === 'undefined') return DEFAULT_USER_STATS
   try {
     const raw = localStorage.getItem(STATS_STORAGE_KEY)
     if (raw) {
       const parsed = JSON.parse(raw)
-      return {
+      const base: UserStudyStats = {
         ...DEFAULT_USER_STATS,
         ...parsed,
         totalStudyMins:
@@ -914,6 +937,22 @@ export function loadUserStats(): UserStudyStats {
         audioSpeed: parsed.audioSpeed || DEFAULT_USER_STATS.audioSpeed,
         furiganaMode: parsed.furiganaMode || DEFAULT_USER_STATS.furiganaMode,
       }
+
+      // Check if streak was broken because user missed yesterday
+      const today = getLocalTodayDate()
+      const yesterday = getLocalYesterdayDate()
+      if (
+        base.lastStudyDate &&
+        base.lastStudyDate !== today &&
+        base.lastStudyDate !== yesterday
+      ) {
+        base.currentStreak = 0
+        base.reviewsCompletedToday = 0
+      } else if (base.lastStudyDate !== today) {
+        base.reviewsCompletedToday = 0
+      }
+
+      return base
     }
   } catch {
     // ignore
@@ -938,29 +977,10 @@ export function saveUserStats(stats: Partial<UserStudyStats>): UserStudyStats {
 /**
  * Tracks real active study time in seconds while user is actively learning.
  * Converts every 60 seconds into +1 totalStudyMins.
+ * Does NOT advance streak or touch lastStudyDate (only actual completed reviews/lessons do).
  */
 export function recordActiveStudySeconds(seconds: number): UserStudyStats {
   const current = loadUserStats()
-  const today = new Date().toISOString().split('T')[0]
-  const prevDate = current.lastStudyDate || ''
-
-  // Streak verification
-  let nextStreak = current.currentStreak
-  if (prevDate !== today) {
-    if (prevDate) {
-      const yesterday = new Date(Date.now() - 86400000)
-        .toISOString()
-        .split('T')[0]
-      if (prevDate === yesterday) {
-        nextStreak = current.currentStreak + 1
-      } else if (current.currentStreak === 0) {
-        nextStreak = 1
-      }
-    } else {
-      nextStreak = 1
-    }
-  }
-
   const rawSeconds = (current.todayStudySeconds || 0) + seconds
   const addedMins = Math.floor(rawSeconds / 60)
   const remainingSecs = rawSeconds % 60
@@ -969,9 +989,44 @@ export function recordActiveStudySeconds(seconds: number): UserStudyStats {
     ...current,
     todayStudySeconds: remainingSecs,
     totalStudyMins: (current.totalStudyMins || 0) + addedMins,
+  }
+
+  saveUserStats(updated)
+  return updated
+}
+
+/**
+ * Records an actual completed study event (SRS review, completed lesson, or quiz).
+ * Advances streak based on the user's local date and resets streak after a missed day.
+ */
+export function recordCompletedStudy(reviewCount: number = 1): UserStudyStats {
+  const current = loadUserStats()
+  const today = getLocalTodayDate()
+  const yesterday = getLocalYesterdayDate()
+  const prevDate = current.lastStudyDate || ''
+
+  let nextStreak = current.currentStreak
+  let reviewsToday = current.reviewsCompletedToday || 0
+
+  if (prevDate === today) {
+    // Already studied today: keep streak and add to reviewsToday
+    reviewsToday += reviewCount
+  } else if (prevDate === yesterday) {
+    // Studied yesterday: advance streak
+    nextStreak = (current.currentStreak || 0) + 1
+    reviewsToday = reviewCount
+  } else {
+    // Missed a day or first study: reset streak to 1
+    nextStreak = 1
+    reviewsToday = reviewCount
+  }
+
+  const updated: UserStudyStats = {
+    ...current,
     currentStreak: nextStreak,
     longestStreak: Math.max(current.longestStreak || 0, nextStreak),
     lastStudyDate: today,
+    reviewsCompletedToday: reviewsToday,
   }
 
   saveUserStats(updated)

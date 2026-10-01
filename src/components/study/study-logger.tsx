@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { Loader2, CheckCircle2 } from 'lucide-react'
-import { loadUserStats, saveUserStats } from '@/data/srs-deck'
+import { loadUserStats, saveUserStats, recordCompletedStudy } from '@/data/srs-deck'
 
 export function StudyLogger() {
   const [isLoading, setIsLoading] = useState(false)
@@ -43,23 +43,16 @@ export function StudyLogger() {
       Math.max(1, Number(formData.get('duration_mins')) || 15)
     )
 
+    recordCompletedStudy(1)
     const stats = loadUserStats()
-    const today = new Date().toISOString().split('T')[0]
-    const newStreak =
-      stats.lastStudyDate === today
-        ? stats.currentStreak
-        : stats.currentStreak + 1
     const earnedXp = duration * 2 + vocab * 3 + kanji * 5 + grammar * 5
 
     saveUserStats({
-      currentStreak: newStreak,
-      longestStreak: Math.max(stats.longestStreak, newStreak),
       totalStudyMins: stats.totalStudyMins + duration,
       vocabCount: stats.vocabCount + vocab,
       kanjiCount: stats.kanjiCount + kanji,
       grammarCount: stats.grammarCount + grammar,
       xp: stats.xp + earnedXp,
-      lastStudyDate: today,
     })
 
     toast.success(`Study session logged! +${earnedXp} XP 🔥`, {

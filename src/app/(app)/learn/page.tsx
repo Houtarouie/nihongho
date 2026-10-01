@@ -35,6 +35,7 @@ import {
   addCustomSRSCard,
   loadUserStats,
   saveUserStats,
+  recordCompletedStudy,
 } from '@/data/srs-deck'
 import { LearningArcade } from '@/components/games/learning-arcade'
 import { toast } from 'sonner'
@@ -120,6 +121,7 @@ export default function LearnPage() {
       ? stats.completedLessons
       : [...stats.completedLessons, lessonId]
 
+    recordCompletedStudy(1)
     const updated = saveUserStats({
       completedLessons: updatedLessons,
       xp: alreadyDone ? stats.xp : stats.xp + 50,

@@ -39,6 +39,7 @@ import {
   importAnkiDeckCards,
   loadUserStats,
   saveUserStats,
+  recordCompletedStudy,
   loadDeckOptions,
   saveDeckOptions,
   loadReviewLogs,
@@ -294,10 +295,10 @@ export default function PracticePage() {
       setTypedAnswer('')
       setSessionReviewed((prev) => prev + 1)
 
+      recordCompletedStudy(1)
       const userStats = loadUserStats()
       saveUserStats({
         xp: userStats.xp + (rating === 'again' ? 2 : 10),
-        reviewsCompletedToday: (userStats.reviewsCompletedToday || 0) + 1,
       })
     },
     [currentCard, cards, deckOptions]
