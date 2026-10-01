@@ -25,12 +25,16 @@ import {
   CheckCircle2,
   AlertTriangle,
   Trophy,
+  Lightbulb,
+  BookOpen,
+  XCircle,
 } from 'lucide-react'
 import {
   getKanaPool,
   buildSmartDistractors,
   cleanRomaji,
   CONFUSION_MNEMONICS,
+  KANA_CONFUSION_GROUPS,
   SENTENCE_SCRAMBLE_CHALLENGES,
   type KanaDeckScope,
 } from '@/data/quiz-engine'
@@ -222,6 +226,20 @@ export function LearningArcade({
     if (!currentItem) return []
     return buildSmartDistractors(currentItem, basePool, quizDirection)
   }, [currentItem, basePool, quizDirection])
+
+  // Feedback panel data — reused across all quiz modes after an answer
+  const feedbackInfo = useMemo(() => {
+    if (!currentItem) return null
+    const mnemonic = CONFUSION_MNEMONICS[currentItem.kana] ?? null
+    const lookAlikeKanas: string[] = KANA_CONFUSION_GROUPS[currentItem.kana] ?? []
+    const suggestions: { label: string; action: string }[] = []
+    if (lookAlikeKanas.length > 0) {
+      suggestions.push({ label: 'Train Look-Alikes', action: 'confusion-pairs' })
+    }
+    suggestions.push({ label: 'Ear Training', action: 'audio-dictation' })
+    suggestions.push({ label: 'Add to SRS Deck', action: 'srs' })
+    return { mnemonic, lookAlikeKanas, suggestions }
+  }, [currentItem])
 
   function awardXP(amount: number) {
     const stats = loadUserStats()
@@ -785,6 +803,39 @@ export function LearningArcade({
         </Card>
       )}
 
+      {/* Selected Characters Strip — visible during quiz when custom pool is active */}
+      {scope === 'custom' && !showCustomPicker && basePool.length > 0 && gameMode !== 'leaderboard' && (
+        <div className="rounded-xl border bg-card/60 px-3 py-2 flex flex-wrap items-center gap-1.5">
+          <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide shrink-0 mr-1">
+            Quiz Pool ({basePool.length}):
+          </span>
+          {basePool.map((item) => {
+            const isCurrent = currentItem?.kana === item.kana
+            return (
+              <span
+                key={item.kana}
+                title={cleanRomaji(item.romaji)}
+                className={`inline-flex items-center gap-0.5 rounded-md border px-1.5 py-0.5 text-xs font-bold transition-all ${
+                  isCurrent
+                    ? 'border-primary bg-primary text-primary-foreground shadow-sm scale-110'
+                    : 'border-border bg-muted/40 text-foreground/70'
+                }`}
+              >
+                {item.kana}
+                <span className="text-[9px] font-normal opacity-70">{cleanRomaji(item.romaji)}</span>
+              </span>
+            )
+          })}
+          <button
+            type="button"
+            onClick={() => setShowCustomPicker(true)}
+            className="ml-auto text-[10px] text-primary font-medium hover:underline shrink-0"
+          >
+            Edit
+          </button>
+        </div>
+      )}
+
       {/* GAME MODE 1: TOFUGU-STYLE SPEED RECALL TYPING */}
       {gameMode === 'speed-typing' && currentItem && (
         <Card className="max-w-lg mx-auto">
@@ -839,29 +890,110 @@ export function LearningArcade({
               </div>
             </form>
 
-            {typingFeedback === 'wrong' && (
-              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm text-red-600 dark:text-red-400">
-                    Answer: {currentItem.kana} = {cleanRomaji(currentItem.romaji)}
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7 text-xs"
-                    onClick={() => {
-                      setTypingFeedback('idle')
-                      setTypedInput('')
-                      setCurrentIndex((i) => i + 1)
-                    }}
-                  >
-                    Next &rarr;
-                  </Button>
+            {typingFeedback !== 'idle' && feedbackInfo && (
+              <div className={`rounded-lg border p-3 text-xs space-y-2.5 ${
+                typingFeedback === 'correct'
+                  ? 'border-green-500/30 bg-green-500/10'
+                  : 'border-red-500/30 bg-red-500/10'
+              }`}>
+                {/* Result header */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    {typingFeedback === 'correct' ? (
+                      <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+                    )}
+                    <span className={`font-bold text-sm ${
+                      typingFeedback === 'correct'
+                        ? 'text-green-700 dark:text-green-400'
+                        : 'text-red-700 dark:text-red-400'
+                    }`}>
+                      {typingFeedback === 'correct'
+                        ? `Correct! ${currentItem.kana} = ${cleanRomaji(currentItem.romaji)}`
+                        : `Answer: ${currentItem.kana} = ${cleanRomaji(currentItem.romaji)}`}
+                    </span>
+                  </div>
+                  {typingFeedback === 'wrong' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 text-xs shrink-0"
+                      onClick={() => {
+                        setTypingFeedback('idle')
+                        setTypedInput('')
+                        setCurrentIndex((i) => i + 1)
+                      }}
+                    >
+                      Next &rarr;
+                    </Button>
+                  )}
                 </div>
-                {CONFUSION_MNEMONICS[currentItem.kana] && (
+
+                {/* Example word */}
+                {currentItem.example && (
                   <p className="text-muted-foreground">
-                    💡 {CONFUSION_MNEMONICS[currentItem.kana]}
+                    📖 Example: <strong>{currentItem.example}</strong>
                   </p>
+                )}
+
+                {/* Mnemonic */}
+                {feedbackInfo.mnemonic && (
+                  <div className="flex gap-1.5 items-start">
+                    <Lightbulb className="h-3.5 w-3.5 text-yellow-500 shrink-0 mt-0.5" />
+                    <p className="text-muted-foreground">{feedbackInfo.mnemonic}</p>
+                  </div>
+                )}
+
+                {/* Look-alike pairs */}
+                {feedbackInfo.lookAlikeKanas.length > 0 && (
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="font-semibold text-foreground/70">Look-alikes:</span>
+                    {feedbackInfo.lookAlikeKanas.map((k) => (
+                      <span key={k} className="rounded border px-1.5 py-0.5 bg-background font-bold text-xs">{k}</span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Practice suggestions */}
+                {typingFeedback === 'wrong' && (
+                  <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/50">
+                    <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <span className="font-semibold text-foreground/70 text-[10px] uppercase tracking-wide">Try next:</span>
+                    {feedbackInfo.suggestions
+                      .filter((s) => s.action !== 'srs')
+                      .map((s) => (
+                        <button
+                          key={s.action}
+                          type="button"
+                          onClick={() => {
+                            setGameMode(s.action as GameMode)
+                            if (s.action === 'confusion-pairs') setScope('confusion')
+                          }}
+                          className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                        >
+                          {s.label}
+                        </button>
+                      ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addCustomSRSCard({
+                          front: currentItem.kana,
+                          reading: currentItem.romaji,
+                          meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
+                          category: 'kana',
+                          jlptLevel: 'N5',
+                          exampleSentence: currentItem.example,
+                          tags: ['kana', script, currentItem.row],
+                        })
+                        toast.success(`${currentItem.kana} added to SRS deck!`)
+                      }}
+                      className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                    >
+                      Add to SRS Deck
+                    </button>
+                  </div>
                 )}
               </div>
             )}
@@ -928,34 +1060,102 @@ export function LearningArcade({
               })}
             </div>
 
-            {selectedOption && (
-              <div className="space-y-3 pt-2 border-t">
-                {CONFUSION_MNEMONICS[currentItem.kana] && (
-                  <div className="rounded-lg bg-muted/60 p-3 text-xs">
-                    <p className="font-semibold text-foreground mb-0.5">
-                      💡 Visual Distinction Tip:
-                    </p>
-                    <p className="text-muted-foreground">
-                      {CONFUSION_MNEMONICS[currentItem.kana]}
-                    </p>
+            {selectedOption && feedbackInfo && (() => {
+              const correctVal = quizDirection === 'kana-to-romaji'
+                ? cleanRomaji(currentItem.romaji)
+                : currentItem.kana
+              const wasCorrect = selectedOption === correctVal
+              return (
+                <div className={`rounded-lg border p-3 text-xs space-y-2.5 ${
+                  wasCorrect ? 'border-green-500/30 bg-green-500/10' : 'border-red-500/30 bg-red-500/10'
+                }`}>
+                  {/* Result header */}
+                  <div className="flex items-center gap-2">
+                    {wasCorrect ? (
+                      <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+                    )}
+                    <span className={`font-bold text-sm ${
+                      wasCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'
+                    }`}>
+                      {wasCorrect
+                        ? `Spot on! ${currentItem.kana} = ${cleanRomaji(currentItem.romaji)}`
+                        : `Answer: ${currentItem.kana} = ${cleanRomaji(currentItem.romaji)}`}
+                    </span>
                   </div>
-                )}
-                {currentItem.example && (
-                  <p className="text-xs text-center text-muted-foreground">
-                    Example word: <strong>{currentItem.example}</strong>
-                  </p>
-                )}
-                <Button
-                  className="w-full"
-                  onClick={() => {
-                    setSelectedOption(null)
-                    setCurrentIndex((i) => i + 1)
-                  }}
-                >
-                  Next Challenge &rarr;
-                </Button>
-              </div>
-            )}
+
+                  {/* Example word */}
+                  {currentItem.example && (
+                    <p className="text-muted-foreground">
+                      📖 Example: <strong>{currentItem.example}</strong>
+                    </p>
+                  )}
+
+                  {/* Mnemonic */}
+                  {feedbackInfo.mnemonic && (
+                    <div className="flex gap-1.5 items-start">
+                      <Lightbulb className="h-3.5 w-3.5 text-yellow-500 shrink-0 mt-0.5" />
+                      <p className="text-muted-foreground">{feedbackInfo.mnemonic}</p>
+                    </div>
+                  )}
+
+                  {/* Look-alike pairs */}
+                  {feedbackInfo.lookAlikeKanas.length > 0 && (
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-foreground/70">Look-alikes:</span>
+                      {feedbackInfo.lookAlikeKanas.map((k) => (
+                        <span key={k} className="rounded border px-1.5 py-0.5 bg-background font-bold text-xs">{k}</span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Practice suggestions */}
+                  {!wasCorrect && (
+                    <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/50">
+                      <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                      <span className="font-semibold text-foreground/70 text-[10px] uppercase tracking-wide">Try next:</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addCustomSRSCard({
+                            front: currentItem.kana,
+                            reading: currentItem.romaji,
+                            meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
+                            category: 'kana',
+                            jlptLevel: 'N5',
+                            exampleSentence: currentItem.example,
+                            tags: ['kana', script, currentItem.row],
+                          })
+                          toast.success(`${currentItem.kana} added to SRS deck!`)
+                        }}
+                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                      >
+                        Add to SRS Deck
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setGameMode('audio-dictation') }}
+                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                      >
+                        Ear Training
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Next button */}
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      setSelectedOption(null)
+                      setCurrentIndex((i) => i + 1)
+                    }}
+                  >
+                    Next Challenge &rarr;
+                  </Button>
+                </div>
+              )
+            })()}
           </CardContent>
         </Card>
       )}
@@ -1012,20 +1212,104 @@ export function LearningArcade({
               )}
             </div>
 
-            {selectedOption && (
-              <Button
-                className="w-full"
-                onClick={() => {
-                  setSelectedOption(null)
-                  const nextIdx = currentIndex + 1
-                  setCurrentIndex(nextIdx)
-                  const nextItem = queue[nextIdx % Math.max(1, queue.length)]
-                  if (nextItem) speakJapanese(nextItem.kana)
-                }}
-              >
-                Next Audio Prompt &rarr;
-              </Button>
-            )}
+            {selectedOption && feedbackInfo && (() => {
+              const wasCorrect = selectedOption === currentItem.kana
+              return (
+                <div className={`rounded-lg border p-3 text-xs space-y-2.5 text-left ${
+                  wasCorrect ? 'border-green-500/30 bg-green-500/10' : 'border-red-500/30 bg-red-500/10'
+                }`}>
+                  {/* Result header */}
+                  <div className="flex items-center gap-2">
+                    {wasCorrect ? (
+                      <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+                    )}
+                    <span className={`font-bold text-sm ${
+                      wasCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'
+                    }`}>
+                      {wasCorrect
+                        ? `Correct! ${currentItem.kana} (${cleanRomaji(currentItem.romaji)})`
+                        : `Answer: ${currentItem.kana} (${cleanRomaji(currentItem.romaji)})`}
+                    </span>
+                  </div>
+
+                  {/* Example word */}
+                  {currentItem.example && (
+                    <p className="text-muted-foreground">
+                      📖 Example: <strong>{currentItem.example}</strong>
+                    </p>
+                  )}
+
+                  {/* Mnemonic */}
+                  {feedbackInfo.mnemonic && (
+                    <div className="flex gap-1.5 items-start">
+                      <Lightbulb className="h-3.5 w-3.5 text-yellow-500 shrink-0 mt-0.5" />
+                      <p className="text-muted-foreground">{feedbackInfo.mnemonic}</p>
+                    </div>
+                  )}
+
+                  {/* Look-alike pairs */}
+                  {feedbackInfo.lookAlikeKanas.length > 0 && (
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-foreground/70">Look-alikes:</span>
+                      {feedbackInfo.lookAlikeKanas.map((k) => (
+                        <span key={k} className="rounded border px-1.5 py-0.5 bg-background font-bold text-xs">{k}</span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Practice suggestions when wrong */}
+                  {!wasCorrect && (
+                    <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/50">
+                      <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                      <span className="font-semibold text-foreground/70 text-[10px] uppercase tracking-wide">Try next:</span>
+                      {feedbackInfo.lookAlikeKanas.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => { setGameMode('confusion-pairs'); setScope('confusion') }}
+                          className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                        >
+                          Train Look-Alikes
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addCustomSRSCard({
+                            front: currentItem.kana,
+                            reading: currentItem.romaji,
+                            meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
+                            category: 'kana',
+                            jlptLevel: 'N5',
+                            exampleSentence: currentItem.example,
+                            tags: ['kana', script, currentItem.row],
+                          })
+                          toast.success(`${currentItem.kana} added to SRS deck!`)
+                        }}
+                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                      >
+                        Add to SRS Deck
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Next button */}
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      setSelectedOption(null)
+                      const nextIdx = currentIndex + 1
+                      setCurrentIndex(nextIdx)
+                      const nextItem = queue[nextIdx % Math.max(1, queue.length)]
+                      if (nextItem) speakJapanese(nextItem.kana)
+                    }}
+                  >
+                    Next Audio Prompt &rarr;
+                  </Button>
+                </div>
+              )
+            })()}
           </CardContent>
         </Card>
       )}
