@@ -1,0 +1,5369 @@
+{
+  "language": "Japanese",
+  "focus": "Casual daily conversation with friends",
+  "note": "Original word list and example sentences written for personal study. 'slang' tagged items are casual and not for formal settings.",
+  "scenario_count": 20,
+  "word_count": 400,
+  "scenarios": [
+    {
+      "id": "s01",
+      "scenario": "Making plans to hang out",
+      "situation": "You're trying to lock in a day with friends and nobody is giving a straight answer.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0001",
+          "word": "暇",
+          "reading": "ひま",
+          "meaning": "free time / not busy",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "土曜、暇？新しいラーメン屋行かない？",
+            "reading": "どようひま？あたらしいラーメンやいかない？",
+            "en": "Free Saturday? Wanna try the new ramen place?"
+          }
+        },
+        {
+          "id": "v0002",
+          "word": "予定",
+          "reading": "よてい",
+          "meaning": "plans / schedule",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来週の予定、まだ決まってないんだよね。",
+            "reading": "らいしゅうのよてい、まだきまってないんだよね。",
+            "en": "My plans for next week aren't set yet."
+          }
+        },
+        {
+          "id": "v0003",
+          "word": "空いてる",
+          "reading": "あいてる",
+          "meaning": "to be free (time)",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "金曜の夜、空いてる人いる？",
+            "reading": "きんようのよる、あいてるひといる？",
+            "en": "Anyone free Friday night?"
+          }
+        },
+        {
+          "id": "v0004",
+          "word": "誘う",
+          "reading": "さそう",
+          "meaning": "to invite",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "みんなを誘ってカラオケ行こうよ。",
+            "reading": "みんなをさそってカラオケいこうよ。",
+            "en": "Let's invite everyone and go to karaoke."
+          }
+        },
+        {
+          "id": "v0005",
+          "word": "集合",
+          "reading": "しゅうごう",
+          "meaning": "gathering / meet up",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "集合は駅の改札前ね。",
+            "reading": "しゅうごうはえきのかいさつまえね。",
+            "en": "We're meeting in front of the ticket gates."
+          }
+        },
+        {
+          "id": "v0006",
+          "word": "待ち合わせ",
+          "reading": "まちあわせ",
+          "meaning": "meeting up (at a set place/time)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "待ち合わせ、ハチ公前でいい？",
+            "reading": "まちあわせ、ハチこうまえでいい？",
+            "en": "Meet at the Hachiko statue okay?"
+          }
+        },
+        {
+          "id": "v0007",
+          "word": "遅刻",
+          "reading": "ちこく",
+          "meaning": "being late",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ごめん、電車止まって遅刻しそう。",
+            "reading": "ごめん、でんしゃとまってちこくしそう。",
+            "en": "Sorry, the train stopped and I'm going to be late."
+          }
+        },
+        {
+          "id": "v0008",
+          "word": "ドタキャン",
+          "reading": "どたきゃん",
+          "meaning": "last-minute cancellation",
+          "pos": "noun",
+          "tag": "slang",
+          "example": {
+            "ja": "また彼にドタキャンされたんだけど。",
+            "reading": "またかれにドタキャンされたんだけど。",
+            "en": "He bailed on me at the last minute again."
+          }
+        },
+        {
+          "id": "v0009",
+          "word": "延期",
+          "reading": "えんき",
+          "meaning": "postponement",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "台風で飲み会は来週に延期だって。",
+            "reading": "たいふうでのみかいはらいしゅうにえんきだって。",
+            "en": "The drinking party is postponed to next week because of the typhoon."
+          }
+        },
+        {
+          "id": "v0010",
+          "word": "都合",
+          "reading": "つごう",
+          "meaning": "convenience / circumstances",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "みんなの都合、聞いてみるね。",
+            "reading": "みんなのつごう、きいてみるね。",
+            "en": "I'll check what works for everyone."
+          }
+        },
+        {
+          "id": "v0011",
+          "word": "今度",
+          "reading": "こんど",
+          "meaning": "next time / sometime",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今度ってよく言うけど、ほんとにいつ行く？",
+            "reading": "こんどってよくいうけど、ほんとにいついく？",
+            "en": "You always say 'next time', but when are we actually going?"
+          }
+        },
+        {
+          "id": "v0012",
+          "word": "久しぶり",
+          "reading": "ひさしぶり",
+          "meaning": "long time no see",
+          "pos": "expression",
+          "tag": "standard",
+          "example": {
+            "ja": "久しぶり！元気にしてた？",
+            "reading": "ひさしぶり！げんきにしてた？",
+            "en": "Long time no see! How've you been?"
+          }
+        },
+        {
+          "id": "v0013",
+          "word": "飲み会",
+          "reading": "のみかい",
+          "meaning": "drinking party",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今夜のサークルの飲み会、行く？",
+            "reading": "こんやのサークルののみかい、いく？",
+            "en": "Are you going to the club's drinking party tonight?"
+          }
+        },
+        {
+          "id": "v0014",
+          "word": "約束",
+          "reading": "やくそく",
+          "meaning": "promise / appointment",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "先約があるから、その日は無理かも。",
+            "reading": "せんやくがあるから、そのひはむりかも。",
+            "en": "I already have an appointment, so I may not make it that day."
+          }
+        },
+        {
+          "id": "v0015",
+          "word": "断る",
+          "reading": "ことわる",
+          "meaning": "to decline",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "断りづらくて、つい行くって言っちゃった。",
+            "reading": "ことわりづらくて、ついいくっていっちゃった。",
+            "en": "It was hard to say no, so I ended up saying I'd go."
+          }
+        },
+        {
+          "id": "v0016",
+          "word": "乗り気",
+          "reading": "のりき",
+          "meaning": "keen / into it",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "あいつ、あんまり乗り気じゃなさそう。",
+            "reading": "あいつ、あんまりのりきじゃなさそう。",
+            "en": "He doesn't seem very into it."
+          }
+        },
+        {
+          "id": "v0017",
+          "word": "参加",
+          "reading": "さんか",
+          "meaning": "participation",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "BBQ、何人参加するの？",
+            "reading": "バーベキュー、なんにんさんかするの？",
+            "en": "How many people are joining the BBQ?"
+          }
+        },
+        {
+          "id": "v0018",
+          "word": "幹事",
+          "reading": "かんじ",
+          "meaning": "organizer (of a party)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今回の幹事、お前ね。店の予約よろしく。",
+            "reading": "こんかいのかんじ、おまえね。みせのよやくよろしく。",
+            "en": "You're the organizer this time. Book the place."
+          }
+        },
+        {
+          "id": "v0019",
+          "word": "急",
+          "reading": "きゅう",
+          "meaning": "sudden",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "急だけど、今から会える？",
+            "reading": "きゅうだけど、いまからあえる？",
+            "en": "It's sudden, but can we meet right now?"
+          }
+        },
+        {
+          "id": "v0020",
+          "word": "また連絡する",
+          "reading": "またれんらくする",
+          "meaning": "I'll message you again",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "バイト終わったらまた連絡するわ。",
+            "reading": "バイトおわったらまたれんらくするわ。",
+            "en": "I'll message you once my part-time shift ends."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "scenario": "Texting and social media",
+      "situation": "Daily life on LINE, Instagram and group chats, including leaving people on read.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0021",
+          "word": "既読",
+          "reading": "きどく",
+          "meaning": "read (message status)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "既読ついてるのに、返事こない…。",
+            "reading": "きどくついてるのに、へんじこない…。",
+            "en": "It says read, but no reply..."
+          }
+        },
+        {
+          "id": "v0022",
+          "word": "既読スルー",
+          "reading": "きどくスルー",
+          "meaning": "reading and ignoring a message",
+          "pos": "noun",
+          "tag": "slang",
+          "example": {
+            "ja": "昨日から既読スルーされてるんだよね。",
+            "reading": "きのうからきどくスルーされてるんだよね。",
+            "en": "I've been left on read since yesterday."
+          }
+        },
+        {
+          "id": "v0023",
+          "word": "返信",
+          "reading": "へんしん",
+          "meaning": "reply",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "返信遅くなってごめん！寝てた。",
+            "reading": "へんしんおそくなってごめん！ねてた。",
+            "en": "Sorry for the late reply! I was asleep."
+          }
+        },
+        {
+          "id": "v0024",
+          "word": "スタンプ",
+          "reading": "スタンプ",
+          "meaning": "sticker (in LINE)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "このスタンプ、かわいくない？買っちゃった。",
+            "reading": "このスタンプ、かわいくない？かっちゃった。",
+            "en": "Isn't this sticker cute? I bought it."
+          }
+        },
+        {
+          "id": "v0025",
+          "word": "グループLINE",
+          "reading": "グループライン",
+          "meaning": "group chat",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "グループLINE、通知多すぎてミュートした。",
+            "reading": "グループライン、つうちおおすぎてミュートした。",
+            "en": "The group chat had too many notifications so I muted it."
+          }
+        },
+        {
+          "id": "v0026",
+          "word": "通知",
+          "reading": "つうち",
+          "meaning": "notification",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "通知オフにしてたから気づかなかった。",
+            "reading": "つうちオフにしてたからきづかなかった。",
+            "en": "I had notifications off so I didn't notice."
+          }
+        },
+        {
+          "id": "v0027",
+          "word": "投稿",
+          "reading": "とうこう",
+          "meaning": "post",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "昨日のライブの写真、もう投稿した？",
+            "reading": "きのうのライブのしゃしん、もうとうこうした？",
+            "en": "Did you already post the photos from yesterday's live show?"
+          }
+        },
+        {
+          "id": "v0028",
+          "word": "いいね",
+          "reading": "いいね",
+          "meaning": "like (on social media)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "あの投稿、いいねいっぱいついてたよ。",
+            "reading": "あのとうこう、いいねいっぱいついてたよ。",
+            "en": "That post got lots of likes."
+          }
+        },
+        {
+          "id": "v0029",
+          "word": "フォロー",
+          "reading": "フォロー",
+          "meaning": "follow",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "インスタ交換しよ。フォローするね。",
+            "reading": "インスタこうかんしよ。フォローするね。",
+            "en": "Let's swap Instagram. I'll follow you."
+          }
+        },
+        {
+          "id": "v0030",
+          "word": "ストーリー",
+          "reading": "ストーリー",
+          "meaning": "Instagram story",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ストーリー見たよ、旅行いいなあ。",
+            "reading": "ストーリーみたよ、りょこういいなあ。",
+            "en": "I saw your story, the trip looks great."
+          }
+        },
+        {
+          "id": "v0031",
+          "word": "写真を撮る",
+          "reading": "しゃしんをとる",
+          "meaning": "to take a photo",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "ここ映えるから、写真撮ろ！",
+            "reading": "ここばえるから、しゃしんとろ！",
+            "en": "This spot looks great, let's take a photo!"
+          }
+        },
+        {
+          "id": "v0032",
+          "word": "映える",
+          "reading": "ばえる",
+          "meaning": "to look good in photos",
+          "pos": "verb",
+          "tag": "slang",
+          "example": {
+            "ja": "このパンケーキ、めっちゃ映える。",
+            "reading": "このパンケーキ、めっちゃばえる。",
+            "en": "This pancake looks so good on camera."
+          }
+        },
+        {
+          "id": "v0033",
+          "word": "スクショ",
+          "reading": "スクショ",
+          "meaning": "screenshot",
+          "pos": "noun",
+          "tag": "slang",
+          "example": {
+            "ja": "さっきのメッセージ、スクショ送って。",
+            "reading": "さっきのメッセージ、スクショおくって。",
+            "en": "Send me a screenshot of that message from earlier."
+          }
+        },
+        {
+          "id": "v0034",
+          "word": "ブロック",
+          "reading": "ブロック",
+          "meaning": "to block",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "しつこいからブロックしちゃった。",
+            "reading": "しつこいからブロックしちゃった。",
+            "en": "He was so persistent I blocked him."
+          }
+        },
+        {
+          "id": "v0035",
+          "word": "通話",
+          "reading": "つうわ",
+          "meaning": "voice call",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "文字だと長くなるから、通話しない？",
+            "reading": "もじだとながくなるから、つうわしない？",
+            "en": "Typing gets long, want to call?"
+          }
+        },
+        {
+          "id": "v0036",
+          "word": "電話に出る",
+          "reading": "でんわにでる",
+          "meaning": "to answer the phone",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "何回かけても電話に出ないんだけど。",
+            "reading": "なんかいかけてもでんわにでないんだけど。",
+            "en": "No matter how many times I call, you don't answer."
+          }
+        },
+        {
+          "id": "v0037",
+          "word": "誤字",
+          "reading": "ごじ",
+          "meaning": "typo",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "誤字ってたの恥ずかしい…直したい。",
+            "reading": "ごじってたのはずかしい…なおしたい。",
+            "en": "So embarrassing that I made a typo... I want to fix it."
+          }
+        },
+        {
+          "id": "v0038",
+          "word": "送信",
+          "reading": "そうしん",
+          "meaning": "sending (a message)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "間違えて別の人に送信しちゃった！",
+            "reading": "まちがえてべつのひとにそうしんしちゃった！",
+            "en": "I accidentally sent it to the wrong person!"
+          }
+        },
+        {
+          "id": "v0039",
+          "word": "ネタバレ",
+          "reading": "ネタバレ",
+          "meaning": "spoiler",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ネタバレやめて！まだ最終回見てない！",
+            "reading": "ネタバレやめて！まださいしゅうかいみてない！",
+            "en": "No spoilers! I haven't watched the finale yet!"
+          }
+        },
+        {
+          "id": "v0040",
+          "word": "バズる",
+          "reading": "バズる",
+          "meaning": "to go viral",
+          "pos": "verb",
+          "tag": "slang",
+          "example": {
+            "ja": "うちの猫の動画、バズってるんだけど！",
+            "reading": "うちのねこのどうが、バズってるんだけど！",
+            "en": "My cat's video is going viral!"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "scenario": "Eating out with friends",
+      "situation": "Picking a place, ordering at an izakaya or cafe, and splitting the bill.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0041",
+          "word": "何食べる？",
+          "reading": "なにたべる？",
+          "meaning": "What shall we eat?",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "お腹ぺこぺこ。何食べる？",
+            "reading": "おなかぺこぺこ。なにたべる？",
+            "en": "I'm starving. What should we eat?"
+          }
+        },
+        {
+          "id": "v0042",
+          "word": "お腹すいた",
+          "reading": "おなかすいた",
+          "meaning": "I'm hungry",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "授業終わったらすぐ、お腹すいた〜。",
+            "reading": "じゅぎょうおわったらすぐ、おなかすいた〜。",
+            "en": "The class just ended and I'm already hungry."
+          }
+        },
+        {
+          "id": "v0043",
+          "word": "予約",
+          "reading": "よやく",
+          "meaning": "reservation",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "人気の店だから予約しないと入れないよ。",
+            "reading": "にんきのみせだからよやくしないといれないよ。",
+            "en": "It's a popular place, so we can't get in without a reservation."
+          }
+        },
+        {
+          "id": "v0044",
+          "word": "満席",
+          "reading": "まんせき",
+          "meaning": "full (no seats)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "どこも満席で、結局ファミレスになった。",
+            "reading": "どこもまんせきで、けっきょくファミレスになった。",
+            "en": "Everywhere was full, so we ended up at a family restaurant."
+          }
+        },
+        {
+          "id": "v0045",
+          "word": "とりあえず生",
+          "reading": "とりあえずなま",
+          "meaning": "draft beer for now (classic first order)",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "とりあえず生三つお願いします！",
+            "reading": "とりあえずなまみっつおねがいします！",
+            "en": "Three draft beers to start, please!"
+          }
+        },
+        {
+          "id": "v0046",
+          "word": "乾杯",
+          "reading": "かんぱい",
+          "meaning": "cheers",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "みんなお疲れ！かんぱーい！",
+            "reading": "みんなおつかれ！かんぱーい！",
+            "en": "Good work everyone! Cheers!"
+          }
+        },
+        {
+          "id": "v0047",
+          "word": "おすすめ",
+          "reading": "おすすめ",
+          "meaning": "recommendation",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ここのおすすめって何？",
+            "reading": "ここのおすすめってなに？",
+            "en": "What do you recommend here?"
+          }
+        },
+        {
+          "id": "v0048",
+          "word": "シェアする",
+          "reading": "シェアする",
+          "meaning": "to share (food)",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "ピザとパスタ、シェアしようよ。",
+            "reading": "ピザとパスタ、シェアしようよ。",
+            "en": "Let's share the pizza and pasta."
+          }
+        },
+        {
+          "id": "v0049",
+          "word": "取り分ける",
+          "reading": "とりわける",
+          "meaning": "to dish out portions",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "サラダ、私が取り分けるね。",
+            "reading": "サラダ、わたしがとりわけるね。",
+            "en": "I'll serve out the salad."
+          }
+        },
+        {
+          "id": "v0050",
+          "word": "おかわり",
+          "reading": "おかわり",
+          "meaning": "a refill / seconds",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "すみません、ご飯おかわりできますか。",
+            "reading": "すみません、ごはんおかわりできますか。",
+            "en": "Excuse me, can I get a refill of rice?"
+          }
+        },
+        {
+          "id": "v0051",
+          "word": "食べ放題",
+          "reading": "たべほうだい",
+          "meaning": "all-you-can-eat",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "焼肉の食べ放題、九十分でどう？",
+            "reading": "やきにくのたべほうだい、きゅうじゅっぷんでどう？",
+            "en": "How about all-you-can-eat yakiniku for ninety minutes?"
+          }
+        },
+        {
+          "id": "v0052",
+          "word": "飲み放題",
+          "reading": "のみほうだい",
+          "meaning": "all-you-can-drink",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "飲み放題付きのコースにしよう。",
+            "reading": "のみほうだいつきのコースにしよう。",
+            "en": "Let's pick the course with all-you-can-drink."
+          }
+        },
+        {
+          "id": "v0053",
+          "word": "割り勘",
+          "reading": "わりかん",
+          "meaning": "splitting the bill evenly",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日は割り勘でいい？一人二千円ね。",
+            "reading": "きょうはわりかんでいい？ひとりにせんえんね。",
+            "en": "Okay to split evenly today? It's 2,000 yen each."
+          }
+        },
+        {
+          "id": "v0054",
+          "word": "おごる",
+          "reading": "おごる",
+          "meaning": "to treat (someone)",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "誕生日だから、今日は俺がおごるよ。",
+            "reading": "たんじょうびだから、きょうはおれがおごるよ。",
+            "en": "It's my birthday, so I'll treat today."
+          }
+        },
+        {
+          "id": "v0055",
+          "word": "お会計",
+          "reading": "おかいけい",
+          "meaning": "the bill / checkout",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "お会計お願いします。別々でお願いします。",
+            "reading": "おかいけいおねがいします。べつべつでおねがいします。",
+            "en": "Check, please. Separate bills please."
+          }
+        },
+        {
+          "id": "v0056",
+          "word": "二次会",
+          "reading": "にじかい",
+          "meaning": "after-party (second round)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "二次会はカラオケ行く人？",
+            "reading": "にじかいはカラオケいくひと？",
+            "en": "Who's going to karaoke for the second round?"
+          }
+        },
+        {
+          "id": "v0057",
+          "word": "ごちそうさま",
+          "reading": "ごちそうさま",
+          "meaning": "thanks for the meal",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "ごちそうさま！ありがとう、めっちゃおいしかった。",
+            "reading": "ごちそうさま！ありがとう、めっちゃおいしかった。",
+            "en": "Thanks for the meal! It was really delicious."
+          }
+        },
+        {
+          "id": "v0058",
+          "word": "アレルギー",
+          "reading": "アレルギー",
+          "meaning": "allergy",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "エビのアレルギーあるから、これは食べられない。",
+            "reading": "エビのアレルギーあるから、これはたべられない。",
+            "en": "I'm allergic to shrimp, so I can't eat this."
+          }
+        },
+        {
+          "id": "v0059",
+          "word": "苦手",
+          "reading": "にがて",
+          "meaning": "not good at / can't stand",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "パクチー苦手なんだよね、抜いてもらえる？",
+            "reading": "パクチーにがてなんだよね、ぬいてもらえる？",
+            "en": "I can't stand cilantro, could you leave it out?"
+          }
+        },
+        {
+          "id": "v0060",
+          "word": "食べ過ぎた",
+          "reading": "たべすぎた",
+          "meaning": "I ate too much",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "もう無理、食べ過ぎた〜。動けない。",
+            "reading": "もうむり、たべすぎた〜。うごけない。",
+            "en": "No more, I ate too much. I can't move."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "scenario": "Convenience store, groceries and cooking",
+      "situation": "Late-night konbini runs, grocery shopping, and cooking for yourself or with a friend.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0061",
+          "word": "コンビニ",
+          "reading": "コンビニ",
+          "meaning": "convenience store",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ちょっとコンビニ行ってくる。何かいる？",
+            "reading": "ちょっとコンビニいってくる。なにかいる？",
+            "en": "I'm popping to the konbini. Want anything?"
+          }
+        },
+        {
+          "id": "v0062",
+          "word": "レジ袋",
+          "reading": "レジぶくろ",
+          "meaning": "plastic bag (at checkout)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "レジ袋いりますか？いえ、大丈夫です。",
+            "reading": "レジぶくろいりますか？いえ、だいじょうぶです。",
+            "en": "Do you need a bag? No, I'm fine."
+          }
+        },
+        {
+          "id": "v0063",
+          "word": "温める",
+          "reading": "あたためる",
+          "meaning": "to heat up",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "お弁当、温めますか？お願いします。",
+            "reading": "おべんとう、あたためますか？おねがいします。",
+            "en": "Shall I heat up the bento? Yes please."
+          }
+        },
+        {
+          "id": "v0064",
+          "word": "お弁当",
+          "reading": "おべんとう",
+          "meaning": "boxed meal",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日は寝坊して、お弁当作れなかった。",
+            "reading": "きょうはねぼうして、おべんとうつくれなかった。",
+            "en": "I overslept today and couldn't make a bento."
+          }
+        },
+        {
+          "id": "v0065",
+          "word": "スーパー",
+          "reading": "スーパー",
+          "meaning": "supermarket",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "スーパーで半額シール貼ってたよ。",
+            "reading": "スーパーではんがくシールはってたよ。",
+            "en": "At the supermarket they had half-price stickers on."
+          }
+        },
+        {
+          "id": "v0066",
+          "word": "半額",
+          "reading": "はんがく",
+          "meaning": "half price",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "夜八時過ぎると、お惣菜が半額になるんだ。",
+            "reading": "よるはちじすぎると、おそうざいがはんがくになるんだ。",
+            "en": "After eight at night the deli food goes half price."
+          }
+        },
+        {
+          "id": "v0067",
+          "word": "買い物",
+          "reading": "かいもの",
+          "meaning": "shopping",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "週末にまとめて買い物しとく。",
+            "reading": "しゅうまつにまとめてかいものしとく。",
+            "en": "I'll do all my shopping in one go on the weekend."
+          }
+        },
+        {
+          "id": "v0068",
+          "word": "冷蔵庫",
+          "reading": "れいぞうこ",
+          "meaning": "fridge",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "冷蔵庫、ほぼ空っぽなんだけど。",
+            "reading": "れいぞうこ、ほぼからっぽなんだけど。",
+            "en": "My fridge is practically empty."
+          }
+        },
+        {
+          "id": "v0069",
+          "word": "賞味期限",
+          "reading": "しょうみきげん",
+          "meaning": "best-before date",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "この牛乳、賞味期限切れてるよ。",
+            "reading": "このぎゅうにゅう、しょうみきげんきれてるよ。",
+            "en": "This milk is past its best-before date."
+          }
+        },
+        {
+          "id": "v0070",
+          "word": "自炊",
+          "reading": "じすい",
+          "meaning": "cooking for yourself",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "節約のために、最近自炊してるんだ。",
+            "reading": "せつやくのために、さいきんじすいしてるんだ。",
+            "en": "I've been cooking for myself lately to save money."
+          }
+        },
+        {
+          "id": "v0071",
+          "word": "作り置き",
+          "reading": "つくりおき",
+          "meaning": "batch-cooked meals",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "日曜に作り置きしておくと、平日ラクだよ。",
+            "reading": "にちようにつくりおきしておくと、へいじつラクだよ。",
+            "en": "If you batch-cook on Sundays, weekdays are easy."
+          }
+        },
+        {
+          "id": "v0072",
+          "word": "味見",
+          "reading": "あじみ",
+          "meaning": "tasting (while cooking)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ちょっと味見してみて。しょっぱくない？",
+            "reading": "ちょっとあじみしてみて。しょっぱくない？",
+            "en": "Taste it for me. Isn't it salty?"
+          }
+        },
+        {
+          "id": "v0073",
+          "word": "しょっぱい",
+          "reading": "しょっぱい",
+          "meaning": "salty",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "このラーメン、スープがしょっぱすぎる。",
+            "reading": "このラーメン、スープがしょっぱすぎる。",
+            "en": "This ramen soup is way too salty."
+          }
+        },
+        {
+          "id": "v0074",
+          "word": "焦げる",
+          "reading": "こげる",
+          "meaning": "to burn (food)",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "やば、卵焦げちゃった！",
+            "reading": "やば、たまごこげちゃった！",
+            "en": "Oh no, I burnt the egg!"
+          }
+        },
+        {
+          "id": "v0075",
+          "word": "電子レンジ",
+          "reading": "でんしレンジ",
+          "meaning": "microwave",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "電子レンジで三分チンしてね。",
+            "reading": "でんしレンジでさんぷんチンしてね。",
+            "en": "Microwave it for three minutes."
+          }
+        },
+        {
+          "id": "v0076",
+          "word": "カップ麺",
+          "reading": "カップめん",
+          "meaning": "instant cup noodles",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "夜中にカップ麺食べるの、やめられない。",
+            "reading": "よなかにカップめんたべるの、やめられない。",
+            "en": "I can't stop eating cup noodles in the middle of the night."
+          }
+        },
+        {
+          "id": "v0077",
+          "word": "ポイントカード",
+          "reading": "ポイントカード",
+          "meaning": "loyalty card",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ポイントカードお持ちですか？あ、忘れました。",
+            "reading": "ポイントカードおもちですか？あ、わすれました。",
+            "en": "Do you have a points card? Oh, I forgot it."
+          }
+        },
+        {
+          "id": "v0078",
+          "word": "小銭",
+          "reading": "こぜに",
+          "meaning": "coins / small change",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "小銭ないから、お札でもいい？",
+            "reading": "こぜにないから、おさつでもいい？",
+            "en": "I have no coins, is a bill okay?"
+          }
+        },
+        {
+          "id": "v0079",
+          "word": "ATM",
+          "reading": "エーティーエム",
+          "meaning": "ATM",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ATMでお金下ろしてくるから、ちょっと待ってて。",
+            "reading": "エーティーエムでおかねおろしてくるから、ちょっとまってて。",
+            "en": "I'll withdraw cash at the ATM, wait a sec."
+          }
+        },
+        {
+          "id": "v0080",
+          "word": "ごみ出し",
+          "reading": "ごみだし",
+          "meaning": "taking out the trash",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "明日は燃えるごみの日だから、ごみ出し忘れないでね。",
+            "reading": "あしたはもえるごみのひだから、ごみだしわすれないでね。",
+            "en": "Tomorrow is burnable trash day, don't forget to take it out."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "scenario": "Commuting and getting around",
+      "situation": "Rush-hour trains, missed connections, and telling a friend you're running late.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0081",
+          "word": "電車",
+          "reading": "でんしゃ",
+          "meaning": "train",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "朝の電車、人が多すぎて死ぬ。",
+            "reading": "あさのでんしゃ、ひとがおおすぎてしぬ。",
+            "en": "The morning train is so crowded I could die."
+          }
+        },
+        {
+          "id": "v0082",
+          "word": "乗り換え",
+          "reading": "のりかえ",
+          "meaning": "transfer",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "新宿で乗り換えだよ、間違えないでね。",
+            "reading": "しんじゅくでのりかえだよ、まちがえないでね。",
+            "en": "You transfer at Shinjuku, don't get it wrong."
+          }
+        },
+        {
+          "id": "v0083",
+          "word": "終電",
+          "reading": "しゅうでん",
+          "meaning": "last train",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "やば、終電逃した…タクシー高いのに。",
+            "reading": "やば、しゅうでんのがした…タクシーたかいのに。",
+            "en": "Oh no, I missed the last train... and taxis are expensive."
+          }
+        },
+        {
+          "id": "v0084",
+          "word": "始発",
+          "reading": "しはつ",
+          "meaning": "first train",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "カラオケで始発まで粘ろうよ。",
+            "reading": "カラオケでしはつまでねばろうよ。",
+            "en": "Let's stay at karaoke until the first train."
+          }
+        },
+        {
+          "id": "v0085",
+          "word": "遅延",
+          "reading": "ちえん",
+          "meaning": "delay",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "人身事故で電車が遅延してるって。",
+            "reading": "じんしんじこででんしゃがちえんしてるって。",
+            "en": "The train is delayed because of an accident on the line."
+          }
+        },
+        {
+          "id": "v0086",
+          "word": "満員",
+          "reading": "まんいん",
+          "meaning": "packed",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "満員電車で足踏まれた、最悪。",
+            "reading": "まんいんでんしゃであしふまれた、さいあく。",
+            "en": "Someone stepped on my foot on the packed train, awful."
+          }
+        },
+        {
+          "id": "v0087",
+          "word": "乗り過ごす",
+          "reading": "のりすごす",
+          "meaning": "to miss your stop",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "寝てて、二駅乗り過ごしちゃった。",
+            "reading": "ねてて、ふたえきのりすごしちゃった。",
+            "en": "I fell asleep and went two stations past my stop."
+          }
+        },
+        {
+          "id": "v0088",
+          "word": "改札",
+          "reading": "かいさつ",
+          "meaning": "ticket gate",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "改札出たところで待ってるね。",
+            "reading": "かいさつでたところでまってるね。",
+            "en": "I'll wait just outside the ticket gate."
+          }
+        },
+        {
+          "id": "v0089",
+          "word": "出口",
+          "reading": "でぐち",
+          "meaning": "exit",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "東口じゃなくて、西口だよ。出口間違えてる。",
+            "reading": "ひがしぐちじゃなくて、にしぐちだよ。でぐちまちがえてる。",
+            "en": "It's the west exit, not the east. You've got the wrong exit."
+          }
+        },
+        {
+          "id": "v0090",
+          "word": "迷う",
+          "reading": "まよう",
+          "meaning": "to get lost",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "駅広すぎて迷った。今どこ？",
+            "reading": "えきひろすぎてまよった。いまどこ？",
+            "en": "The station is so big I got lost. Where are you now?"
+          }
+        },
+        {
+          "id": "v0091",
+          "word": "自転車",
+          "reading": "じてんしゃ",
+          "meaning": "bicycle",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "雨降る前に自転車で帰ろう。",
+            "reading": "あめふるまえにじてんしゃでかえろう。",
+            "en": "Let's bike home before it rains."
+          }
+        },
+        {
+          "id": "v0092",
+          "word": "定期",
+          "reading": "ていき",
+          "meaning": "commuter pass",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "定期、今月で切れるから更新しなきゃ。",
+            "reading": "ていき、こんげつできれるからこうしんしなきゃ。",
+            "en": "My commuter pass expires this month, I need to renew it."
+          }
+        },
+        {
+          "id": "v0093",
+          "word": "運賃",
+          "reading": "うんちん",
+          "meaning": "fare",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "遠いから運賃だけで千円かかるんだ。",
+            "reading": "とおいからうんちんだけでせんえんかかるんだ。",
+            "en": "It's far, so the fare alone is 1,000 yen."
+          }
+        },
+        {
+          "id": "v0094",
+          "word": "タクシー",
+          "reading": "タクシー",
+          "meaning": "taxi",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "みんなでタクシー乗れば、割り勘で安いよ。",
+            "reading": "みんなでタクシーのればわりかんでやすいよ。",
+            "en": "If we all take a taxi, it's cheap when split."
+          }
+        },
+        {
+          "id": "v0095",
+          "word": "道",
+          "reading": "みち",
+          "meaning": "road / way",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "この道、まっすぐ行けば着くよ。",
+            "reading": "このみち、まっすぐいけばつくよ。",
+            "en": "Go straight along this road and you'll get there."
+          }
+        },
+        {
+          "id": "v0096",
+          "word": "近道",
+          "reading": "ちかみち",
+          "meaning": "shortcut",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "公園通ったら近道になるよ。",
+            "reading": "こうえんとおったらちかみちになるよ。",
+            "en": "Going through the park is a shortcut."
+          }
+        },
+        {
+          "id": "v0097",
+          "word": "もうすぐ着く",
+          "reading": "もうすぐつく",
+          "meaning": "I'll arrive soon",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "あと五分でもうすぐ着くから、先に入ってて。",
+            "reading": "あとごふんでもうすぐつくから、さきにはいってて。",
+            "en": "I'll be there in five minutes, go in first."
+          }
+        },
+        {
+          "id": "v0098",
+          "word": "駅前",
+          "reading": "えきまえ",
+          "meaning": "in front of the station",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "駅前のスタバで待ってるね。",
+            "reading": "えきまえのスタバでまってるね。",
+            "en": "I'll be at the Starbucks in front of the station."
+          }
+        },
+        {
+          "id": "v0099",
+          "word": "渋滞",
+          "reading": "じゅうたい",
+          "meaning": "traffic jam",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "連休で高速が渋滞してて、全然進まない。",
+            "reading": "れんきゅうでこうそくがじゅうたいしてて、ぜんぜんすすまない。",
+            "en": "The expressway is jammed from the holiday weekend, we're not moving."
+          }
+        },
+        {
+          "id": "v0100",
+          "word": "運転",
+          "reading": "うんてん",
+          "meaning": "driving",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "免許取ったばかりだから、運転まだ不安。",
+            "reading": "めんきょとったばかりだから、うんてんまだふあん。",
+            "en": "I just got my license, so I'm still nervous driving."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "scenario": "Part-time job and work complaints",
+      "situation": "Venting about shifts, annoying managers and customers over a late snack.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0101",
+          "word": "バイト",
+          "reading": "バイト",
+          "meaning": "part-time job",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日バイトだから、飲み会は行けない。",
+            "reading": "きょうバイトだから、のみかいはいけない。",
+            "en": "I have my part-time shift today, so I can't go to the drinking party."
+          }
+        },
+        {
+          "id": "v0102",
+          "word": "シフト",
+          "reading": "シフト",
+          "meaning": "work shift",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来月のシフト、もう出した？",
+            "reading": "らいげつのシフト、もうだした？",
+            "en": "Have you submitted next month's shifts yet?"
+          }
+        },
+        {
+          "id": "v0103",
+          "word": "店長",
+          "reading": "てんちょう",
+          "meaning": "store manager",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "店長、機嫌悪くて話しかけづらい。",
+            "reading": "てんちょう、きげんわるくてはなしかけづらい。",
+            "en": "The manager's in a bad mood and it's hard to talk to him."
+          }
+        },
+        {
+          "id": "v0104",
+          "word": "先輩",
+          "reading": "せんぱい",
+          "meaning": "senior (colleague / schoolmate)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "バイトの先輩が優しくて、すぐ慣れた。",
+            "reading": "バイトのせんぱいがやさしくて、すぐなれた。",
+            "en": "My seniors at work are kind, so I settled in quickly."
+          }
+        },
+        {
+          "id": "v0105",
+          "word": "後輩",
+          "reading": "こうはい",
+          "meaning": "junior",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "新しい後輩にレジの打ち方、教えたよ。",
+            "reading": "あたらしいこうはいにレジのうちかた、おしえたよ。",
+            "en": "I taught the new junior how to work the register."
+          }
+        },
+        {
+          "id": "v0106",
+          "word": "残業",
+          "reading": "ざんぎょう",
+          "meaning": "overtime",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日も残業で、帰るの十時過ぎそう。",
+            "reading": "きょうもざんぎょうで、かえるのじゅうじすぎそう。",
+            "en": "Overtime again today, I'll probably get home after ten."
+          }
+        },
+        {
+          "id": "v0107",
+          "word": "時給",
+          "reading": "じきゅう",
+          "meaning": "hourly wage",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "このバイト、時給いいけどキツいんだよね。",
+            "reading": "このバイト、じきゅういいけどキツいんだよね。",
+            "en": "This job pays well per hour but it's tough."
+          }
+        },
+        {
+          "id": "v0108",
+          "word": "給料日",
+          "reading": "きゅうりょうび",
+          "meaning": "payday",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "給料日まであと三日、お金ない…。",
+            "reading": "きゅうりょうびまであとみっか、おかねない…。",
+            "en": "Three days until payday and I'm broke..."
+          }
+        },
+        {
+          "id": "v0109",
+          "word": "休憩",
+          "reading": "きゅうけい",
+          "meaning": "break",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "休憩十五分しかなくて、ご飯食べる時間ない。",
+            "reading": "きゅうけいじゅうごふんしかなくて、ごはんたべるじかんない。",
+            "en": "I only get a 15-minute break, no time to eat."
+          }
+        },
+        {
+          "id": "v0110",
+          "word": "お客さん",
+          "reading": "おきゃくさん",
+          "meaning": "customer",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日のお客さん、クレーム多くて疲れた。",
+            "reading": "きょうのおきゃくさん、クレームおおくてつかれた。",
+            "en": "Lots of complaining customers today, I'm exhausted."
+          }
+        },
+        {
+          "id": "v0111",
+          "word": "クレーム",
+          "reading": "クレーム",
+          "meaning": "complaint",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "レジ待たせただけでクレームって、ひどくない？",
+            "reading": "レジまたせただけでクレームって、ひどくない？",
+            "en": "Complaining just because they waited at the register, isn't that harsh?"
+          }
+        },
+        {
+          "id": "v0112",
+          "word": "面接",
+          "reading": "めんせつ",
+          "meaning": "interview",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "明日、カフェのバイトの面接なんだ。緊張する。",
+            "reading": "あした、カフェのバイトのめんせつなんだ。きんちょうする。",
+            "en": "I have an interview for a cafe job tomorrow. I'm nervous."
+          }
+        },
+        {
+          "id": "v0113",
+          "word": "辞める",
+          "reading": "やめる",
+          "meaning": "to quit",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "人間関係がきつくて、バイト辞めようかな。",
+            "reading": "にんげんかんけいがきつくて、バイトやめようかな。",
+            "en": "The workplace relationships are rough, maybe I'll quit."
+          }
+        },
+        {
+          "id": "v0114",
+          "word": "代わってもらう",
+          "reading": "かわってもらう",
+          "meaning": "to get someone to cover",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "来週の土曜、シフト代わってもらえない？",
+            "reading": "らいしゅうのどようび、シフトかわってもらえない？",
+            "en": "Can you cover my shift next Saturday?"
+          }
+        },
+        {
+          "id": "v0115",
+          "word": "遅刻する",
+          "reading": "ちこくする",
+          "meaning": "to be late (to work)",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "寝坊してバイトに遅刻したら、店長に怒られた。",
+            "reading": "ねぼうしてバイトにちこくしたら、てんちょうにおこられた。",
+            "en": "I overslept and was late for work, and the manager yelled at me."
+          }
+        },
+        {
+          "id": "v0116",
+          "word": "覚える",
+          "reading": "おぼえる",
+          "meaning": "to learn / memorize",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "メニュー多すぎて、覚えるのが大変。",
+            "reading": "メニューおおすぎて、おぼえるのがたいへん。",
+            "en": "There are so many menu items that memorizing them is hard."
+          }
+        },
+        {
+          "id": "v0117",
+          "word": "ミス",
+          "reading": "ミス",
+          "meaning": "mistake",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "レジでミスして、お金が合わなかった。",
+            "reading": "レジでミスして、おかねがあわなかった。",
+            "en": "I made a mistake at the register and the money didn't add up."
+          }
+        },
+        {
+          "id": "v0118",
+          "word": "ブラック",
+          "reading": "ブラック",
+          "meaning": "exploitative workplace",
+          "pos": "noun",
+          "tag": "slang",
+          "example": {
+            "ja": "あの居酒屋、ブラックで有名だよ。",
+            "reading": "あのいざかや、ブラックでゆうめいだよ。",
+            "en": "That izakaya is notorious for being exploitative."
+          }
+        },
+        {
+          "id": "v0119",
+          "word": "頑張る",
+          "reading": "がんばる",
+          "meaning": "to do one's best",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "明日も早いけど、お互い頑張ろう。",
+            "reading": "あしたもはやいけど、おたがいがんばろう。",
+            "en": "Tomorrow's early too, but let's both hang in there."
+          }
+        },
+        {
+          "id": "v0120",
+          "word": "お疲れ",
+          "reading": "おつかれ",
+          "meaning": "good work / thanks for your effort",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "お疲れ！今日もよく働いたね。",
+            "reading": "おつかれ！きょうもよくはたらいたね。",
+            "en": "Good work! We worked hard again today."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "scenario": "University and school life",
+      "situation": "Classes, assignments, club activities and last-minute cramming before exams.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0121",
+          "word": "授業",
+          "reading": "じゅぎょう",
+          "meaning": "class",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "一限の授業、眠すぎて全然頭に入らない。",
+            "reading": "いちげんのじゅぎょう、ねむすぎてぜんぜんあたまにはいらない。",
+            "en": "I'm so sleepy in first-period class that nothing sinks in."
+          }
+        },
+        {
+          "id": "v0122",
+          "word": "単位",
+          "reading": "たんい",
+          "meaning": "course credit",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "この授業、単位落としたらやばい。",
+            "reading": "このじゅぎょう、たんいおとしたらやばい。",
+            "en": "If I fail this class for credit, I'm in trouble."
+          }
+        },
+        {
+          "id": "v0123",
+          "word": "レポート",
+          "reading": "レポート",
+          "meaning": "report / essay",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "明日提出のレポート、まだ一行も書いてない。",
+            "reading": "あしたていしゅつのレポート、まだいちぎょうもかいてない。",
+            "en": "The report due tomorrow, I haven't written a single line."
+          }
+        },
+        {
+          "id": "v0124",
+          "word": "締め切り",
+          "reading": "しめきり",
+          "meaning": "deadline",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "締め切り今夜までって知ってた？",
+            "reading": "しめきりこんやまでってしってた？",
+            "en": "Did you know the deadline is tonight?"
+          }
+        },
+        {
+          "id": "v0125",
+          "word": "試験",
+          "reading": "しけん",
+          "meaning": "exam",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来週から試験なのに、全然勉強してない。",
+            "reading": "らいしゅうからしけんなのに、ぜんぜんべんきょうしてない。",
+            "en": "Exams start next week and I haven't studied at all."
+          }
+        },
+        {
+          "id": "v0126",
+          "word": "一夜漬け",
+          "reading": "いちやづけ",
+          "meaning": "all-night cramming",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "いつも一夜漬けで、なんとか乗り切ってる。",
+            "reading": "いつもいちやづけで、なんとかのりきってる。",
+            "en": "I always cram the night before and somehow scrape through."
+          }
+        },
+        {
+          "id": "v0127",
+          "word": "ノート",
+          "reading": "ノート",
+          "meaning": "notes / notebook",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "昨日休んだから、ノート見せてくれない？",
+            "reading": "きのうやすんだから、ノートみせてくれない？",
+            "en": "I was absent yesterday, can you show me your notes?"
+          }
+        },
+        {
+          "id": "v0128",
+          "word": "出席",
+          "reading": "しゅっせき",
+          "meaning": "attendance",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "この授業、出席取るから休めないよ。",
+            "reading": "このじゅぎょう、しゅっせきとるからやすめないよ。",
+            "en": "They take attendance in this class, so we can't skip."
+          }
+        },
+        {
+          "id": "v0129",
+          "word": "サボる",
+          "reading": "サボる",
+          "meaning": "to skip / slack off",
+          "pos": "verb",
+          "tag": "slang",
+          "example": {
+            "ja": "二限サボって、カフェでだらだらしよ。",
+            "reading": "にげんサボって、カフェでだらだらしよ。",
+            "en": "Let's skip second period and chill at a cafe."
+          }
+        },
+        {
+          "id": "v0130",
+          "word": "寝坊",
+          "reading": "ねぼう",
+          "meaning": "oversleeping",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "寝坊して、一限に間に合わなかった。",
+            "reading": "ねぼうして、いちげんにまにあわなかった。",
+            "en": "I overslept and missed first period."
+          }
+        },
+        {
+          "id": "v0131",
+          "word": "サークル",
+          "reading": "サークル",
+          "meaning": "university club",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "サークルの新歓、今週末にあるよ。",
+            "reading": "サークルのしんかん、こんしゅうまつにあるよ。",
+            "en": "The club's welcome event is this weekend."
+          }
+        },
+        {
+          "id": "v0132",
+          "word": "部活",
+          "reading": "ぶかつ",
+          "meaning": "school club activity",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "部活が終わってから、みんなでコンビニ寄った。",
+            "reading": "ぶかつがおわってから、みんなでコンビニよった。",
+            "en": "After club practice we all stopped at the konbini."
+          }
+        },
+        {
+          "id": "v0133",
+          "word": "ゼミ",
+          "reading": "ゼミ",
+          "meaning": "seminar",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ゼミの発表、緊張しすぎてお腹痛い。",
+            "reading": "ゼミのはっぴょう、きんちょうしすぎておなかいたい。",
+            "en": "I'm so nervous about the seminar presentation my stomach hurts."
+          }
+        },
+        {
+          "id": "v0134",
+          "word": "卒論",
+          "reading": "そつろん",
+          "meaning": "graduation thesis",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "卒論のテーマ、まだ決まってないんだよね。",
+            "reading": "そつろんのテーマ、まだきまってないんだよね。",
+            "en": "I still haven't decided on my thesis topic."
+          }
+        },
+        {
+          "id": "v0135",
+          "word": "就活",
+          "reading": "しゅうかつ",
+          "meaning": "job hunting",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "就活始まって、スーツ買いに行かなきゃ。",
+            "reading": "しゅうかつはじまって、スーツかいにいかなきゃ。",
+            "en": "Job hunting has started, so I have to go buy a suit."
+          }
+        },
+        {
+          "id": "v0136",
+          "word": "留年",
+          "reading": "りゅうねん",
+          "meaning": "repeating a year",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "単位足りなくて、留年しそうなんだ。",
+            "reading": "たんいたりなくて、りゅうねんしそうなんだ。",
+            "en": "I'm short on credits and might have to repeat a year."
+          }
+        },
+        {
+          "id": "v0137",
+          "word": "図書館",
+          "reading": "としょかん",
+          "meaning": "library",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "図書館で一緒に勉強しない？",
+            "reading": "としょかんでいっしょにべんきょうしない？",
+            "en": "Want to study together at the library?"
+          }
+        },
+        {
+          "id": "v0138",
+          "word": "学食",
+          "reading": "がくしょく",
+          "meaning": "school cafeteria",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "学食のカレー、安くて意外とうまい。",
+            "reading": "がくしょくのカレー、やすくていがいとうまい。",
+            "en": "The cafeteria curry is cheap and surprisingly good."
+          }
+        },
+        {
+          "id": "v0139",
+          "word": "同期",
+          "reading": "どうき",
+          "meaning": "same-year peer",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "同期のみんなとは、今でもよく会うよ。",
+            "reading": "どうきのみんなとは、いまでもよくあうよ。",
+            "en": "I still often meet up with those who joined the same year as me."
+          }
+        },
+        {
+          "id": "v0140",
+          "word": "留学",
+          "reading": "りゅうがく",
+          "meaning": "studying abroad",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来年、アメリカに留学しようと思ってる。",
+            "reading": "らいねん、アメリカにりゅうがくしようとおもってる。",
+            "en": "I'm thinking of studying abroad in America next year."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s08",
+      "scenario": "Money, shopping and sales",
+      "situation": "Being broke before payday, hunting for deals and justifying impulse buys.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0141",
+          "word": "お金がない",
+          "reading": "おかねがない",
+          "meaning": "I'm broke",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "今月ピンチで、お金がないんだ。",
+            "reading": "こんげつピンチで、おかねがないんだ。",
+            "en": "This month is tight and I'm broke."
+          }
+        },
+        {
+          "id": "v0142",
+          "word": "節約",
+          "reading": "せつやく",
+          "meaning": "saving / frugality",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来月から節約して、旅行資金貯めたい。",
+            "reading": "らいげつからせつやくして、りょこうしきんためたい。",
+            "en": "I want to cut costs from next month and save for a trip."
+          }
+        },
+        {
+          "id": "v0143",
+          "word": "貯金",
+          "reading": "ちょきん",
+          "meaning": "savings",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "毎月三万円貯金するのが目標。",
+            "reading": "まいつきさんまんえんちょきんするのがもくひょう。",
+            "en": "My goal is to save 30,000 yen every month."
+          }
+        },
+        {
+          "id": "v0144",
+          "word": "無駄遣い",
+          "reading": "むだづかい",
+          "meaning": "wasting money",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "またガチャ回しちゃった。無駄遣いだ…。",
+            "reading": "またガチャまわしちゃった。むだづかいだ…。",
+            "en": "I spun the gacha again. Such a waste of money..."
+          }
+        },
+        {
+          "id": "v0145",
+          "word": "衝動買い",
+          "reading": "しょうどうがい",
+          "meaning": "impulse buying",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "セールで衝動買いして、後悔してる。",
+            "reading": "セールでしょうどうがいして、こうかいしてる。",
+            "en": "I impulse-bought at the sale and I regret it."
+          }
+        },
+        {
+          "id": "v0146",
+          "word": "セール",
+          "reading": "セール",
+          "meaning": "sale",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ユニクロのセール、明日までだよ。",
+            "reading": "ユニクロのセール、あしたまでだよ。",
+            "en": "The Uniqlo sale ends tomorrow."
+          }
+        },
+        {
+          "id": "v0147",
+          "word": "値段",
+          "reading": "ねだん",
+          "meaning": "price",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "この靴、値段高すぎて手が出ない。",
+            "reading": "このくつ、ねだんたかすぎててがでない。",
+            "en": "These shoes are too expensive for me to buy."
+          }
+        },
+        {
+          "id": "v0148",
+          "word": "高い",
+          "reading": "たかい",
+          "meaning": "expensive",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "東京の家賃、高すぎない？",
+            "reading": "とうきょうのやちん、たかすぎない？",
+            "en": "Isn't Tokyo rent way too expensive?"
+          }
+        },
+        {
+          "id": "v0149",
+          "word": "安い",
+          "reading": "やすい",
+          "meaning": "cheap",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "このリュック、安いのに丈夫でびっくり。",
+            "reading": "このリュック、やすいのにじょうぶでびっくり。",
+            "en": "This backpack is cheap but surprisingly sturdy."
+          }
+        },
+        {
+          "id": "v0150",
+          "word": "お得",
+          "reading": "おとく",
+          "meaning": "good value",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "まとめて買ったほうがお得だよ。",
+            "reading": "まとめてかったほうがおとくだよ。",
+            "en": "It's better value if you buy in bulk."
+          }
+        },
+        {
+          "id": "v0151",
+          "word": "クーポン",
+          "reading": "クーポン",
+          "meaning": "coupon",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "アプリのクーポン使えば、百円引きだよ。",
+            "reading": "アプリのクーポンつかえば、ひゃくえんびきだよ。",
+            "en": "If you use the app coupon, it's 100 yen off."
+          }
+        },
+        {
+          "id": "v0152",
+          "word": "ネットで買う",
+          "reading": "ネットでかう",
+          "meaning": "to buy online",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "店で見て、ネットで買ったほうが安かった。",
+            "reading": "みせでみて、ネットでかったほうがやすかった。",
+            "en": "I looked in the shop but it was cheaper to buy online."
+          }
+        },
+        {
+          "id": "v0153",
+          "word": "試着",
+          "reading": "しちゃく",
+          "meaning": "trying on clothes",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "このジャケット、試着してもいいですか。",
+            "reading": "このジャケット、しちゃくしてもいいですか。",
+            "en": "May I try on this jacket?"
+          }
+        },
+        {
+          "id": "v0154",
+          "word": "サイズ",
+          "reading": "サイズ",
+          "meaning": "size",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ちょっときつい。ワンサイズ上ありますか。",
+            "reading": "ちょっときつい。ワンサイズうえありますか。",
+            "en": "It's a bit tight. Do you have one size up?"
+          }
+        },
+        {
+          "id": "v0155",
+          "word": "返品",
+          "reading": "へんぴん",
+          "meaning": "returning an item",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "サイズ違いだったから、返品したよ。",
+            "reading": "サイズちがいだったから、へんぴんしたよ。",
+            "en": "It was the wrong size, so I returned it."
+          }
+        },
+        {
+          "id": "v0156",
+          "word": "貸す",
+          "reading": "かす",
+          "meaning": "to lend",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "ごめん、千円貸してくれない？明日返す。",
+            "reading": "ごめん、せんえんかしてくれない？あしたかえす。",
+            "en": "Sorry, can you lend me 1,000 yen? I'll pay you back tomorrow."
+          }
+        },
+        {
+          "id": "v0157",
+          "word": "返す",
+          "reading": "かえす",
+          "meaning": "to return / pay back",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "借りたお金、給料日に返すね。",
+            "reading": "かりたおかね、きゅうりょうびにかえすね。",
+            "en": "I'll pay back the money I borrowed on payday."
+          }
+        },
+        {
+          "id": "v0158",
+          "word": "払う",
+          "reading": "はらう",
+          "meaning": "to pay",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "スマホで払えるから、現金いらないよ。",
+            "reading": "スマホではらえるから、げんきんいらないよ。",
+            "en": "You can pay by phone, so you don't need cash."
+          }
+        },
+        {
+          "id": "v0159",
+          "word": "家賃",
+          "reading": "やちん",
+          "meaning": "rent",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "家賃と光熱費で、給料ほとんど消える。",
+            "reading": "やちんとこうねつひで、きゅうりょうほとんどきえる。",
+            "en": "Rent and utilities eat up most of my paycheck."
+          }
+        },
+        {
+          "id": "v0160",
+          "word": "サブスク",
+          "reading": "サブスク",
+          "meaning": "subscription",
+          "pos": "noun",
+          "tag": "slang",
+          "example": {
+            "ja": "使ってないサブスク、全部解約しなきゃ。",
+            "reading": "つかってないサブスク、ぜんぶかいやくしなきゃ。",
+            "en": "I need to cancel all the subscriptions I don't use."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s09",
+      "scenario": "Crushes, dating and relationships",
+      "situation": "Late-night talks with a close friend about someone you like or a relationship that went sideways.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0161",
+          "word": "好きな人",
+          "reading": "すきなひと",
+          "meaning": "someone you like",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "実は、好きな人ができたんだよね。",
+            "reading": "じつは、すきなひとができたんだよね。",
+            "en": "Actually, I've started liking someone."
+          }
+        },
+        {
+          "id": "v0162",
+          "word": "片思い",
+          "reading": "かたおもい",
+          "meaning": "unrequited love",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "もう二年も片思いしてるんだ。",
+            "reading": "もうにねんもかたおもいしてるんだ。",
+            "en": "I've had an unrequited crush for two years now."
+          }
+        },
+        {
+          "id": "v0163",
+          "word": "告白",
+          "reading": "こくはく",
+          "meaning": "confession of love",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来週、思い切って告白しようと思う。",
+            "reading": "らいしゅう、おもいきってこくはくしようとおもう。",
+            "en": "I'm going to take the plunge and confess next week."
+          }
+        },
+        {
+          "id": "v0164",
+          "word": "振られる",
+          "reading": "ふられる",
+          "meaning": "to get rejected / dumped",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "昨日、告白したけど振られちゃった。",
+            "reading": "きのう、こくはくしたけどふられちゃった。",
+            "en": "I confessed yesterday but got rejected."
+          }
+        },
+        {
+          "id": "v0165",
+          "word": "付き合う",
+          "reading": "つきあう",
+          "meaning": "to date",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "あの二人、付き合ってるって知ってた？",
+            "reading": "あのふたり、つきあってるってしってた？",
+            "en": "Did you know those two are dating?"
+          }
+        },
+        {
+          "id": "v0166",
+          "word": "彼氏",
+          "reading": "かれし",
+          "meaning": "boyfriend",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "彼氏が全然連絡くれなくて、不安になる。",
+            "reading": "かれしがぜんぜんれんらくくれなくて、ふあんになる。",
+            "en": "My boyfriend hardly texts me and it makes me anxious."
+          }
+        },
+        {
+          "id": "v0167",
+          "word": "彼女",
+          "reading": "かのじょ",
+          "meaning": "girlfriend",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "彼女の誕生日、何あげたらいいと思う？",
+            "reading": "かのじょのたんじょうび、なにあげたらいいとおもう？",
+            "en": "What do you think I should give my girlfriend for her birthday?"
+          }
+        },
+        {
+          "id": "v0168",
+          "word": "デート",
+          "reading": "デート",
+          "meaning": "date",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "初デートで、どこ行くのがいいかな。",
+            "reading": "はつデートで、どこいくのがいいかな。",
+            "en": "Where should we go on a first date?"
+          }
+        },
+        {
+          "id": "v0169",
+          "word": "マッチングアプリ",
+          "reading": "マッチングアプリ",
+          "meaning": "dating app",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "マッチングアプリで知り合って、今度会うんだ。",
+            "reading": "マッチングアプリでしりあって、こんどあうんだ。",
+            "en": "I met someone on a dating app and we're meeting soon."
+          }
+        },
+        {
+          "id": "v0170",
+          "word": "ドキドキする",
+          "reading": "ドキドキする",
+          "meaning": "heart pounding",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "隣に座られて、ドキドキしちゃった。",
+            "reading": "となりにすわられて、ドキドキしちゃった。",
+            "en": "They sat next to me and my heart was racing."
+          }
+        },
+        {
+          "id": "v0171",
+          "word": "脈あり",
+          "reading": "みゃくあり",
+          "meaning": "signs of interest",
+          "pos": "phrase",
+          "tag": "slang",
+          "example": {
+            "ja": "毎日LINEくるし、これは脈ありかな？",
+            "reading": "まいにちラインくるし、これはみゃくありかな？",
+            "en": "They text me every day, is that a sign they like me?"
+          }
+        },
+        {
+          "id": "v0172",
+          "word": "気がある",
+          "reading": "きがある",
+          "meaning": "to be interested in someone",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "あの子、絶対あなたに気があるよ。",
+            "reading": "あのこ、ぜったいあなたにきがあるよ。",
+            "en": "She definitely has a thing for you."
+          }
+        },
+        {
+          "id": "v0173",
+          "word": "タイプ",
+          "reading": "タイプ",
+          "meaning": "type (preference)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "どんな人がタイプ？やっぱり優しい人？",
+            "reading": "どんなひとがタイプ？やっぱりやさしいひと？",
+            "en": "What's your type? Someone kind, right?"
+          }
+        },
+        {
+          "id": "v0174",
+          "word": "浮気",
+          "reading": "うわき",
+          "meaning": "cheating",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "彼氏の浮気がわかって、もう別れる。",
+            "reading": "かれしのうわきがわかって、もうわかれる。",
+            "en": "I found out my boyfriend cheated, so I'm breaking up."
+          }
+        },
+        {
+          "id": "v0175",
+          "word": "別れる",
+          "reading": "わかれる",
+          "meaning": "to break up",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "三年付き合ったけど、先月別れたんだ。",
+            "reading": "さんねんつきあったけど、せんげつわかれたんだ。",
+            "en": "We dated three years, but broke up last month."
+          }
+        },
+        {
+          "id": "v0176",
+          "word": "喧嘩",
+          "reading": "けんか",
+          "meaning": "fight / quarrel",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "くだらないことで彼女と喧嘩しちゃった。",
+            "reading": "くだらないことでかのじょとけんかしちゃった。",
+            "en": "I got into a fight with my girlfriend over something stupid."
+          }
+        },
+        {
+          "id": "v0177",
+          "word": "仲直り",
+          "reading": "なかなおり",
+          "meaning": "making up",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ちゃんと謝って、仲直りしたよ。",
+            "reading": "ちゃんとあやまって、なかなおりしたよ。",
+            "en": "I apologized properly and we made up."
+          }
+        },
+        {
+          "id": "v0178",
+          "word": "嫉妬",
+          "reading": "しっと",
+          "meaning": "jealousy",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "他の女の子と話してるの見て、嫉妬した。",
+            "reading": "ほかのおんなのことはなしてるのみて、しっとした。",
+            "en": "I felt jealous seeing him talk to other girls."
+          }
+        },
+        {
+          "id": "v0179",
+          "word": "理想",
+          "reading": "りそう",
+          "meaning": "ideal",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "理想が高すぎて、なかなか彼氏できない。",
+            "reading": "りそうがたかすぎて、なかなかかれしできない。",
+            "en": "My standards are too high, so I can't find a boyfriend."
+          }
+        },
+        {
+          "id": "v0180",
+          "word": "相談に乗る",
+          "reading": "そうだんにのる",
+          "meaning": "to listen and advise",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "恋の相談に乗ってほしいんだけど、今いい？",
+            "reading": "こいのそうだんにのってほしいんだけど、いまいい？",
+            "en": "I need you to listen to my love troubles, got a minute?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "scenario": "Feelings, venting and encouraging each other",
+      "situation": "Telling a friend you're stressed, tired or happy, and cheering them up in return.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0181",
+          "word": "疲れた",
+          "reading": "つかれた",
+          "meaning": "I'm tired",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "今週は忙しすぎて、もうめっちゃ疲れた。",
+            "reading": "こんしゅうはいそがしすぎて、もうめっちゃつかれた。",
+            "en": "This week was so busy I'm completely worn out."
+          }
+        },
+        {
+          "id": "v0182",
+          "word": "ストレス",
+          "reading": "ストレス",
+          "meaning": "stress",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "最近ストレスたまってて、爆発しそう。",
+            "reading": "さいきんストレスたまってて、ばくはつしそう。",
+            "en": "I've been stressed lately and I'm about to explode."
+          }
+        },
+        {
+          "id": "v0183",
+          "word": "落ち込む",
+          "reading": "おちこむ",
+          "meaning": "to feel down",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "テストの点が悪くて、落ち込んでる。",
+            "reading": "テストのてんがわるくて、おちこんでる。",
+            "en": "I'm feeling down because my test score was bad."
+          }
+        },
+        {
+          "id": "v0184",
+          "word": "イライラする",
+          "reading": "イライラする",
+          "meaning": "to be irritated",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "電車で後ろから押されて、イライラした。",
+            "reading": "でんしゃでうしろからおされて、イライラした。",
+            "en": "I got pushed from behind on the train and was irritated."
+          }
+        },
+        {
+          "id": "v0185",
+          "word": "緊張",
+          "reading": "きんちょう",
+          "meaning": "nervousness",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "明日の発表、緊張して眠れないかも。",
+            "reading": "あしたのはっぴょう、きんちょうしてねむれないかも。",
+            "en": "I'm so nervous about tomorrow's presentation I might not sleep."
+          }
+        },
+        {
+          "id": "v0186",
+          "word": "不安",
+          "reading": "ふあん",
+          "meaning": "anxiety",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "将来のこと考えると、不安になる。",
+            "reading": "しょうらいのことかんがえると、ふあんになる。",
+            "en": "Thinking about the future makes me anxious."
+          }
+        },
+        {
+          "id": "v0187",
+          "word": "寂しい",
+          "reading": "さびしい",
+          "meaning": "lonely",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "みんな卒業しちゃって、なんか寂しい。",
+            "reading": "みんなそつぎょうしちゃって、なんかさびしい。",
+            "en": "Everyone graduated and I feel kind of lonely."
+          }
+        },
+        {
+          "id": "v0188",
+          "word": "嬉しい",
+          "reading": "うれしい",
+          "meaning": "happy",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "連絡くれて嬉しい！ありがとう。",
+            "reading": "れんらくくれてうれしい！ありがとう。",
+            "en": "I'm so happy you reached out! Thanks."
+          }
+        },
+        {
+          "id": "v0189",
+          "word": "楽しみ",
+          "reading": "たのしみ",
+          "meaning": "looking forward to",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "来月の旅行、めっちゃ楽しみ！",
+            "reading": "らいげつのりょこう、めっちゃたのしみ！",
+            "en": "I'm so looking forward to next month's trip!"
+          }
+        },
+        {
+          "id": "v0190",
+          "word": "悔しい",
+          "reading": "くやしい",
+          "meaning": "frustrating / mortifying",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "あと一点で負けた。悔しい…。",
+            "reading": "あといってんでまけた。くやしい…。",
+            "en": "We lost by one point. So frustrating..."
+          }
+        },
+        {
+          "id": "v0191",
+          "word": "恥ずかしい",
+          "reading": "はずかしい",
+          "meaning": "embarrassing",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "みんなの前で転んで、恥ずかしかった。",
+            "reading": "みんなのまえでころんで、はずかしかった。",
+            "en": "I tripped in front of everyone and was so embarrassed."
+          }
+        },
+        {
+          "id": "v0192",
+          "word": "びっくり",
+          "reading": "びっくり",
+          "meaning": "surprised",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "急に後ろから声かけられて、びっくりした。",
+            "reading": "きゅうにうしろからこえかけられて、びっくりした。",
+            "en": "Someone spoke to me suddenly from behind and I was startled."
+          }
+        },
+        {
+          "id": "v0193",
+          "word": "ムカつく",
+          "reading": "ムカつく",
+          "meaning": "to be annoyed / pissed off",
+          "pos": "verb",
+          "tag": "slang",
+          "example": {
+            "ja": "あいつの言い方、ほんとムカつく。",
+            "reading": "あいつのいいかた、ほんとムカつく。",
+            "en": "The way he talks really pisses me off."
+          }
+        },
+        {
+          "id": "v0194",
+          "word": "気にしない",
+          "reading": "きにしない",
+          "meaning": "don't worry about it",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "失敗したけど、気にしないで。誰でもあるよ。",
+            "reading": "しっぱいしたけど、きにしないで。だれでもあるよ。",
+            "en": "You messed up, but don't worry. It happens to everyone."
+          }
+        },
+        {
+          "id": "v0195",
+          "word": "大丈夫",
+          "reading": "だいじょうぶ",
+          "meaning": "okay / alright",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "顔色悪いけど、大丈夫？",
+            "reading": "かおいろわるいけど、だいじょうぶ？",
+            "en": "You look pale, are you okay?"
+          }
+        },
+        {
+          "id": "v0196",
+          "word": "励ます",
+          "reading": "はげます",
+          "meaning": "to cheer up",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "落ち込んでた友達を、ご飯に誘って励ました。",
+            "reading": "おちこんでたともだちを、ごはんにさそってはげました。",
+            "en": "I cheered up my down friend by inviting her to eat."
+          }
+        },
+        {
+          "id": "v0197",
+          "word": "愚痴",
+          "reading": "ぐち",
+          "meaning": "complaining / venting",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ちょっと愚痴聞いてくれる？上司がひどくて。",
+            "reading": "ちょっとぐちきいてくれる？じょうしがひどくて。",
+            "en": "Can you listen to me vent? My boss is awful."
+          }
+        },
+        {
+          "id": "v0198",
+          "word": "泣く",
+          "reading": "なく",
+          "meaning": "to cry",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "あの映画、最後のシーンで泣いちゃった。",
+            "reading": "あのえいが、さいごのシーンでないちゃった。",
+            "en": "I cried at the last scene of that movie."
+          }
+        },
+        {
+          "id": "v0199",
+          "word": "助かる",
+          "reading": "たすかる",
+          "meaning": "to be saved / that helps",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "手伝ってくれて、ほんと助かった。",
+            "reading": "てつだってくれて、ほんとたすかった。",
+            "en": "Thanks for helping, you really saved me."
+          }
+        },
+        {
+          "id": "v0200",
+          "word": "ありがとう",
+          "reading": "ありがとう",
+          "meaning": "thank you",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "いつも話聞いてくれて、ありがとう。",
+            "reading": "いつもはなしきいてくれて、ありがとう。",
+            "en": "Thanks for always listening to me."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "scenario": "Health, sleep and hangovers",
+      "situation": "Explaining why you look like a ghost today, or checking in on a sick friend.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0201",
+          "word": "風邪",
+          "reading": "かぜ",
+          "meaning": "a cold",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "風邪ひいたみたいで、喉が痛い。",
+            "reading": "かぜひいたみたいで、のどがいたい。",
+            "en": "I think I caught a cold, my throat hurts."
+          }
+        },
+        {
+          "id": "v0202",
+          "word": "熱",
+          "reading": "ねつ",
+          "meaning": "fever",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "朝から熱があって、学校休んだ。",
+            "reading": "あさからねつがあって、がっこうやすんだ。",
+            "en": "I had a fever from the morning so I stayed home from school."
+          }
+        },
+        {
+          "id": "v0203",
+          "word": "頭が痛い",
+          "reading": "あたまがいたい",
+          "meaning": "I have a headache",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "昨日飲みすぎて、頭が痛い。",
+            "reading": "きのうのみすぎて、あたまがいたい。",
+            "en": "I drank too much yesterday and have a headache."
+          }
+        },
+        {
+          "id": "v0204",
+          "word": "二日酔い",
+          "reading": "ふつかよい",
+          "meaning": "hangover",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "二日酔いで、今日は何もできない。",
+            "reading": "ふつかよいで、きょうはなにもできない。",
+            "en": "I'm hungover and can't do anything today."
+          }
+        },
+        {
+          "id": "v0205",
+          "word": "吐き気",
+          "reading": "はきけ",
+          "meaning": "nausea",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "電車で吐き気がして、途中で降りた。",
+            "reading": "でんしゃではきけがして、とちゅうでおりた。",
+            "en": "I felt nauseous on the train and got off midway."
+          }
+        },
+        {
+          "id": "v0206",
+          "word": "眠い",
+          "reading": "ねむい",
+          "meaning": "sleepy",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "昼ご飯のあとって、なんでこんなに眠いんだろう。",
+            "reading": "ひるごはんのあとって、なんでこんなにねむいんだろう。",
+            "en": "Why am I so sleepy after lunch?"
+          }
+        },
+        {
+          "id": "v0207",
+          "word": "寝不足",
+          "reading": "ねぶそく",
+          "meaning": "lack of sleep",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ゲームしてて寝不足だよ。目が開かない。",
+            "reading": "ゲームしててねぶそくだよ。めがあかない。",
+            "en": "I stayed up gaming and am sleep-deprived. I can't keep my eyes open."
+          }
+        },
+        {
+          "id": "v0208",
+          "word": "徹夜",
+          "reading": "てつや",
+          "meaning": "all-nighter",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "レポートのために徹夜して、フラフラ。",
+            "reading": "レポートのためにてつやして、フラフラ。",
+            "en": "I pulled an all-nighter for the report and I'm woozy."
+          }
+        },
+        {
+          "id": "v0209",
+          "word": "昼寝",
+          "reading": "ひるね",
+          "meaning": "nap",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "休みの日は昼寝して一日が終わる。",
+            "reading": "やすみのひはひるねしていちにちがおわる。",
+            "en": "On days off I nap and the day is over."
+          }
+        },
+        {
+          "id": "v0210",
+          "word": "病院",
+          "reading": "びょういん",
+          "meaning": "hospital / clinic",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "咳が止まらないなら、病院行ったほうがいいよ。",
+            "reading": "せきがとまらないなら、びょういんいったほうがいいよ。",
+            "en": "If your cough won't stop, you should go to the clinic."
+          }
+        },
+        {
+          "id": "v0211",
+          "word": "薬",
+          "reading": "くすり",
+          "meaning": "medicine",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "薬飲んで、今日は早く寝なよ。",
+            "reading": "くすりのんで、きょうははやくねなよ。",
+            "en": "Take your medicine and sleep early today."
+          }
+        },
+        {
+          "id": "v0212",
+          "word": "マスク",
+          "reading": "マスク",
+          "meaning": "mask",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "うつすといけないから、マスクしとくね。",
+            "reading": "うつすといけないから、マスクしとくね。",
+            "en": "I'll wear a mask so I don't pass it on."
+          }
+        },
+        {
+          "id": "v0213",
+          "word": "花粉症",
+          "reading": "かふんしょう",
+          "meaning": "hay fever",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "春は花粉症で、鼻水と目のかゆみがひどい。",
+            "reading": "はるはかふんしょうで、はなみずとめのかゆみがひどい。",
+            "en": "In spring my hay fever gives me a bad runny nose and itchy eyes."
+          }
+        },
+        {
+          "id": "v0214",
+          "word": "お大事に",
+          "reading": "おだいじに",
+          "meaning": "take care (get well)",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "熱あるの？お大事にね。ゆっくり休んで。",
+            "reading": "ねつあるの？おだいじにね。ゆっくりやすんで。",
+            "en": "You have a fever? Get well soon. Rest up."
+          }
+        },
+        {
+          "id": "v0215",
+          "word": "体調",
+          "reading": "たいちょう",
+          "meaning": "physical condition",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "最近、体調悪くて何もやる気が出ない。",
+            "reading": "さいきん、たいちょうわるくてなにもやるきがでない。",
+            "en": "My health's been bad lately and I have no motivation."
+          }
+        },
+        {
+          "id": "v0216",
+          "word": "ダイエット",
+          "reading": "ダイエット",
+          "meaning": "diet",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "夏までにダイエットして、三キロ痩せたい。",
+            "reading": "なつまでにダイエットして、さんキロやせたい。",
+            "en": "I want to diet and lose 3 kg by summer."
+          }
+        },
+        {
+          "id": "v0217",
+          "word": "運動",
+          "reading": "うんどう",
+          "meaning": "exercise",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "最近運動不足で、階段で息切れする。",
+            "reading": "さいきんうんどうぶそくで、かいだんでいきぎれする。",
+            "en": "I'm out of shape lately and get winded on the stairs."
+          }
+        },
+        {
+          "id": "v0218",
+          "word": "筋肉痛",
+          "reading": "きんにくつう",
+          "meaning": "sore muscles",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "昨日ジム行って、今日は全身筋肉痛。",
+            "reading": "きのうジムいって、きょうはぜんしんきんにくつう。",
+            "en": "I went to the gym yesterday and my whole body aches today."
+          }
+        },
+        {
+          "id": "v0219",
+          "word": "歯医者",
+          "reading": "はいしゃ",
+          "meaning": "dentist",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "明日、歯医者の予約あって行きたくない。",
+            "reading": "あした、はいしゃのよやくあっていきたくない。",
+            "en": "I have a dentist appointment tomorrow and I don't want to go."
+          }
+        },
+        {
+          "id": "v0220",
+          "word": "元気",
+          "reading": "げんき",
+          "meaning": "healthy / energetic",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "よく寝たら、すっかり元気になったよ。",
+            "reading": "よくねたら、すっかりげんきになったよ。",
+            "en": "After a good sleep I feel completely better."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "scenario": "Games, anime, music and hobbies",
+      "situation": "The kind of talk you have when you finally find someone who is into the same stuff.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0221",
+          "word": "ゲーム",
+          "reading": "ゲーム",
+          "meaning": "game",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日の夜、みんなでゲームしない？",
+            "reading": "きょうのよる、みんなでゲームしない？",
+            "en": "Want to play games together tonight?"
+          }
+        },
+        {
+          "id": "v0222",
+          "word": "ガチャ",
+          "reading": "ガチャ",
+          "meaning": "gacha / random draw",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ガチャ十連で、全然当たらなかった。",
+            "reading": "ガチャじゅうれんで、ぜんぜんあたらなかった。",
+            "en": "I did a ten-pull and got nothing good."
+          }
+        },
+        {
+          "id": "v0223",
+          "word": "課金",
+          "reading": "かきん",
+          "meaning": "in-game spending",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "課金しすぎて、今月の食費が危ない。",
+            "reading": "かきんしすぎて、こんげつのしょくひがあぶない。",
+            "en": "I spent too much on in-game purchases and my food budget is at risk."
+          }
+        },
+        {
+          "id": "v0224",
+          "word": "推し",
+          "reading": "おし",
+          "meaning": "your favorite (idol/character)",
+          "pos": "noun",
+          "tag": "slang",
+          "example": {
+            "ja": "私の推し、今日もかっこよすぎる。",
+            "reading": "わたしのおし、きょうもかっこよすぎる。",
+            "en": "My favorite is way too cool today again."
+          }
+        },
+        {
+          "id": "v0225",
+          "word": "ライブ",
+          "reading": "ライブ",
+          "meaning": "live concert",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ライブのチケット、当たった！一緒に行こう！",
+            "reading": "ライブのチケット、あたった！いっしょにいこう！",
+            "en": "I won concert tickets! Let's go together!"
+          }
+        },
+        {
+          "id": "v0226",
+          "word": "抽選",
+          "reading": "ちゅうせん",
+          "meaning": "lottery draw",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "チケットは抽選だから、当たるか分からない。",
+            "reading": "チケットはちゅうせんだから、あたるかわからない。",
+            "en": "Tickets are by lottery, so I don't know if I'll get one."
+          }
+        },
+        {
+          "id": "v0227",
+          "word": "アニメ",
+          "reading": "アニメ",
+          "meaning": "anime",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今期のアニメ、何見てる？おすすめある？",
+            "reading": "こんきのアニメ、なにみてる？おすすめある？",
+            "en": "What anime are you watching this season? Any recommendations?"
+          }
+        },
+        {
+          "id": "v0228",
+          "word": "漫画",
+          "reading": "まんが",
+          "meaning": "manga",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "漫画の新刊、今日発売だから買いに行く。",
+            "reading": "まんがのしんかん、きょうはつばいだからかいにいく。",
+            "en": "The new manga volume comes out today so I'm going to buy it."
+          }
+        },
+        {
+          "id": "v0229",
+          "word": "ドラマ",
+          "reading": "ドラマ",
+          "meaning": "TV drama",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "あのドラマ、続きが気になって寝れない。",
+            "reading": "あのドラマ、つづきがきになってねれない。",
+            "en": "I can't sleep because I want to see what happens next in that drama."
+          }
+        },
+        {
+          "id": "v0230",
+          "word": "一気見",
+          "reading": "いっきみ",
+          "meaning": "binge-watching",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "週末は家でドラマを一気見する予定。",
+            "reading": "しゅうまつはいえでドラマをいっきみするよてい。",
+            "en": "I plan to binge-watch a drama at home this weekend."
+          }
+        },
+        {
+          "id": "v0231",
+          "word": "配信",
+          "reading": "はいしん",
+          "meaning": "streaming",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "このアニメ、今夜から配信始まるよ。",
+            "reading": "このアニメ、こんやからはいしんはじまるよ。",
+            "en": "This anime starts streaming tonight."
+          }
+        },
+        {
+          "id": "v0232",
+          "word": "カラオケ",
+          "reading": "カラオケ",
+          "meaning": "karaoke",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "カラオケ、フリータイムで朝までいこ！",
+            "reading": "カラオケ、フリータイムであさまでいこ！",
+            "en": "Let's do karaoke with free time until morning!"
+          }
+        },
+        {
+          "id": "v0233",
+          "word": "十八番",
+          "reading": "おはこ",
+          "meaning": "one's signature song",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "カラオケの十八番って何？",
+            "reading": "カラオケのおはこってなに？",
+            "en": "What's your signature karaoke song?"
+          }
+        },
+        {
+          "id": "v0234",
+          "word": "音痴",
+          "reading": "おんち",
+          "meaning": "tone-deaf",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "私、音痴だから人前で歌いたくない。",
+            "reading": "わたし、おんちだからひとまえでうたいたくない。",
+            "en": "I'm tone-deaf so I don't want to sing in front of people."
+          }
+        },
+        {
+          "id": "v0235",
+          "word": "趣味",
+          "reading": "しゅみ",
+          "meaning": "hobby",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "最近の趣味は、一人でキャンプすること。",
+            "reading": "さいきんのしゅみは、ひとりでキャンプすること。",
+            "en": "My recent hobby is solo camping."
+          }
+        },
+        {
+          "id": "v0236",
+          "word": "ハマる",
+          "reading": "ハマる",
+          "meaning": "to get hooked on",
+          "pos": "verb",
+          "tag": "slang",
+          "example": {
+            "ja": "最近、韓国ドラマにハマってるんだ。",
+            "reading": "さいきん、かんこくドラマにハマってるんだ。",
+            "en": "I've been hooked on Korean dramas lately."
+          }
+        },
+        {
+          "id": "v0237",
+          "word": "オタク",
+          "reading": "オタク",
+          "meaning": "nerd / hardcore fan",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "あの人、アニメオタクで知識がすごいよ。",
+            "reading": "あのひと、アニメオタクでちしきがすごいよ。",
+            "en": "That guy is an anime nerd with incredible knowledge."
+          }
+        },
+        {
+          "id": "v0238",
+          "word": "貸して",
+          "reading": "かして",
+          "meaning": "lend me",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "その漫画、読み終わったら貸して！",
+            "reading": "そのまんが、よみおわったらかして！",
+            "en": "Lend me that manga when you're done!"
+          }
+        },
+        {
+          "id": "v0239",
+          "word": "映画",
+          "reading": "えいが",
+          "meaning": "movie",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今度の日曜、映画観に行かない？",
+            "reading": "こんどのにちよう、えいがみにいかない？",
+            "en": "Want to go see a movie this Sunday?"
+          }
+        },
+        {
+          "id": "v0240",
+          "word": "写真",
+          "reading": "しゃしん",
+          "meaning": "photo",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "旅行の写真、あとでグループに送るね。",
+            "reading": "りょこうのしゃしん、あとでグループにおくるね。",
+            "en": "I'll send the trip photos to the group later."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s13",
+      "scenario": "Casual slang and everyday reactions",
+      "situation": "The words that fill real conversations between friends: agreeing, being shocked, and dodging commitments.",
+      "word_count": 21,
+      "words": [
+        {
+          "id": "v0241",
+          "word": "やばい",
+          "reading": "やばい",
+          "meaning": "awesome / terrible / crazy (context-dependent)",
+          "pos": "i-adj",
+          "tag": "slang",
+          "example": {
+            "ja": "このケーキ、やばい！うますぎる！",
+            "reading": "このケーキ、やばい！うますぎる！",
+            "en": "This cake is insane! So good!"
+          }
+        },
+        {
+          "id": "v0242",
+          "word": "マジ",
+          "reading": "マジ",
+          "meaning": "seriously / for real",
+          "pos": "adv",
+          "tag": "slang",
+          "example": {
+            "ja": "マジで？それ初めて聞いたんだけど。",
+            "reading": "マジで？それはじめてきいたんだけど。",
+            "en": "Seriously? That's the first I've heard of it."
+          }
+        },
+        {
+          "id": "v0243",
+          "word": "めっちゃ",
+          "reading": "めっちゃ",
+          "meaning": "very / super",
+          "pos": "adv",
+          "tag": "slang",
+          "example": {
+            "ja": "昨日のライブ、めっちゃ盛り上がったよ。",
+            "reading": "きのうのライブ、めっちゃもりあがったよ。",
+            "en": "Yesterday's live show was super lively."
+          }
+        },
+        {
+          "id": "v0244",
+          "word": "超",
+          "reading": "ちょう",
+          "meaning": "super / extremely",
+          "pos": "adv",
+          "tag": "slang",
+          "example": {
+            "ja": "今日、超暑くない？溶けそう。",
+            "reading": "きょう、ちょうあつくない？とけそう。",
+            "en": "Isn't it super hot today? I feel like I'll melt."
+          }
+        },
+        {
+          "id": "v0245",
+          "word": "ウケる",
+          "reading": "ウケる",
+          "meaning": "that's hilarious",
+          "pos": "verb",
+          "tag": "slang",
+          "example": {
+            "ja": "その話、ウケる！ほんとに言ったの？",
+            "reading": "そのはなし、ウケる！ほんとにいったの？",
+            "en": "That's hilarious! Did he really say that?"
+          }
+        },
+        {
+          "id": "v0246",
+          "word": "ヤバ",
+          "reading": "ヤバ",
+          "meaning": "uh-oh",
+          "pos": "interj",
+          "tag": "slang",
+          "example": {
+            "ja": "ヤバ、財布忘れた！取りに戻る！",
+            "reading": "ヤバ、さいふわすれた！とりにもどる！",
+            "en": "Uh-oh, I forgot my wallet! I'm going back for it!"
+          }
+        },
+        {
+          "id": "v0247",
+          "word": "確かに",
+          "reading": "たしかに",
+          "meaning": "true / good point",
+          "pos": "adv",
+          "tag": "standard",
+          "example": {
+            "ja": "確かに！それは気づかなかった。",
+            "reading": "たしかに！それはきづかなかった。",
+            "en": "True! I hadn't noticed that."
+          }
+        },
+        {
+          "id": "v0248",
+          "word": "それな",
+          "reading": "それな",
+          "meaning": "exactly / same",
+          "pos": "phrase",
+          "tag": "slang",
+          "example": {
+            "ja": "月曜ってほんとだるいよね。　それな〜。",
+            "reading": "げつようってほんとだるいよね。　それな〜。",
+            "en": "Mondays are such a drag. Right?!"
+          }
+        },
+        {
+          "id": "v0249",
+          "word": "わかる",
+          "reading": "わかる",
+          "meaning": "I get it / relatable",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "わかる〜！私もさっき同じ失敗した。",
+            "reading": "わかる〜！わたしもさっきおなじしっぱいした。",
+            "en": "I feel you! I made the same mistake earlier."
+          }
+        },
+        {
+          "id": "v0250",
+          "word": "うそ",
+          "reading": "うそ",
+          "meaning": "no way / really?",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "え、うそ！あの二人、別れたの？",
+            "reading": "え、うそ！あのふたり、わかれたの？",
+            "en": "What, no way! Those two broke up?"
+          }
+        },
+        {
+          "id": "v0251",
+          "word": "ありえない",
+          "reading": "ありえない",
+          "meaning": "unbelievable / impossible",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "一時間も遅刻？ありえないんだけど。",
+            "reading": "いちじかんもちこく？ありえないんだけど。",
+            "en": "An hour late? That's unbelievable."
+          }
+        },
+        {
+          "id": "v0252",
+          "word": "だるい",
+          "reading": "だるい",
+          "meaning": "sluggish / can't be bothered",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "朝から雨でだるい。家出たくない。",
+            "reading": "あさからあめでだるい。いえでたくない。",
+            "en": "It's rainy since morning and I'm sluggish. I don't want to leave home."
+          }
+        },
+        {
+          "id": "v0253",
+          "word": "めんどくさい",
+          "reading": "めんどくさい",
+          "meaning": "a hassle",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "洗い物、めんどくさくて明日にしよ。",
+            "reading": "あらいもの、めんどくさくてあしたにしよ。",
+            "en": "Dishes are a hassle, I'll do them tomorrow."
+          }
+        },
+        {
+          "id": "v0254",
+          "word": "微妙",
+          "reading": "びみょう",
+          "meaning": "so-so / questionable",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "あの映画、期待してたけど、ちょっと微妙だった。",
+            "reading": "あのえいが、きたいしてたけど、ちょっとびみょうだった。",
+            "en": "I had high hopes for that movie, but it was kind of meh."
+          }
+        },
+        {
+          "id": "v0255",
+          "word": "普通に",
+          "reading": "ふつうに",
+          "meaning": "honestly / totally",
+          "pos": "adv",
+          "tag": "slang",
+          "example": {
+            "ja": "この店、普通においしいよね。",
+            "reading": "このみせ、ふつうにおいしいよね。",
+            "en": "This place is honestly really good."
+          }
+        },
+        {
+          "id": "v0256",
+          "word": "なんか",
+          "reading": "なんか",
+          "meaning": "kind of / somehow",
+          "pos": "adv",
+          "tag": "standard",
+          "example": {
+            "ja": "なんか今日、元気ないね。何かあった？",
+            "reading": "なんかきょう、げんきないね。なにかあった？",
+            "en": "You seem a bit down today. Did something happen?"
+          }
+        },
+        {
+          "id": "v0257",
+          "word": "ちょっと",
+          "reading": "ちょっと",
+          "meaning": "a little / (softener for refusing)",
+          "pos": "adv",
+          "tag": "standard",
+          "example": {
+            "ja": "その日はちょっと…。他の日でもいい？",
+            "reading": "そのひはちょっと…。ほかのひでもいい？",
+            "en": "That day is kind of... Is another day okay?"
+          }
+        },
+        {
+          "id": "v0258",
+          "word": "とりあえず",
+          "reading": "とりあえず",
+          "meaning": "for now / first of all",
+          "pos": "adv",
+          "tag": "standard",
+          "example": {
+            "ja": "とりあえず座ろう。話はそれから。",
+            "reading": "とりあえずすわろう。はなしはそれから。",
+            "en": "Let's sit down first. We can talk after."
+          }
+        },
+        {
+          "id": "v0259",
+          "word": "やっぱり",
+          "reading": "やっぱり",
+          "meaning": "as expected / after all",
+          "pos": "adv",
+          "tag": "standard",
+          "example": {
+            "ja": "やっぱり行かないことにした。ごめんね。",
+            "reading": "やっぱりいかないことにした。ごめんね。",
+            "en": "I've decided not to go after all. Sorry."
+          }
+        },
+        {
+          "id": "v0260",
+          "word": "さすが",
+          "reading": "さすが",
+          "meaning": "as expected of you",
+          "pos": "adv",
+          "tag": "standard",
+          "example": {
+            "ja": "満点？さすが！勉強してたもんね。",
+            "reading": "まんてん？さすが！べんきょうしてたもんね。",
+            "en": "A perfect score? As expected! You did study."
+          }
+        },
+        {
+          "id": "v0261",
+          "word": "まじか",
+          "reading": "まじか",
+          "meaning": "seriously?!",
+          "pos": "phrase",
+          "tag": "slang",
+          "example": {
+            "ja": "明日テストなの？まじか、勉強してない。",
+            "reading": "あしたテストなの？まじか、べんきょうしてない。",
+            "en": "The test is tomorrow? Seriously, I haven't studied."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s14",
+      "scenario": "Weather and seasons small talk",
+      "situation": "The universal icebreaker: complaining about heat, rain and pollen with whoever's next to you.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0262",
+          "word": "暑い",
+          "reading": "あつい",
+          "meaning": "hot (weather)",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "今年の夏、暑すぎて外に出られない。",
+            "reading": "ことしのなつ、あつすぎてそとにでられない。",
+            "en": "This summer is so hot I can't go outside."
+          }
+        },
+        {
+          "id": "v0263",
+          "word": "寒い",
+          "reading": "さむい",
+          "meaning": "cold (weather)",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "朝は寒いけど、昼は暖かくなるらしいよ。",
+            "reading": "あさはさむいけど、ひるはあたたかくなるらしいよ。",
+            "en": "It's cold in the morning but apparently gets warm by noon."
+          }
+        },
+        {
+          "id": "v0264",
+          "word": "蒸し暑い",
+          "reading": "むしあつい",
+          "meaning": "hot and humid",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "梅雨は蒸し暑くて、洗濯物が乾かない。",
+            "reading": "つゆはむしあつくて、せんたくものがかわかない。",
+            "en": "In the rainy season it's muggy and laundry won't dry."
+          }
+        },
+        {
+          "id": "v0265",
+          "word": "梅雨",
+          "reading": "つゆ",
+          "meaning": "rainy season",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "梅雨、いつ明けるんだろう。もう飽きた。",
+            "reading": "つゆ、いつあけるんだろう。もうあきた。",
+            "en": "When will the rainy season end? I'm so over it."
+          }
+        },
+        {
+          "id": "v0266",
+          "word": "天気予報",
+          "reading": "てんきよほう",
+          "meaning": "weather forecast",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "天気予報だと、午後から雨だって。",
+            "reading": "てんきよほうだと、ごごからあめだって。",
+            "en": "According to the forecast, it'll rain from the afternoon."
+          }
+        },
+        {
+          "id": "v0267",
+          "word": "傘",
+          "reading": "かさ",
+          "meaning": "umbrella",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "傘持ってくるの忘れた。入れてくれない？",
+            "reading": "かさもってくるのわすれた。いれてくれない？",
+            "en": "I forgot my umbrella. Can I share yours?"
+          }
+        },
+        {
+          "id": "v0268",
+          "word": "土砂降り",
+          "reading": "どしゃぶり",
+          "meaning": "heavy downpour",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "帰り道、土砂降りでずぶ濡れになった。",
+            "reading": "かえりみち、どしゃぶりでずぶぬれになった。",
+            "en": "It poured on my way home and I got soaked."
+          }
+        },
+        {
+          "id": "v0269",
+          "word": "台風",
+          "reading": "たいふう",
+          "meaning": "typhoon",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "台風が近づいてるから、明日は休みになるかも。",
+            "reading": "たいふうがちかづいてるから、あしたはやすみになるかも。",
+            "en": "A typhoon is approaching, so tomorrow may be off."
+          }
+        },
+        {
+          "id": "v0270",
+          "word": "雪",
+          "reading": "ゆき",
+          "meaning": "snow",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "雪が積もって、電車が止まってるよ。",
+            "reading": "ゆきがつもって、でんしゃがとまってるよ。",
+            "en": "Snow has piled up and the trains have stopped."
+          }
+        },
+        {
+          "id": "v0271",
+          "word": "晴れ",
+          "reading": "はれ",
+          "meaning": "sunny",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "明日、晴れるといいね。お花見行こう！",
+            "reading": "あした、はれるといいね。おはなみいこう！",
+            "en": "I hope it clears up tomorrow. Let's go flower viewing!"
+          }
+        },
+        {
+          "id": "v0272",
+          "word": "お花見",
+          "reading": "おはなみ",
+          "meaning": "cherry blossom viewing",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "お花見の場所取り、朝から行ってくるね。",
+            "reading": "おはなみのばしょとり、あさからいってくるね。",
+            "en": "I'll go from the morning to save a spot for the blossom viewing."
+          }
+        },
+        {
+          "id": "v0273",
+          "word": "紅葉",
+          "reading": "こうよう",
+          "meaning": "autumn leaves",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "京都に紅葉を見に行きたいな。",
+            "reading": "きょうとにこうようをみにいきたいな。",
+            "en": "I'd like to go see the autumn leaves in Kyoto."
+          }
+        },
+        {
+          "id": "v0274",
+          "word": "花火",
+          "reading": "はなび",
+          "meaning": "fireworks",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "夏祭りの花火、浴衣着て見に行こうよ。",
+            "reading": "なつまつりのはなび、ゆかたきてみにいこうよ。",
+            "en": "Let's go to the summer festival fireworks in yukata."
+          }
+        },
+        {
+          "id": "v0275",
+          "word": "日焼け",
+          "reading": "ひやけ",
+          "meaning": "sunburn / tan",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "日焼け止め塗ってたのに、真っ赤になった。",
+            "reading": "ひやけどめぬってたのに、まっかになった。",
+            "en": "I wore sunscreen but got totally red."
+          }
+        },
+        {
+          "id": "v0276",
+          "word": "扇風機",
+          "reading": "せんぷうき",
+          "meaning": "electric fan",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "エアコン壊れて、扇風機だけで過ごしてる。",
+            "reading": "エアコンこわれて、せんぷうきだけですごしてる。",
+            "en": "My AC broke so I'm getting by with just a fan."
+          }
+        },
+        {
+          "id": "v0277",
+          "word": "こたつ",
+          "reading": "こたつ",
+          "meaning": "heated table",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "こたつに入ったら、もう動けない。",
+            "reading": "こたつにはいったら、もううごけない。",
+            "en": "Once I get in the kotatsu, I can't move anymore."
+          }
+        },
+        {
+          "id": "v0278",
+          "word": "風が強い",
+          "reading": "かぜがつよい",
+          "meaning": "windy",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "今日は風が強くて、髪がぐちゃぐちゃ。",
+            "reading": "きょうはかぜがつよくて、かみがぐちゃぐちゃ。",
+            "en": "It's so windy today my hair is a mess."
+          }
+        },
+        {
+          "id": "v0279",
+          "word": "湿度",
+          "reading": "しつど",
+          "meaning": "humidity",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "湿度高すぎて、髪がまとまらない。",
+            "reading": "しつどたかすぎて、かみがまとまらない。",
+            "en": "The humidity is so high my hair won't behave."
+          }
+        },
+        {
+          "id": "v0280",
+          "word": "季節",
+          "reading": "きせつ",
+          "meaning": "season",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "四つの季節の中で、秋が一番好き。",
+            "reading": "よっつのきせつのなかで、あきがいちばんすき。",
+            "en": "Of the four seasons, I like autumn best."
+          }
+        },
+        {
+          "id": "v0281",
+          "word": "過ごしやすい",
+          "reading": "すごしやすい",
+          "meaning": "comfortable (to live in)",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "今日はちょうどいい気温で過ごしやすいね。",
+            "reading": "きょうはちょうどいいきおんですごしやすいね。",
+            "en": "The temperature is just right today, so comfortable."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s15",
+      "scenario": "Travel and trips with friends",
+      "situation": "Planning a weekend away, booking, and surviving the trip itself.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0282",
+          "word": "旅行",
+          "reading": "りょこう",
+          "meaning": "trip",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "夏休みに、みんなで沖縄旅行しようよ。",
+            "reading": "なつやすみに、みんなでおきなわりょこうしようよ。",
+            "en": "Let's all take a trip to Okinawa during summer break."
+          }
+        },
+        {
+          "id": "v0283",
+          "word": "日帰り",
+          "reading": "ひがえり",
+          "meaning": "day trip",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "忙しいから、日帰りで温泉行かない？",
+            "reading": "いそがしいから、ひがえりでおんせんいかない？",
+            "en": "We're busy, so how about a day trip to a hot spring?"
+          }
+        },
+        {
+          "id": "v0284",
+          "word": "一泊",
+          "reading": "いっぱく",
+          "meaning": "one night stay",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "一泊二日で、箱根に行ってきた。",
+            "reading": "いっぱくふつかで、はこねにいってきた。",
+            "en": "We went to Hakone for two days and one night."
+          }
+        },
+        {
+          "id": "v0285",
+          "word": "宿",
+          "reading": "やど",
+          "meaning": "lodging",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "連休だから、安い宿がもう全部埋まってる。",
+            "reading": "れんきゅうだから、やすいやどがもうぜんぶうまってる。",
+            "en": "It's a holiday weekend, so all the cheap lodging is already booked."
+          }
+        },
+        {
+          "id": "v0286",
+          "word": "予約する",
+          "reading": "よやくする",
+          "meaning": "to book",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "ホテルは私が予約しとくね。",
+            "reading": "ホテルはわたしがよやくしとくね。",
+            "en": "I'll book the hotel."
+          }
+        },
+        {
+          "id": "v0287",
+          "word": "新幹線",
+          "reading": "しんかんせん",
+          "meaning": "bullet train",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "新幹線で行けば、二時間で着くよ。",
+            "reading": "しんかんせんでいけば、にじかんでつくよ。",
+            "en": "If we take the shinkansen, it's two hours."
+          }
+        },
+        {
+          "id": "v0288",
+          "word": "夜行バス",
+          "reading": "やこうバス",
+          "meaning": "overnight bus",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "安いから夜行バスで行くけど、腰が痛くなる。",
+            "reading": "やすいからやこうバスでいくけど、こしがいたくなる。",
+            "en": "The overnight bus is cheap but hurts my back."
+          }
+        },
+        {
+          "id": "v0289",
+          "word": "空港",
+          "reading": "くうこう",
+          "meaning": "airport",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "空港まで友達が車で送ってくれた。",
+            "reading": "くうこうまでともだちがくるまでおくってくれた。",
+            "en": "A friend drove me to the airport."
+          }
+        },
+        {
+          "id": "v0290",
+          "word": "荷物",
+          "reading": "にもつ",
+          "meaning": "luggage",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "荷物多すぎて、スーツケース閉まらない。",
+            "reading": "にもつおおすぎて、スーツケースしまらない。",
+            "en": "I have too much stuff and the suitcase won't close."
+          }
+        },
+        {
+          "id": "v0291",
+          "word": "お土産",
+          "reading": "おみやげ",
+          "meaning": "souvenir",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "お土産、何がいい？お菓子でいい？",
+            "reading": "おみやげ、なにがいい？おかしでいい？",
+            "en": "What souvenir do you want? Is candy okay?"
+          }
+        },
+        {
+          "id": "v0292",
+          "word": "観光",
+          "reading": "かんこう",
+          "meaning": "sightseeing",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "観光スポットより、地元のご飯が楽しみ。",
+            "reading": "かんこうスポットより、じもとのごはんがたのしみ。",
+            "en": "I'm looking forward to local food more than sightseeing spots."
+          }
+        },
+        {
+          "id": "v0293",
+          "word": "温泉",
+          "reading": "おんせん",
+          "meaning": "hot spring",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "温泉入って、ビール飲むのが最高。",
+            "reading": "おんせんはいって、ビールのむのがさいこう。",
+            "en": "Soaking in a hot spring and having a beer is the best."
+          }
+        },
+        {
+          "id": "v0294",
+          "word": "貸切",
+          "reading": "かしきり",
+          "meaning": "private / chartered",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "夜の露天風呂、貸切で最高だった。",
+            "reading": "よるのろてんぶろ、かしきりでさいこうだった。",
+            "en": "The open-air bath at night was all to ourselves, amazing."
+          }
+        },
+        {
+          "id": "v0295",
+          "word": "パスポート",
+          "reading": "パスポート",
+          "meaning": "passport",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "パスポートの期限、切れてるの忘れてた！",
+            "reading": "パスポートのきげん、きれてるのわすれてた！",
+            "en": "I forgot my passport had expired!"
+          }
+        },
+        {
+          "id": "v0296",
+          "word": "両替",
+          "reading": "りょうがえ",
+          "meaning": "currency exchange",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "空港で両替すると、レートが悪いよ。",
+            "reading": "くうこうでりょうがえすると、レートがわるいよ。",
+            "en": "The exchange rate is bad if you change money at the airport."
+          }
+        },
+        {
+          "id": "v0297",
+          "word": "道に迷う",
+          "reading": "みちにまよう",
+          "meaning": "to get lost",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "スマホの地図見ても、道に迷っちゃった。",
+            "reading": "スマホのちずみても、みちにまよっちゃった。",
+            "en": "Even with the phone map, I got lost."
+          }
+        },
+        {
+          "id": "v0298",
+          "word": "写真スポット",
+          "reading": "しゃしんスポット",
+          "meaning": "photo spot",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "あそこ、写真スポットだから撮ってあげるよ。",
+            "reading": "あそこ、しゃしんスポットだからとってあげるよ。",
+            "en": "That's a photo spot, I'll take your picture."
+          }
+        },
+        {
+          "id": "v0299",
+          "word": "計画を立てる",
+          "reading": "けいかくをたてる",
+          "meaning": "to make plans",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "旅行の計画、みんなで立てよう。",
+            "reading": "りょこうのけいかく、みんなでたてよう。",
+            "en": "Let's all make the trip plans together."
+          }
+        },
+        {
+          "id": "v0300",
+          "word": "満喫",
+          "reading": "まんきつ",
+          "meaning": "to fully enjoy",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "二泊三日で、京都を満喫してきた。",
+            "reading": "にはくみっかで、きょうとをまんきつしてきた。",
+            "en": "I fully enjoyed Kyoto over three days and two nights."
+          }
+        },
+        {
+          "id": "v0301",
+          "word": "帰りたくない",
+          "reading": "かえりたくない",
+          "meaning": "I don't want to go home",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "楽しすぎて、帰りたくない…。",
+            "reading": "たのしすぎて、かえりたくない…。",
+            "en": "I'm having so much fun I don't want to go home..."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s16",
+      "scenario": "Home life, roommates and chores",
+      "situation": "Living alone or sharing a place: laundry, noise, rent and whose turn it is to clean.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0302",
+          "word": "一人暮らし",
+          "reading": "ひとりぐらし",
+          "meaning": "living alone",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "一人暮らし始めたら、親のありがたみが分かった。",
+            "reading": "ひとりぐらしはじめたら、おやのありがたみがわかった。",
+            "en": "Once I started living alone I appreciated my parents."
+          }
+        },
+        {
+          "id": "v0303",
+          "word": "ルームシェア",
+          "reading": "ルームシェア",
+          "meaning": "sharing a flat",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "友達とルームシェアしてるから、家賃が安いんだ。",
+            "reading": "ともだちとルームシェアしてるから、やちんがやすいんだ。",
+            "en": "I share a flat with a friend so the rent is cheap."
+          }
+        },
+        {
+          "id": "v0304",
+          "word": "引っ越し",
+          "reading": "ひっこし",
+          "meaning": "moving house",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来月引っ越しだから、荷造りが全然終わらない。",
+            "reading": "らいげつひっこしだから、にづくりがぜんぜんおわらない。",
+            "en": "I'm moving next month and my packing is nowhere near done."
+          }
+        },
+        {
+          "id": "v0305",
+          "word": "掃除",
+          "reading": "そうじ",
+          "meaning": "cleaning",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "友達が来るから、急いで掃除しなきゃ。",
+            "reading": "ともだちがくるから、いそいでそうじしなきゃ。",
+            "en": "A friend is coming over so I need to clean up fast."
+          }
+        },
+        {
+          "id": "v0306",
+          "word": "洗濯",
+          "reading": "せんたく",
+          "meaning": "laundry",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "雨続きで、洗濯物がたまってる。",
+            "reading": "あめつづきで、せんたくものがたまってる。",
+            "en": "It's been raining and the laundry is piling up."
+          }
+        },
+        {
+          "id": "v0307",
+          "word": "洗い物",
+          "reading": "あらいもの",
+          "meaning": "dishes",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日の洗い物は、あなたの当番だよ。",
+            "reading": "きょうのあらいものは、あなたのとうばんだよ。",
+            "en": "It's your turn to do the dishes today."
+          }
+        },
+        {
+          "id": "v0308",
+          "word": "片付ける",
+          "reading": "かたづける",
+          "meaning": "to tidy up",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "部屋、散らかりすぎ。ちょっと片付けなよ。",
+            "reading": "へや、ちらかりすぎ。ちょっとかたづけなよ。",
+            "en": "Your room's too messy. Tidy up a bit."
+          }
+        },
+        {
+          "id": "v0309",
+          "word": "散らかる",
+          "reading": "ちらかる",
+          "meaning": "to be messy",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "リビングが散らかってて、座る場所がない。",
+            "reading": "リビングがちらかってて、すわるばしょがない。",
+            "en": "The living room is such a mess there's nowhere to sit."
+          }
+        },
+        {
+          "id": "v0310",
+          "word": "鍵",
+          "reading": "かぎ",
+          "meaning": "key",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "鍵を中に忘れて、家に入れない！",
+            "reading": "かぎをなかにわすれて、いえにはいれない！",
+            "en": "I left my key inside and can't get into the house!"
+          }
+        },
+        {
+          "id": "v0311",
+          "word": "騒音",
+          "reading": "そうおん",
+          "meaning": "noise",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "隣の騒音がうるさくて、夜眠れない。",
+            "reading": "となりのそうおんがうるさくて、よるねむれない。",
+            "en": "The noise from next door is loud and I can't sleep at night."
+          }
+        },
+        {
+          "id": "v0312",
+          "word": "隣人",
+          "reading": "りんじん",
+          "meaning": "neighbor",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "隣人が優しくて、おすそ分けをくれた。",
+            "reading": "りんじんがやさしくて、おすそわけをくれた。",
+            "en": "My neighbor is kind and gave me some of their food."
+          }
+        },
+        {
+          "id": "v0313",
+          "word": "光熱費",
+          "reading": "こうねつひ",
+          "meaning": "utilities",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "冬は光熱費がかかるから、節約しなきゃ。",
+            "reading": "ふゆはこうねつひがかかるから、せつやくしなきゃ。",
+            "en": "Utilities cost a lot in winter so I need to save."
+          }
+        },
+        {
+          "id": "v0314",
+          "word": "エアコン",
+          "reading": "エアコン",
+          "meaning": "air conditioner",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "エアコンつけっぱなしで寝たら、風邪ひいた。",
+            "reading": "エアコンつけっぱなしでねたら、かぜひいた。",
+            "en": "I slept with the AC on all night and caught a cold."
+          }
+        },
+        {
+          "id": "v0315",
+          "word": "電気を消す",
+          "reading": "でんきをけす",
+          "meaning": "to turn off the light",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "出る時は、電気消すの忘れないでね。",
+            "reading": "でるときは、でんきけすのわすれないでね。",
+            "en": "Don't forget to turn off the light when you leave."
+          }
+        },
+        {
+          "id": "v0316",
+          "word": "お風呂",
+          "reading": "おふろ",
+          "meaning": "bath",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "疲れた日は、お風呂にゆっくり浸かりたい。",
+            "reading": "つかれたひは、おふろにゆっくりつかりたい。",
+            "en": "On tiring days I want to soak slowly in the bath."
+          }
+        },
+        {
+          "id": "v0317",
+          "word": "ベッド",
+          "reading": "ベッド",
+          "meaning": "bed",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "帰ったら、すぐベッドにダイブしたい。",
+            "reading": "かえったら、すぐベッドにダイブしたい。",
+            "en": "When I get home I want to dive straight into bed."
+          }
+        },
+        {
+          "id": "v0318",
+          "word": "ゴキブリ",
+          "reading": "ゴキブリ",
+          "meaning": "cockroach",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "家にゴキブリが出て、叫んじゃった。",
+            "reading": "いえにゴキブリがでて、さけんじゃった。",
+            "en": "A cockroach appeared in my house and I screamed."
+          }
+        },
+        {
+          "id": "v0319",
+          "word": "宅配便",
+          "reading": "たくはいびん",
+          "meaning": "parcel delivery",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "宅配便、不在票が入ってたから再配達お願いした。",
+            "reading": "たくはいびん、ふざいひょうがはいってたからさいはいたつおねがいした。",
+            "en": "There was a missed-delivery slip so I asked for redelivery."
+          }
+        },
+        {
+          "id": "v0320",
+          "word": "留守",
+          "reading": "るす",
+          "meaning": "not at home",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "昨日電話したけど、留守だったよね？",
+            "reading": "きのうでんわしたけど、るすだったよね？",
+            "en": "I called yesterday, but you weren't home, right?"
+          }
+        },
+        {
+          "id": "v0321",
+          "word": "泊まる",
+          "reading": "とまる",
+          "meaning": "to stay overnight",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "終電逃したから、今夜は泊まってもいい？",
+            "reading": "しゅうでんのがしたから、こんやはとまってもいい？",
+            "en": "I missed the last train, can I stay over tonight?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s17",
+      "scenario": "Fashion, looks and compliments",
+      "situation": "Getting ready, shopping together, and the small talk about haircuts and outfits.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0322",
+          "word": "服",
+          "reading": "ふく",
+          "meaning": "clothes",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "着る服がなくて、毎朝悩むんだ。",
+            "reading": "きるふくがなくて、まいあさなやむんだ。",
+            "en": "I have nothing to wear and agonize every morning."
+          }
+        },
+        {
+          "id": "v0323",
+          "word": "似合う",
+          "reading": "にあう",
+          "meaning": "to suit",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "その色、すごく似合ってるよ。",
+            "reading": "そのいろ、すごくにあってるよ。",
+            "en": "That color really suits you."
+          }
+        },
+        {
+          "id": "v0324",
+          "word": "かわいい",
+          "reading": "かわいい",
+          "meaning": "cute",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "そのバッグ、かわいい！どこで買ったの？",
+            "reading": "そのバッグ、かわいい！どこでかったの？",
+            "en": "That bag is cute! Where did you buy it?"
+          }
+        },
+        {
+          "id": "v0325",
+          "word": "かっこいい",
+          "reading": "かっこいい",
+          "meaning": "cool / handsome",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "髪切った？かっこよくなったね。",
+            "reading": "かみきった？かっこよくなったね。",
+            "en": "Did you cut your hair? You look cooler."
+          }
+        },
+        {
+          "id": "v0326",
+          "word": "おしゃれ",
+          "reading": "おしゃれ",
+          "meaning": "stylish",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "彼、いつもおしゃれだよね。服のセンスいい。",
+            "reading": "かれ、いつもおしゃれだよね。ふくのセンスいい。",
+            "en": "He's always stylish. He has good fashion sense."
+          }
+        },
+        {
+          "id": "v0327",
+          "word": "コーデ",
+          "reading": "コーデ",
+          "meaning": "outfit coordination",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "今日のコーデ、どう？デートなんだ。",
+            "reading": "きょうのコーデ、どう？デートなんだ。",
+            "en": "How's my outfit today? I have a date."
+          }
+        },
+        {
+          "id": "v0328",
+          "word": "美容院",
+          "reading": "びよういん",
+          "meaning": "hair salon",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "美容院で髪を染めたら、気分が上がった。",
+            "reading": "びよういんでかみをそめたら、きぶんがあがった。",
+            "en": "I dyed my hair at the salon and my mood lifted."
+          }
+        },
+        {
+          "id": "v0329",
+          "word": "前髪",
+          "reading": "まえがみ",
+          "meaning": "bangs",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "前髪切りすぎて、後悔してる…。",
+            "reading": "まえがみきりすぎて、こうかいしてる…。",
+            "en": "I cut my bangs too short and regret it..."
+          }
+        },
+        {
+          "id": "v0330",
+          "word": "メイク",
+          "reading": "メイク",
+          "meaning": "makeup",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "寝坊して、メイクする時間なかった。",
+            "reading": "ねぼうして、メイクするじかんなかった。",
+            "en": "I overslept and had no time to put on makeup."
+          }
+        },
+        {
+          "id": "v0331",
+          "word": "すっぴん",
+          "reading": "すっぴん",
+          "meaning": "no makeup",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "コンビニならすっぴんでも行けちゃう。",
+            "reading": "コンビニならすっぴんでもいけちゃう。",
+            "en": "For a konbini run, I can go without makeup."
+          }
+        },
+        {
+          "id": "v0332",
+          "word": "スニーカー",
+          "reading": "スニーカー",
+          "meaning": "sneakers",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "歩くから、スニーカーで来てね。",
+            "reading": "あるくから、スニーカーできてね。",
+            "en": "We'll be walking, so come in sneakers."
+          }
+        },
+        {
+          "id": "v0333",
+          "word": "サイズが合わない",
+          "reading": "サイズがあわない",
+          "meaning": "doesn't fit",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "去年の服、サイズが合わなくなっちゃった。",
+            "reading": "きょねんのふく、サイズがあわなくなっちゃった。",
+            "en": "Last year's clothes don't fit me anymore."
+          }
+        },
+        {
+          "id": "v0334",
+          "word": "痩せる",
+          "reading": "やせる",
+          "meaning": "to lose weight",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "最近、痩せた？顔がすっきりしたね。",
+            "reading": "さいきん、やせた？かおがすっきりしたね。",
+            "en": "Did you lose weight? Your face looks slimmer."
+          }
+        },
+        {
+          "id": "v0335",
+          "word": "太る",
+          "reading": "ふとる",
+          "meaning": "to gain weight",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "ご飯がおいしすぎて、三キロ太った。",
+            "reading": "ごはんがおいしすぎて、さんキロふとった。",
+            "en": "The food was so good I gained 3 kg."
+          }
+        },
+        {
+          "id": "v0336",
+          "word": "背が高い",
+          "reading": "せがたかい",
+          "meaning": "tall",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "彼氏、背が高くて、並ぶと私が小さく見える。",
+            "reading": "かれし、せがたかくて、ならぶとわたしがちいさくみえる。",
+            "en": "My boyfriend is tall, so I look small next to him."
+          }
+        },
+        {
+          "id": "v0337",
+          "word": "香水",
+          "reading": "こうすい",
+          "meaning": "perfume",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "いい匂い。香水、何使ってるの？",
+            "reading": "いいにおい。こうすい、なにつかってるの？",
+            "en": "You smell nice. What perfume do you use?"
+          }
+        },
+        {
+          "id": "v0338",
+          "word": "眼鏡",
+          "reading": "めがね",
+          "meaning": "glasses",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "コンタクトやめて、眼鏡にしてみたよ。",
+            "reading": "コンタクトやめて、めがねにしてみたよ。",
+            "en": "I stopped wearing contacts and tried glasses."
+          }
+        },
+        {
+          "id": "v0339",
+          "word": "ピアス",
+          "reading": "ピアス",
+          "meaning": "pierced earrings",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ピアス開けたいけど、痛そうで怖い。",
+            "reading": "ピアスあけたいけど、いたそうでこわい。",
+            "en": "I want to get my ears pierced but it looks painful and scary."
+          }
+        },
+        {
+          "id": "v0340",
+          "word": "古着",
+          "reading": "ふるぎ",
+          "meaning": "secondhand clothes",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "古着屋で、掘り出し物を見つけたよ。",
+            "reading": "ふるぎやで、ほりだしものをみつけたよ。",
+            "en": "I found a great bargain at the thrift store."
+          }
+        },
+        {
+          "id": "v0341",
+          "word": "褒める",
+          "reading": "ほめる",
+          "meaning": "to compliment",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "髪型を褒められて、一日中うれしかった。",
+            "reading": "かみがたをほめられて、いちにちじゅううれしかった。",
+            "en": "I got complimented on my hairstyle and was happy all day."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s18",
+      "scenario": "Phone, wifi and tech problems",
+      "situation": "The small disasters of modern life: dead batteries, cracked screens and no signal.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0342",
+          "word": "充電",
+          "reading": "じゅうでん",
+          "meaning": "charging",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "スマホの充電、あと5%しかない！",
+            "reading": "スマホのじゅうでん、あとごパーセントしかない！",
+            "en": "My phone is only at 5%!"
+          }
+        },
+        {
+          "id": "v0343",
+          "word": "充電器",
+          "reading": "じゅうでんき",
+          "meaning": "charger",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "充電器、持ってたら貸してくれない？",
+            "reading": "じゅうでんき、もってたらかしてくれない？",
+            "en": "If you have a charger, can I borrow it?"
+          }
+        },
+        {
+          "id": "v0344",
+          "word": "バッテリー",
+          "reading": "バッテリー",
+          "meaning": "battery",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "バッテリーがすぐ減るから、機種変したい。",
+            "reading": "バッテリーがすぐへるから、きしゅへんしたい。",
+            "en": "The battery drains quickly so I want to change phones."
+          }
+        },
+        {
+          "id": "v0345",
+          "word": "画面が割れる",
+          "reading": "がめんがわれる",
+          "meaning": "screen cracks",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "落としたら、画面が割れた…最悪。",
+            "reading": "おとしたら、がめんがわれた…さいあく。",
+            "en": "I dropped it and the screen cracked... awful."
+          }
+        },
+        {
+          "id": "v0346",
+          "word": "圏外",
+          "reading": "けんがい",
+          "meaning": "out of signal range",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "山の中で圏外になって、連絡できなかった。",
+            "reading": "やまのなかでけんがいになって、れんらくできなかった。",
+            "en": "I had no signal in the mountains and couldn't contact anyone."
+          }
+        },
+        {
+          "id": "v0347",
+          "word": "Wi-Fi",
+          "reading": "ワイファイ",
+          "meaning": "Wi-Fi",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "このカフェ、Wi-Fiあるかな？パスワード聞いてくる。",
+            "reading": "このカフェ、ワイファイあるかな？パスワードきいてくる。",
+            "en": "I wonder if this cafe has Wi-Fi? I'll ask for the password."
+          }
+        },
+        {
+          "id": "v0348",
+          "word": "通信制限",
+          "reading": "つうしんせいげん",
+          "meaning": "data throttling",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "月末で通信制限かかって、動画が見れない。",
+            "reading": "げつまつでつうしんせいげんかかって、どうががみれない。",
+            "en": "Data got throttled at month end and I can't watch videos."
+          }
+        },
+        {
+          "id": "v0349",
+          "word": "アプリ",
+          "reading": "アプリ",
+          "meaning": "app",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "このアプリ、便利だよ。インストールしてみて。",
+            "reading": "このアプリ、べんりだよ。インストールしてみて。",
+            "en": "This app is handy. Try installing it."
+          }
+        },
+        {
+          "id": "v0350",
+          "word": "アップデート",
+          "reading": "アップデート",
+          "meaning": "update",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "アップデートしたら、逆に使いにくくなった。",
+            "reading": "アップデートしたら、ぎゃくにつかいにくくなった。",
+            "en": "After updating it became harder to use."
+          }
+        },
+        {
+          "id": "v0351",
+          "word": "パスワード",
+          "reading": "パスワード",
+          "meaning": "password",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "パスワード忘れて、ログインできない。",
+            "reading": "パスワードわすれて、ログインできない。",
+            "en": "I forgot my password and can't log in."
+          }
+        },
+        {
+          "id": "v0352",
+          "word": "フリーズ",
+          "reading": "フリーズ",
+          "meaning": "freeze",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "ゲーム中にスマホがフリーズした！",
+            "reading": "ゲームちゅうにスマホがフリーズした！",
+            "en": "My phone froze in the middle of the game!"
+          }
+        },
+        {
+          "id": "v0353",
+          "word": "壊れる",
+          "reading": "こわれる",
+          "meaning": "to break",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "パソコンが急に壊れて、レポートが消えた。",
+            "reading": "パソコンがきゅうにこわれて、レポートがきえた。",
+            "en": "My laptop suddenly broke and my report vanished."
+          }
+        },
+        {
+          "id": "v0354",
+          "word": "保存",
+          "reading": "ほぞん",
+          "meaning": "saving (data)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "保存し忘れて、三時間分が消えた。",
+            "reading": "ほぞんしわすれて、さんじかんぶんがきえた。",
+            "en": "I forgot to save and lost three hours of work."
+          }
+        },
+        {
+          "id": "v0355",
+          "word": "機種変更",
+          "reading": "きしゅへんこう",
+          "meaning": "changing phone model",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "来月、新しいiPhoneに機種変更する予定。",
+            "reading": "らいげつ、あたらしいアイフォンにきしゅへんこうするよてい。",
+            "en": "I plan to switch to a new iPhone next month."
+          }
+        },
+        {
+          "id": "v0356",
+          "word": "検索",
+          "reading": "けんさく",
+          "meaning": "search",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "分からないことは、すぐ検索しちゃう。",
+            "reading": "わからないことは、すぐけんさくしちゃう。",
+            "en": "If I don't know something I search for it right away."
+          }
+        },
+        {
+          "id": "v0357",
+          "word": "ダウンロード",
+          "reading": "ダウンロード",
+          "meaning": "download",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "この動画、ダウンロードしておいたよ。",
+            "reading": "このどうが、ダウンロードしておいたよ。",
+            "en": "I downloaded this video for you."
+          }
+        },
+        {
+          "id": "v0358",
+          "word": "画像",
+          "reading": "がぞう",
+          "meaning": "image",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "画像が重くて、なかなか開かない。",
+            "reading": "がぞうがおもくて、なかなかひらかない。",
+            "en": "The image is heavy and won't open."
+          }
+        },
+        {
+          "id": "v0359",
+          "word": "落とす",
+          "reading": "おとす",
+          "meaning": "to drop",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "トイレにスマホ落として、焦った。",
+            "reading": "トイレにスマホおとして、あせった。",
+            "en": "I dropped my phone in the toilet and panicked."
+          }
+        },
+        {
+          "id": "v0360",
+          "word": "電源",
+          "reading": "でんげん",
+          "meaning": "power",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "電源が入らない。完全に壊れたかも。",
+            "reading": "でんげんがはいらない。かんぜんにこわれたかも。",
+            "en": "It won't turn on. It might be completely dead."
+          }
+        },
+        {
+          "id": "v0361",
+          "word": "再起動",
+          "reading": "さいきどう",
+          "meaning": "restart",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "動かないなら、再起動してみて。",
+            "reading": "うごかないなら、さいきどうしてみて。",
+            "en": "If it won't work, try restarting it."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s19",
+      "scenario": "Describing people and friend gossip",
+      "situation": "Talking about coworkers, classmates and mutual friends without being too cruel.",
+      "word_count": 19,
+      "words": [
+        {
+          "id": "v0362",
+          "word": "性格",
+          "reading": "せいかく",
+          "meaning": "personality",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "あの子、性格いいよね。誰にでも優しい。",
+            "reading": "あのこ、せいかくいいよね。だれにでもやさしい。",
+            "en": "She has a great personality. She's kind to everyone."
+          }
+        },
+        {
+          "id": "v0363",
+          "word": "優しい",
+          "reading": "やさしい",
+          "meaning": "kind",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "バイトの先輩が優しくて、助かってる。",
+            "reading": "バイトのせんぱいがやさしくて、たすかってる。",
+            "en": "My senior at work is kind, which helps me a lot."
+          }
+        },
+        {
+          "id": "v0364",
+          "word": "面白い",
+          "reading": "おもしろい",
+          "meaning": "funny / interesting",
+          "pos": "i-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "彼と話すと、いつも笑っちゃう。面白いんだ。",
+            "reading": "かれとはなすと、いつもわらっちゃう。おもしろいんだ。",
+            "en": "Talking to him always makes me laugh. He's funny."
+          }
+        },
+        {
+          "id": "v0365",
+          "word": "真面目",
+          "reading": "まじめ",
+          "meaning": "serious / diligent",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "彼は真面目すぎて、冗談が通じない。",
+            "reading": "かれはまじめすぎて、じょうだんがつうじない。",
+            "en": "He's too serious and doesn't get jokes."
+          }
+        },
+        {
+          "id": "v0366",
+          "word": "適当",
+          "reading": "てきとう",
+          "meaning": "careless / half-hearted",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "あいつ、適当だから約束守らないよ。",
+            "reading": "あいつ、てきとうだからやくそくまもらないよ。",
+            "en": "He's careless so he doesn't keep promises."
+          }
+        },
+        {
+          "id": "v0367",
+          "word": "人見知り",
+          "reading": "ひとみしり",
+          "meaning": "shy around new people",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "私、人見知りだから、初対面だと話せない。",
+            "reading": "わたし、ひとみしりだから、しょたいめんだとはなせない。",
+            "en": "I'm shy around new people so I can't talk at first meetings."
+          }
+        },
+        {
+          "id": "v0368",
+          "word": "社交的",
+          "reading": "しゃこうてき",
+          "meaning": "sociable",
+          "pos": "na-adj",
+          "tag": "standard",
+          "example": {
+            "ja": "彼女は社交的で、すぐ誰とでも仲良くなる。",
+            "reading": "かのじょはしゃこうてきで、すぐだれとでもなかよくなる。",
+            "en": "She's sociable and quickly befriends anyone."
+          }
+        },
+        {
+          "id": "v0369",
+          "word": "自己中",
+          "reading": "じこちゅう",
+          "meaning": "selfish",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "あの人、自己中で、人の話聞かないんだよね。",
+            "reading": "あのひと、じこちゅうで、ひとのはなしきかないんだよね。",
+            "en": "That person is self-centered and never listens."
+          }
+        },
+        {
+          "id": "v0370",
+          "word": "天然",
+          "reading": "てんねん",
+          "meaning": "ditzy (naturally)",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "彼女、天然で、いつも面白い間違いするんだ。",
+            "reading": "かのじょ、てんねんで、いつもおもしろいまちがいするんだ。",
+            "en": "She's a natural airhead and always makes funny mistakes."
+          }
+        },
+        {
+          "id": "v0371",
+          "word": "うわさ",
+          "reading": "うわさ",
+          "meaning": "rumor",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "うわさで聞いたんだけど、あの二人、付き合ってるの？",
+            "reading": "うわさできいたんだけど、あのふたり、つきあってるの？",
+            "en": "I heard a rumor, are those two dating?"
+          }
+        },
+        {
+          "id": "v0372",
+          "word": "内緒",
+          "reading": "ないしょ",
+          "meaning": "secret",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "これ、内緒ね。誰にも言わないで。",
+            "reading": "これ、ないしょね。だれにもいわないで。",
+            "en": "Keep this a secret. Don't tell anyone."
+          }
+        },
+        {
+          "id": "v0373",
+          "word": "噂話",
+          "reading": "うわさばなし",
+          "meaning": "gossip",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "噂話ばかりする人とは、距離を置きたい。",
+            "reading": "うわさばなしばかりするひととは、きょりをおきたい。",
+            "en": "I want to keep distance from people who only gossip."
+          }
+        },
+        {
+          "id": "v0374",
+          "word": "陰口",
+          "reading": "かげぐち",
+          "meaning": "talking behind someone's back",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "陰口言われてるって知って、ショックだった。",
+            "reading": "かげぐちいわれてるってしって、ショックだった。",
+            "en": "I was shocked to learn people were talking behind my back."
+          }
+        },
+        {
+          "id": "v0375",
+          "word": "仲がいい",
+          "reading": "なかがいい",
+          "meaning": "get along well",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "私たち、小学校からずっと仲がいいんだ。",
+            "reading": "わたしたち、しょうがっこうからずっとなかがいいんだ。",
+            "en": "We've been close since elementary school."
+          }
+        },
+        {
+          "id": "v0376",
+          "word": "親友",
+          "reading": "しんゆう",
+          "meaning": "best friend",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "彼女は私の親友で、何でも話せる。",
+            "reading": "かのじょはわたしのしんゆうで、なんでもはなせる。",
+            "en": "She's my best friend and I can tell her anything."
+          }
+        },
+        {
+          "id": "v0377",
+          "word": "幼なじみ",
+          "reading": "おさななじみ",
+          "meaning": "childhood friend",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "幼なじみが結婚するって聞いて、びっくりした。",
+            "reading": "おさななじみがけっこんするってきいて、びっくりした。",
+            "en": "I was surprised to hear my childhood friend is getting married."
+          }
+        },
+        {
+          "id": "v0378",
+          "word": "裏切る",
+          "reading": "うらぎる",
+          "meaning": "to betray",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "信じてたのに、秘密をばらされて裏切られた気分。",
+            "reading": "しんじてたのに、ひみつをばらされてうらぎられたきぶん。",
+            "en": "I trusted him, and now my secret got spread, I feel betrayed."
+          }
+        },
+        {
+          "id": "v0379",
+          "word": "信頼",
+          "reading": "しんらい",
+          "meaning": "trust",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "信頼できる友達がいるって、ほんとに大事。",
+            "reading": "しんらいできるともだちがいるって、ほんとにだいじ。",
+            "en": "Having friends you can trust is really important."
+          }
+        },
+        {
+          "id": "v0380",
+          "word": "気が合う",
+          "reading": "きがあう",
+          "meaning": "to click with someone",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "初めて会ったのに、なんか気が合うんだよね。",
+            "reading": "はじめてあったのに、なんかきがあうんだよね。",
+            "en": "We just met but somehow we click."
+          }
+        }
+      ]
+    },
+    {
+      "id": "s20",
+      "scenario": "Asking favors, apologizing and thanking",
+      "situation": "The everyday politeness between friends: borrowing things, saying sorry and appreciating help.",
+      "word_count": 20,
+      "words": [
+        {
+          "id": "v0381",
+          "word": "お願い",
+          "reading": "おねがい",
+          "meaning": "please / a favor",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "お願い！レポート、見せて！",
+            "reading": "おねがい！レポート、みせて！",
+            "en": "Please! Let me see your report!"
+          }
+        },
+        {
+          "id": "v0382",
+          "word": "頼む",
+          "reading": "たのむ",
+          "meaning": "to ask / request",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "ちょっと頼みたいことがあるんだけど、いい？",
+            "reading": "ちょっとたのみたいことがあるんだけど、いい？",
+            "en": "I have a favor to ask, is that okay?"
+          }
+        },
+        {
+          "id": "v0383",
+          "word": "手伝う",
+          "reading": "てつだう",
+          "meaning": "to help",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "引っ越し、手伝ってくれてありがとう。",
+            "reading": "ひっこし、てつだってくれてありがとう。",
+            "en": "Thanks for helping with the move."
+          }
+        },
+        {
+          "id": "v0384",
+          "word": "ごめん",
+          "reading": "ごめん",
+          "meaning": "sorry (casual)",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "ごめん、連絡するの忘れてた！",
+            "reading": "ごめん、れんらくするのわすれてた！",
+            "en": "Sorry, I forgot to get in touch!"
+          }
+        },
+        {
+          "id": "v0385",
+          "word": "すみません",
+          "reading": "すみません",
+          "meaning": "excuse me / sorry",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "すみません、ちょっと通してください。",
+            "reading": "すみません、ちょっととおしてください。",
+            "en": "Excuse me, could you let me through?"
+          }
+        },
+        {
+          "id": "v0386",
+          "word": "悪い",
+          "reading": "わるい",
+          "meaning": "my bad / thank you (casual)",
+          "pos": "i-adj",
+          "tag": "slang",
+          "example": {
+            "ja": "悪い、ちょっとペン貸してくれる？",
+            "reading": "わるい、ちょっとペンかしてくれる？",
+            "en": "My bad, could you lend me a pen?"
+          }
+        },
+        {
+          "id": "v0387",
+          "word": "感謝",
+          "reading": "かんしゃ",
+          "meaning": "gratitude / appreciation",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "いつも助けてくれて、本当に感謝してる。",
+            "reading": "いつもたすけてくれて、ほんとうにかんしゃしてる。",
+            "en": "I'm truly grateful for your help all the time."
+          }
+        },
+        {
+          "id": "v0388",
+          "word": "どういたしまして",
+          "reading": "どういたしまして",
+          "meaning": "you're welcome",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "お礼なんていいよ、どういたしまして！",
+            "reading": "おれいなんていいよ、どういたしまして！",
+            "en": "No need for thanks, you're welcome!"
+          }
+        },
+        {
+          "id": "v0389",
+          "word": "気にしないで",
+          "reading": "きにしないで",
+          "meaning": "don't sweat it",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "全然気にしないで！大したことないよ。",
+            "reading": "ぜんぜんきにしないで！たいしたことないよ。",
+            "en": "Don't sweat it at all! It's no big deal."
+          }
+        },
+        {
+          "id": "v0390",
+          "word": "お礼",
+          "reading": "おれい",
+          "meaning": "thanks / gift of thanks",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "手伝ってくれたお礼に、ランチ奢るね。",
+            "reading": "てつだってくれたおれいに、ランチおごるね。",
+            "en": "As thanks for helping, I'll treat you to lunch."
+          }
+        },
+        {
+          "id": "v0391",
+          "word": "申し訳ない",
+          "reading": "もうしわけない",
+          "meaning": "I feel terrible / so sorry",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "忙しいのに呼び出しちゃって、申し訳ない。",
+            "reading": "いそがしいのによびだしちゃって、もうしわけない。",
+            "en": "I feel so bad calling you out when you're busy."
+          }
+        },
+        {
+          "id": "v0392",
+          "word": "恩返し",
+          "reading": "おんがえし",
+          "meaning": "returning a favor",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "いつかちゃんと恩返しするからね。",
+            "reading": "いつかちゃんとおんがえしするからね。",
+            "en": "I'll definitely return the favor one day."
+          }
+        },
+        {
+          "id": "v0393",
+          "word": "迷惑",
+          "reading": "めいわく",
+          "meaning": "bother / trouble",
+          "pos": "noun",
+          "tag": "standard",
+          "example": {
+            "ja": "迷惑かけて本当にごめんね。",
+            "reading": "めいわくかけてほんとうにごめんね。",
+            "en": "I'm so sorry for causing you trouble."
+          }
+        },
+        {
+          "id": "v0394",
+          "word": "許す",
+          "reading": "ゆるす",
+          "meaning": "to forgive",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "プリン食べちゃったの、許してくれる？",
+            "reading": "プリンたべちゃったの、ゆるしてくれる？",
+            "en": "Can you forgive me for eating your pudding?"
+          }
+        },
+        {
+          "id": "v0395",
+          "word": "謝る",
+          "reading": "あやまる",
+          "meaning": "to apologize",
+          "pos": "verb",
+          "tag": "standard",
+          "example": {
+            "ja": "私が悪かったから、ちゃんと謝るね。",
+            "reading": "わたしがわるかったから、ちゃんとあやまるね。",
+            "en": "I was in the wrong, so I'll apologize properly."
+          }
+        },
+        {
+          "id": "v0396",
+          "word": "お世話になる",
+          "reading": "おせわになる",
+          "meaning": "to be indebted to someone",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "泊めてもらって、本当にお世話になりました。",
+            "reading": "とめてもらって、ほんとうにおせわになりました。",
+            "en": "Thank you so much for taking care of me and letting me stay."
+          }
+        },
+        {
+          "id": "v0397",
+          "word": "助かった",
+          "reading": "たすかった",
+          "meaning": "you saved my life / so helpful",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "傘貸してくれて助かったよ！",
+            "reading": "かさかしてくれてたすかったよ！",
+            "en": "Thanks for lending me the umbrella, that saved me!"
+          }
+        },
+        {
+          "id": "v0398",
+          "word": "遠慮しないで",
+          "reading": "えんりょしないで",
+          "meaning": "don't be shy / feel free",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "お菓子いっぱいあるから、遠慮しないで食べてね。",
+            "reading": "おかしいっぱいあるから、えんりょしないでたべてね。",
+            "en": "There's plenty of snacks, so please don't be shy and dig in."
+          }
+        },
+        {
+          "id": "v0399",
+          "word": "頼りになる",
+          "reading": "たよりになる",
+          "meaning": "reliable / dependable",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "困ったとき、いつも頼りになるね。",
+            "reading": "こまったとき、いつもたよりになるね。",
+            "en": "You're always so dependable whenever I'm in trouble."
+          }
+        },
+        {
+          "id": "v0400",
+          "word": "よろしく",
+          "reading": "よろしく",
+          "meaning": "please treat me well / counting on you",
+          "pos": "phrase",
+          "tag": "standard",
+          "example": {
+            "ja": "これからも仲良くしてね、よろしく！",
+            "reading": "これからもなかよくしてね、よろしく！",
+            "en": "Let's keep being great friends, counting on you!"
+          }
+        }
+      ]
+    }
+  ]
+}

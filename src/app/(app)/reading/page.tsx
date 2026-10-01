@@ -64,7 +64,7 @@ export default function ReadingAndVocabPage() {
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-extrabold tracking-tight flex items-center gap-2">
                 <Layers className="h-5 w-5 text-primary" />
-                Curated Word Lists
+                Curated Vocabulary & Conversation
               </h2>
               <span
                 className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
@@ -77,8 +77,8 @@ export default function ReadingAndVocabPage() {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Find which words you still need to learn across JLPT N5–N1, Core,
-              and Textbook lists with 1-click Anki deck addition.
+              400 daily conversation words across 20 scenarios, plus JLPT N5–N1
+              and Textbook lists with 1-click Anki deck sync.
             </p>
           </div>
         </button>
