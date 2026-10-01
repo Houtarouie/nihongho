@@ -31,7 +31,14 @@ export function MobileHeader() {
         </span>
       </Link>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
+        <Link
+          href="/profile"
+          className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-sm"
+          title="Profile"
+        >
+          {stats.avatar || '🌸'}
+        </Link>
         <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-2 py-0.5 text-xs font-bold text-orange-500">
           <Flame className="h-3.5 w-3.5 fill-orange-500" />
           <span>{stats.currentStreak}d</span>

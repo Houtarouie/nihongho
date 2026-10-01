@@ -22,6 +22,23 @@ import { ThemeToggle } from '@/components/layout/theme-toggle'
 
 const PRESET_ACCOUNTS = [
   {
+    displayName: 'Fresh Learner',
+    username: 'fresh_learner',
+    email: 'learner@nihongo.app',
+    targetJlpt: 'N5',
+    currentStreak: 0,
+    longestStreak: 0,
+    xp: 0,
+    weeklyXp: 0,
+    totalStudyMins: 0,
+    todayStudySeconds: 0,
+    vocabCount: 0,
+    kanjiCount: 0,
+    grammarCount: 0,
+    completedLessons: [],
+    isFreshUser: true,
+  },
+  {
     displayName: 'Kenji',
     username: 'kenjilearns',
     email: 'kenji@nihongo.app',
@@ -29,11 +46,14 @@ const PRESET_ACCOUNTS = [
     currentStreak: 14,
     longestStreak: 21,
     xp: 1240,
+    weeklyXp: 480,
     totalStudyMins: 320,
+    todayStudySeconds: 0,
     vocabCount: 145,
     kanjiCount: 42,
     grammarCount: 28,
     completedLessons: ['hiragana-chart', 'katakana-chart'],
+    isFreshUser: false,
   },
   {
     displayName: 'Sakura',
@@ -43,7 +63,9 @@ const PRESET_ACCOUNTS = [
     currentStreak: 38,
     longestStreak: 45,
     xp: 4820,
+    weeklyXp: 1150,
     totalStudyMins: 1450,
+    todayStudySeconds: 0,
     vocabCount: 620,
     kanjiCount: 215,
     grammarCount: 94,
@@ -55,6 +77,7 @@ const PRESET_ACCOUNTS = [
       'wa-vs-ga',
       'tai-form',
     ],
+    isFreshUser: false,
   },
 ]
 
@@ -65,7 +88,7 @@ export default function LoginPage() {
 
   function handlePresetLogin(preset: (typeof PRESET_ACCOUNTS)[number]) {
     saveUserStats(preset)
-    toast.success(`Signed in as ${preset.displayName} (${preset.email})`)
+    toast.success(`Signed in as ${preset.displayName}`)
     router.push('/dashboard')
   }
 
@@ -81,17 +104,38 @@ export default function LoginPage() {
     const username =
       (formData.get('username') as string)?.trim() || email.split('@')[0]
 
+    const baseUserData = !isLogin
+      ? {
+          displayName: username,
+          username: username.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'learner',
+          email,
+          avatar: '🌸',
+          targetJlpt: 'N5',
+          currentStreak: 0,
+          longestStreak: 0,
+          xp: 0,
+          weeklyXp: 0,
+          totalStudyMins: 0,
+          todayStudySeconds: 0,
+          vocabCount: 0,
+          kanjiCount: 0,
+          grammarCount: 0,
+          reviewsCompletedToday: 0,
+          completedLessons: [],
+          isFreshUser: true,
+        }
+      : {
+          displayName: username,
+          username: username.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'learner',
+          email,
+        }
+
     try {
       const result = await action(formData)
       setIsLoading(false)
 
       if (result?.fallback) {
-        // Offline / local fallback when Supabase env is not configured
-        saveUserStats({
-          displayName: username,
-          username: username.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'student',
-          email,
-        })
+        saveUserStats(baseUserData)
         toast.success(`Welcome, ${username}!`)
         router.push('/dashboard')
         return
@@ -104,11 +148,7 @@ export default function LoginPage() {
       }
     } catch {
       setIsLoading(false)
-      saveUserStats({
-        displayName: username,
-        username: username.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'student',
-        email,
-      })
+      saveUserStats(baseUserData)
       toast.success(`Signed in as ${username}!`)
       router.push('/dashboard')
     }

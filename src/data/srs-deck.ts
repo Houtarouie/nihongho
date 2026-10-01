@@ -451,34 +451,50 @@ export interface UserStudyStats {
   displayName: string
   username: string
   email: string
+  avatar?: string
+  bio?: string
   targetJlpt: string
+  dailyGoalMins?: number
+  audioSpeed?: number
+  furiganaMode?: 'always' | 'hover' | 'hidden'
   currentStreak: number
   longestStreak: number
   xp: number
+  weeklyXp?: number
   totalStudyMins: number
+  todayStudySeconds?: number
   vocabCount: number
   kanjiCount: number
   grammarCount: number
   reviewsCompletedToday: number
   lastStudyDate: string
   completedLessons: string[]
+  isFreshUser?: boolean
 }
 
 export const DEFAULT_USER_STATS: UserStudyStats = {
   displayName: 'Kenji',
   username: 'kenjilearns',
   email: 'kenji@nihongo.app',
+  avatar: '🌸',
+  bio: 'Studying Japanese daily for JLPT N5 and conversational fluency.',
   targetJlpt: 'N5',
+  dailyGoalMins: 15,
+  audioSpeed: 1.0,
+  furiganaMode: 'always',
   currentStreak: 14,
   longestStreak: 21,
   xp: 1240,
+  weeklyXp: 480,
   totalStudyMins: 320,
+  todayStudySeconds: 0,
   vocabCount: 145,
   kanjiCount: 42,
   grammarCount: 28,
   reviewsCompletedToday: 0,
   lastStudyDate: new Date().toISOString().split('T')[0],
   completedLessons: ['hiragana-chart', 'katakana-chart'],
+  isFreshUser: false,
 }
 
 export function loadDeckOptions(): AnkiDeckOptions {
@@ -871,7 +887,33 @@ export function loadUserStats(): UserStudyStats {
   try {
     const raw = localStorage.getItem(STATS_STORAGE_KEY)
     if (raw) {
-      return { ...DEFAULT_USER_STATS, ...JSON.parse(raw) }
+      const parsed = JSON.parse(raw)
+      return {
+        ...DEFAULT_USER_STATS,
+        ...parsed,
+        totalStudyMins:
+          typeof parsed.totalStudyMins === 'number'
+            ? parsed.totalStudyMins
+            : DEFAULT_USER_STATS.totalStudyMins,
+        todayStudySeconds:
+          typeof parsed.todayStudySeconds === 'number'
+            ? parsed.todayStudySeconds
+            : 0,
+        weeklyXp:
+          typeof parsed.weeklyXp === 'number'
+            ? parsed.weeklyXp
+            : parsed.xp || DEFAULT_USER_STATS.weeklyXp,
+        currentStreak:
+          typeof parsed.currentStreak === 'number'
+            ? parsed.currentStreak
+            : DEFAULT_USER_STATS.currentStreak,
+        xp: typeof parsed.xp === 'number' ? parsed.xp : DEFAULT_USER_STATS.xp,
+        avatar: parsed.avatar || DEFAULT_USER_STATS.avatar,
+        bio: parsed.bio ?? DEFAULT_USER_STATS.bio,
+        dailyGoalMins: parsed.dailyGoalMins || DEFAULT_USER_STATS.dailyGoalMins,
+        audioSpeed: parsed.audioSpeed || DEFAULT_USER_STATS.audioSpeed,
+        furiganaMode: parsed.furiganaMode || DEFAULT_USER_STATS.furiganaMode,
+      }
     }
   } catch {
     // ignore
@@ -881,7 +923,7 @@ export function loadUserStats(): UserStudyStats {
 
 export function saveUserStats(stats: Partial<UserStudyStats>): UserStudyStats {
   const current = loadUserStats()
-  const updated = { ...current, ...stats }
+  const updated: UserStudyStats = { ...current, ...stats }
   if (typeof window !== 'undefined') {
     try {
       localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(updated))
@@ -891,6 +933,136 @@ export function saveUserStats(stats: Partial<UserStudyStats>): UserStudyStats {
     }
   }
   return updated
+}
+
+/**
+ * Tracks real active study time in seconds while user is actively learning.
+ * Converts every 60 seconds into +1 totalStudyMins.
+ */
+export function recordActiveStudySeconds(seconds: number): UserStudyStats {
+  const current = loadUserStats()
+  const today = new Date().toISOString().split('T')[0]
+  const prevDate = current.lastStudyDate || ''
+
+  // Streak verification
+  let nextStreak = current.currentStreak
+  if (prevDate !== today) {
+    if (prevDate) {
+      const yesterday = new Date(Date.now() - 86400000)
+        .toISOString()
+        .split('T')[0]
+      if (prevDate === yesterday) {
+        nextStreak = current.currentStreak + 1
+      } else if (current.currentStreak === 0) {
+        nextStreak = 1
+      }
+    } else {
+      nextStreak = 1
+    }
+  }
+
+  const rawSeconds = (current.todayStudySeconds || 0) + seconds
+  const addedMins = Math.floor(rawSeconds / 60)
+  const remainingSecs = rawSeconds % 60
+
+  const updated: UserStudyStats = {
+    ...current,
+    todayStudySeconds: remainingSecs,
+    totalStudyMins: (current.totalStudyMins || 0) + addedMins,
+    currentStreak: nextStreak,
+    longestStreak: Math.max(current.longestStreak || 0, nextStreak),
+    lastStudyDate: today,
+  }
+
+  saveUserStats(updated)
+  return updated
+}
+
+/**
+ * Resets user stats to a completely fresh 0 profile (not locked to Kenji default).
+ */
+export function resetUserToFreshStart(customName?: string): UserStudyStats {
+  const name = customName?.trim() || 'Learner'
+  const fresh: UserStudyStats = {
+    displayName: name,
+    username: name.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'learner',
+    email: `${name.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'learner'}@nihongo.app`,
+    avatar: '🌸',
+    bio: 'Beginning my Japanese learning journey from scratch!',
+    targetJlpt: 'N5',
+    dailyGoalMins: 15,
+    audioSpeed: 1.0,
+    furiganaMode: 'always',
+    currentStreak: 0,
+    longestStreak: 0,
+    xp: 0,
+    weeklyXp: 0,
+    totalStudyMins: 0,
+    todayStudySeconds: 0,
+    vocabCount: 0,
+    kanjiCount: 0,
+    grammarCount: 0,
+    reviewsCompletedToday: 0,
+    lastStudyDate: new Date().toISOString().split('T')[0],
+    completedLessons: [],
+    isFreshUser: true,
+  }
+  saveUserStats(fresh)
+  return fresh
+}
+
+/**
+ * Loads the pre-populated Kenji N5 demonstration profile.
+ */
+export function resetUserToDemoProfile(): UserStudyStats {
+  const demo: UserStudyStats = {
+    ...DEFAULT_USER_STATS,
+    avatar: '🌸',
+    todayStudySeconds: 0,
+    isFreshUser: false,
+  }
+  saveUserStats(demo)
+  return demo
+}
+
+/**
+ * Exports all user data (stats, SRS cards, review logs) as a JSON backup.
+ */
+export function exportUserDataBackup(): string {
+  if (typeof window === 'undefined') return '{}'
+  const stats = loadUserStats()
+  const cards = loadSRSCards()
+  const options = loadDeckOptions()
+  const reviewLogs = loadReviewLogs()
+  const backup = {
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    stats,
+    cards,
+    options,
+    reviewLogs,
+  }
+  return JSON.stringify(backup, null, 2)
+}
+
+/**
+ * Restores all user data from a valid JSON backup string.
+ */
+export function importUserDataBackup(jsonString: string): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    const data = JSON.parse(jsonString)
+    if (!data || typeof data !== 'object') return false
+    if (data.stats) saveUserStats(data.stats)
+    if (Array.isArray(data.cards)) saveSRSCards(data.cards)
+    if (data.options) saveDeckOptions(data.options)
+    if (Array.isArray(data.reviewLogs)) saveReviewLogs(data.reviewLogs)
+    window.dispatchEvent(new Event('nihongo-stats-updated'))
+    window.dispatchEvent(new Event('nihongo-leaderboard-updated'))
+    return true
+  } catch {
+    return false
+  }
 }
 
 let activeJapaneseAudio: HTMLAudioElement | null = null

@@ -1,13 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { PostComposer } from '@/components/social/post-composer'
 import { PostCard, type CommunityPost } from '@/components/social/post-card'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { Trophy, Flame, Sparkles, Trash2, MessageSquarePlus } from 'lucide-react'
+import {
+  Trophy,
+  Flame,
+  Sparkles,
+  Trash2,
+  Clock,
+  ArrowUp,
+  ArrowDown,
+  Shield,
+  Zap,
+  Target,
+} from 'lucide-react'
 import {
   loadUserStats,
   DEFAULT_USER_STATS,
@@ -15,7 +26,7 @@ import {
 } from '@/data/srs-deck'
 import {
   loadQuizRuns,
-  getCurrentLeague,
+  getLeagueCompetitors,
   clearQuizRuns,
   type QuizRunRecord,
 } from '@/data/quiz-leaderboard'
@@ -23,8 +34,8 @@ import {
 const POSTS_STORAGE_KEY = 'nihongo_user_posts_clean_v2'
 
 export default function CommunityPage() {
-  const [activeTab, setActiveTab] = useState<'leaderboard' | 'feed'>(
-    'leaderboard'
+  const [activeTab, setActiveTab] = useState<'league' | 'arcade' | 'feed'>(
+    'league'
   )
   const [posts, setPosts] = useState<CommunityPost[]>([])
   const [stats, setStats] = useState<UserStudyStats>(DEFAULT_USER_STATS)
@@ -71,7 +82,7 @@ export default function CommunityPage() {
       author: {
         name: user.displayName || 'Me',
         username: user.username || 'learner',
-        avatar: '',
+        avatar: user.avatar || '🌸',
       },
       content,
       timeAgo: 'Just now',
@@ -118,7 +129,14 @@ export default function CommunityPage() {
     savePosts(next)
   }
 
-  const league = getCurrentLeague(stats.xp)
+  // Dynamic League Competitor Standings
+  const leagueData = useMemo(() => {
+    return getLeagueCompetitors(stats)
+  }, [stats])
+
+  const { league, competitors, userRank, timeRemaining, isPromotion, isDemotion } =
+    leagueData
+
   const leagueProgress = Math.min(
     100,
     Math.round(
@@ -141,26 +159,37 @@ export default function CommunityPage() {
   return (
     <div className="max-w-3xl mx-auto pb-12 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Leaderboard & Study Feed
+        <h1 className="text-3xl font-extrabold tracking-tight">
+          League Rankings & Community
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Track your League rank, personal quiz high scores, and study notes.
+          Compete in weekly divisions, climb from Bronze to Diamond League, and track your high scores.
         </p>
       </div>
 
-      {/* Simple Duolingo-Style Pill Switcher */}
+      {/* Duolingo-Style 3-Segment Switcher */}
       <div className="flex w-full rounded-xl bg-muted p-1">
         <button
           type="button"
-          onClick={() => setActiveTab('leaderboard')}
+          onClick={() => setActiveTab('league')}
           className={`flex-1 rounded-lg py-2 text-sm font-bold transition-all ${
-            activeTab === 'leaderboard'
+            activeTab === 'league'
               ? 'bg-background text-foreground shadow-sm'
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          🏆 Quiz Leaderboard
+          🏆 Weekly League ({league.name.split(' ')[0]})
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('arcade')}
+          className={`flex-1 rounded-lg py-2 text-sm font-bold transition-all ${
+            activeTab === 'arcade'
+              ? 'bg-background text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          ⚡ Quiz High Scores
         </button>
         <button
           type="button"
@@ -171,77 +200,280 @@ export default function CommunityPage() {
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          📝 My Study Posts ({posts.length})
+          📝 Study Log ({posts.length})
         </button>
       </div>
 
-      {activeTab === 'leaderboard' ? (
+      {/* TAB 1: WEEKLY LEAGUE RANKINGS */}
+      {activeTab === 'league' && (
         <div className="space-y-6">
-          {/* Duolingo-Style League Banner */}
-          <Card className="border-2 border-primary/20 bg-primary/5">
+          {/* League Division Header Banner */}
+          <Card className="border-2 border-primary/20 bg-primary/5 overflow-hidden">
             <CardContent className="p-6 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/15 flex items-center justify-center text-3xl shrink-0">
+                  <div className="h-16 w-16 rounded-2xl bg-primary/15 flex items-center justify-center text-4xl shrink-0">
                     {league.badge}
                   </div>
                   <div>
-                    <Badge className="mb-1">Current Division</Badge>
-                    <h2 className="text-2xl font-extrabold">{league.name}</h2>
+                    <div className="flex items-center gap-2">
+                      <Badge className="font-semibold text-xs">
+                        Current Division
+                      </Badge>
+                      <span className="text-xs text-muted-foreground flex items-center gap-1 font-mono">
+                        <Clock className="h-3.5 w-3.5 text-primary" />
+                        Ends in {timeRemaining}
+                      </span>
+                    </div>
+                    <h2 className="text-2xl font-extrabold mt-0.5">
+                      {league.name}
+                    </h2>
                     <p className="text-xs text-muted-foreground">
-                      {stats.displayName} · {stats.xp} Total XP ·{' '}
-                      {stats.currentStreak} Day Streak
+                      30 active learners competing this week
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="rounded-xl bg-background px-3.5 py-2 border text-center">
+
+                {/* User Current Standing Chip */}
+                <div className="flex items-center gap-2 sm:justify-end">
+                  <div className="rounded-xl bg-background px-4 py-2 border text-center shadow-xs">
                     <p className="text-[11px] text-muted-foreground font-medium">
-                      Total XP
+                      Your Rank
                     </p>
-                    <p className="text-lg font-extrabold text-primary flex items-center justify-center gap-1">
-                      <Sparkles className="h-4 w-4" />
-                      {stats.xp}
+                    <p className="text-xl font-black text-primary flex items-center justify-center gap-1">
+                      #{userRank}
                     </p>
                   </div>
-                  <div className="rounded-xl bg-background px-3.5 py-2 border text-center">
+                  <div className="rounded-xl bg-background px-4 py-2 border text-center shadow-xs">
                     <p className="text-[11px] text-muted-foreground font-medium">
-                      Streak
+                      Weekly XP
                     </p>
-                    <p className="text-lg font-extrabold text-orange-500 flex items-center justify-center gap-1">
-                      <Flame className="h-4 w-4 fill-orange-500" />
-                      {stats.currentStreak}d
+                    <p className="text-xl font-black text-yellow-600 dark:text-yellow-400 flex items-center justify-center gap-1">
+                      <Sparkles className="h-4 w-4" />
+                      {stats.weeklyXp || stats.xp}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-1.5">
+              {/* Status Notice */}
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-background/80 border text-xs">
+                <div className="flex items-center gap-2">
+                  {isPromotion ? (
+                    <>
+                      <span className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
+                      <span className="font-bold text-green-600 dark:text-green-400">
+                        In Promotion Zone (Rank #{userRank})
+                      </span>
+                      <span className="text-muted-foreground hidden sm:inline">
+                        — You will advance to the next league on Sunday!
+                      </span>
+                    </>
+                  ) : isDemotion ? (
+                    <>
+                      <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+                      <span className="font-bold text-red-500">
+                        In Demotion Zone (Rank #{userRank})
+                      </span>
+                      <span className="text-muted-foreground hidden sm:inline">
+                        — Earn more XP to move into the safe zone!
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
+                      <span className="font-bold text-blue-500">
+                        Safe Zone (Rank #{userRank})
+                      </span>
+                      <span className="text-muted-foreground hidden sm:inline">
+                        — Top 7 promote. Keep learning to climb!
+                      </span>
+                    </>
+                  )}
+                </div>
+                <div className="text-muted-foreground font-medium">
+                  {stats.currentStreak}d Streak 🔥
+                </div>
+              </div>
+
+              {/* Progress to next league tier */}
+              <div className="space-y-1.5 pt-1">
                 <div className="flex justify-between text-xs font-medium">
-                  <span>Progress to Next League</span>
+                  <span>Progress to Next Tier</span>
                   <span>
                     {stats.xp} / {league.nextXp} XP ({leagueProgress}%)
                   </span>
                 </div>
-                <Progress value={leagueProgress} className="h-3" />
+                <Progress value={leagueProgress} className="h-2.5" />
               </div>
             </CardContent>
           </Card>
 
+          {/* Leaderboard Competitor List */}
+          <Card className="overflow-hidden">
+            <CardHeader className="p-4 border-b bg-muted/20">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base font-bold flex items-center gap-2">
+                  <Trophy className="h-4 w-4 text-primary" />
+                  Division Standings (Top 30)
+                </CardTitle>
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1 text-green-600 dark:text-green-400 font-semibold">
+                    <ArrowUp className="h-3 w-3" /> Top 7 Promote
+                  </span>
+                  {league.id !== 'bronze' && (
+                    <span className="flex items-center gap-1 text-red-500 font-semibold">
+                      <ArrowDown className="h-3 w-3" /> Bottom 5 Demote
+                    </span>
+                  )}
+                </div>
+              </div>
+            </CardHeader>
+
+            <CardContent className="p-0">
+              <div className="divide-y divide-border/60">
+                {competitors.map((item, idx) => {
+                  const isTop3 = item.rank <= 3
+                  const isPromoted = item.rank <= 7
+                  const isDemoted =
+                    league.id !== 'bronze' &&
+                    item.rank > competitors.length - 5
+
+                  return (
+                    <div key={item.id}>
+                      {/* Divider for Promotion Line after rank 7 */}
+                      {idx === 7 && (
+                        <div className="bg-green-500/10 border-y border-green-500/30 px-4 py-1.5 flex items-center justify-between text-[11px] font-bold text-green-600 dark:text-green-400">
+                          <span className="flex items-center gap-1.5">
+                            <Shield className="h-3.5 w-3.5" />
+                            ▲ PROMOTION ZONE &bull; Top 7 advance to the next league
+                          </span>
+                          <span>Safe above this line</span>
+                        </div>
+                      )}
+
+                      {/* Divider for Demotion Line before bottom 5 */}
+                      {league.id !== 'bronze' &&
+                        idx === competitors.length - 5 && (
+                          <div className="bg-red-500/10 border-y border-red-500/30 px-4 py-1.5 flex items-center justify-between text-[11px] font-bold text-red-500">
+                            <span className="flex items-center gap-1.5">
+                              <ArrowDown className="h-3.5 w-3.5" />
+                              ▼ DEMOTION ZONE &bull; Bottom 5 drop down
+                            </span>
+                            <span>Earn XP to stay safe</span>
+                          </div>
+                        )}
+
+                      {/* Row Item */}
+                      <div
+                        className={`flex items-center justify-between px-4 py-3 transition-colors ${
+                          item.isUser
+                            ? 'bg-primary/10 font-medium border-l-4 border-l-primary'
+                            : isTop3
+                            ? 'bg-muted/15'
+                            : 'hover:bg-muted/30'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3.5 min-w-0">
+                          {/* Rank indicator */}
+                          <div className="w-7 text-center shrink-0">
+                            {item.rank === 1 ? (
+                              <span className="text-xl" title="1st Place">
+                                🥇
+                              </span>
+                            ) : item.rank === 2 ? (
+                              <span className="text-xl" title="2nd Place">
+                                🥈
+                              </span>
+                            ) : item.rank === 3 ? (
+                              <span className="text-xl" title="3rd Place">
+                                🥉
+                              </span>
+                            ) : (
+                              <span
+                                className={`text-xs font-bold font-mono ${
+                                  item.isUser
+                                    ? 'text-primary font-black text-sm'
+                                    : isPromoted
+                                    ? 'text-green-600 dark:text-green-400'
+                                    : isDemoted
+                                    ? 'text-red-500'
+                                    : 'text-muted-foreground'
+                                }`}
+                              >
+                                #{item.rank}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Avatar */}
+                          <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center text-lg shrink-0 border border-border/60">
+                            {item.avatar}
+                          </div>
+
+                          {/* Name & country */}
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm font-bold truncate">
+                                {item.name}
+                              </p>
+                              {item.isUser && (
+                                <Badge className="text-[10px] px-1.5 py-0 h-4 bg-primary text-primary-foreground font-black">
+                                  YOU
+                                </Badge>
+                              )}
+                              <span
+                                className="text-xs"
+                                title={`Flag: ${item.countryFlag}`}
+                              >
+                                {item.countryFlag}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-muted-foreground flex items-center gap-1">
+                              <Flame className="h-3 w-3 text-orange-500 fill-orange-500" />
+                              {item.streak} day streak
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* XP points */}
+                        <div className="text-right shrink-0">
+                          <p className="font-extrabold text-sm text-foreground">
+                            {item.weeklyXp}{' '}
+                            <span className="text-xs font-normal text-muted-foreground">
+                              XP
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* TAB 2: QUIZ ARCADE HIGH SCORES */}
+      {activeTab === 'arcade' && (
+        <div className="space-y-6">
           {/* Best Scores Per Quiz Mode */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
-                <Trophy className="h-5 w-5 text-primary" />
+                <Zap className="h-5 w-5 text-primary" />
                 Personal Best Scores by Quiz Mode
               </CardTitle>
             </CardHeader>
             <CardContent>
               {Object.keys(bestByMode).length === 0 ? (
-                <p className="text-sm text-muted-foreground py-4 text-center">
-                  No quiz runs recorded yet. Play any mode in the Quiz Arcade or
-                  Grammar Practice to post your first score!
-                </p>
+                <div className="text-sm text-muted-foreground py-6 text-center space-y-2">
+                  <p>No quiz runs recorded yet.</p>
+                  <p className="text-xs">
+                    Play any mode in the Quiz Arcade (Learn page) to post your high scores!
+                  </p>
+                </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {Object.values(bestByMode).map((best) => (
@@ -252,7 +484,7 @@ export default function CommunityPage() {
                       <div>
                         <p className="font-bold text-sm">{best.modeName}</p>
                         <p className="text-xs text-muted-foreground">
-                          Best Streak: {best.streak} · Accuracy: {best.accuracy}%
+                          Streak: {best.streak} &bull; Accuracy: {best.accuracy}%
                         </p>
                       </div>
                       <Badge className="text-xs font-bold">
@@ -265,10 +497,13 @@ export default function CommunityPage() {
             </CardContent>
           </Card>
 
-          {/* Recent Quiz Leaderboard History */}
+          {/* Recent Quiz Run History */}
           <Card>
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
-              <CardTitle className="text-lg">Recent Quiz Leaderboard</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Target className="h-5 w-5 text-primary" />
+                Recent Speedrun History
+              </CardTitle>
               {quizRuns.length > 0 && (
                 <Button
                   size="sm"
@@ -284,7 +519,7 @@ export default function CommunityPage() {
             <CardContent>
               {quizRuns.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground text-sm">
-                  Complete a quiz session to see your ranked runs here!
+                  Complete a quiz session in Learn &rarr; Arcade to see your ranked runs here!
                 </div>
               ) : (
                 <div className="divide-y">
@@ -299,10 +534,10 @@ export default function CommunityPage() {
                         </span>
                         <div>
                           <p className="font-semibold">
-                            {run.playerName} — {run.modeName}
+                            {run.playerName} &mdash; {run.modeName}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {run.timestamp} · Streak {run.streak} ·{' '}
+                            {run.timestamp} &bull; Streak {run.streak} &bull;{' '}
                             {run.accuracy}% accuracy
                           </p>
                         </div>
@@ -322,19 +557,20 @@ export default function CommunityPage() {
             </CardContent>
           </Card>
         </div>
-      ) : (
+      )}
+
+      {/* TAB 3: STUDY FEED */}
+      {activeTab === 'feed' && (
         <div className="space-y-4">
           <PostComposer onCreatePost={handleCreatePost} />
 
           {posts.length === 0 ? (
             <Card>
               <CardContent className="p-10 text-center space-y-2">
-                <MessageSquarePlus className="h-8 w-8 text-muted-foreground mx-auto" />
                 <h3 className="font-bold text-base">No study posts yet</h3>
                 <p className="text-xs text-muted-foreground max-w-md mx-auto">
-                  All bot posts and replies have been removed. Write a post
-                  above whenever you want to log your own daily Japanese
-                  milestones!
+                  Write a study note above whenever you want to log milestones,
+                  new grammar breakthroughs, or questions for your study notes!
                 </p>
               </CardContent>
             </Card>

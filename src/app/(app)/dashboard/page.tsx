@@ -13,6 +13,7 @@ import {
   PenTool,
   Clock,
 } from 'lucide-react'
+import { getCurrentLeague } from '@/data/quiz-leaderboard'
 import { StudyLogger } from '@/components/study/study-logger'
 import {
   loadUserStats,
@@ -45,21 +46,35 @@ export default function DashboardPage() {
     )
   )
 
+  const league = getCurrentLeague(stats.xp)
+
   return (
     <div className="flex flex-col gap-6 pb-12">
       {/* Header section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
         <div className="space-y-1">
-          <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-1.5 text-orange-500 bg-orange-500/10 px-2.5 py-1 rounded-full text-sm font-bold">
-              <Flame className="h-4 w-4 fill-orange-500" />
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <Link
+              href="/profile"
+              className="h-8 w-8 rounded-full bg-primary/15 flex items-center justify-center text-lg hover:scale-105 transition-transform"
+              title="Edit Profile & Avatar"
+            >
+              {stats.avatar || '🌸'}
+            </Link>
+            <div className="flex items-center gap-1 text-orange-500 bg-orange-500/10 px-2.5 py-1 rounded-full text-xs font-bold">
+              <Flame className="h-3.5 w-3.5 fill-orange-500" />
               <span>{stats.currentStreak} day streak</span>
             </div>
+            <Link href="/community">
+              <Badge variant="secondary" className="gap-1 cursor-pointer hover:bg-muted font-bold text-xs">
+                <span>{league.badge}</span> {league.name}
+              </Badge>
+            </Link>
             <Badge variant="secondary" className="gap-1">
               <Sparkles className="h-3 w-3 text-yellow-500" /> {stats.xp} XP
             </Badge>
-            <Badge variant="outline" className="gap-1">
-              <Clock className="h-3 w-3" /> {stats.totalStudyMins}m studied
+            <Badge variant="outline" className="gap-1 font-mono text-xs">
+              <Clock className="h-3 w-3 text-blue-500 animate-pulse" /> {stats.totalStudyMins}m studied
             </Badge>
           </div>
           <h1 className="text-3xl font-bold tracking-tight pt-1">
