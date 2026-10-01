@@ -74,6 +74,7 @@ export type KanaDeckScope =
   | 'yoon'
   | 'confusion'
   | 'all'
+  | 'custom'
 
 export function getKanaPool(
   script: 'hiragana' | 'katakana' | 'both',
@@ -132,13 +133,26 @@ export function buildSmartDistractors(
     }
   }
 
-  // Fill remaining slots from same row or nearby items
+  // Fill remaining slots from current pool
   for (const item of pool) {
     if (candidateValues.length >= 3) break
     const val =
       mode === 'kana-to-romaji' ? cleanRomaji(item.romaji) : item.kana
     if (val !== correctValue && !candidateValues.includes(val)) {
       candidateValues.push(val)
+    }
+  }
+
+  // If pool was small (e.g. only 2 or 5 items selected), pull extra distractors from base gojuon pool
+  if (candidateValues.length < 3) {
+    const fallbackPool = getKanaPool('both', 'gojuon')
+    for (const item of fallbackPool) {
+      if (candidateValues.length >= 3) break
+      const val =
+        mode === 'kana-to-romaji' ? cleanRomaji(item.romaji) : item.kana
+      if (val !== correctValue && !candidateValues.includes(val)) {
+        candidateValues.push(val)
+      }
     }
   }
 

@@ -34,7 +34,11 @@ import {
   SENTENCE_SCRAMBLE_CHALLENGES,
   type KanaDeckScope,
 } from '@/data/quiz-engine'
-import type { KanaItem } from '@/data/kana'
+import {
+  HIRAGANA_GOJUON,
+  KATAKANA_GOJUON,
+  type KanaItem,
+} from '@/data/kana'
 import {
   speakJapanese,
   addCustomSRSCard,
@@ -59,16 +63,26 @@ type GameMode =
 
 interface LearningArcadeProps {
   initialScript?: 'hiragana' | 'katakana' | 'both'
+  customPool?: KanaItem[]
+  onExitCustomPool?: () => void
 }
 
 export function LearningArcade({
   initialScript = 'hiragana',
+  customPool,
+  onExitCustomPool,
 }: LearningArcadeProps) {
   const [gameMode, setGameMode] = useState<GameMode>('speed-typing')
   const [script, setScript] = useState<'hiragana' | 'katakana' | 'both'>(
     initialScript
   )
-  const [scope, setScope] = useState<KanaDeckScope>('gojuon')
+  const [scope, setScope] = useState<KanaDeckScope>(
+    customPool && customPool.length > 0 ? 'custom' : 'gojuon'
+  )
+  const [customSelectedKana, setCustomSelectedKana] = useState<Set<string>>(
+    new Set(customPool ? customPool.map((c) => c.kana) : [])
+  )
+  const [showCustomPicker, setShowCustomPicker] = useState<boolean>(false)
 
   // Shared adaptive quiz state
   const [queue, setQueue] = useState<KanaItem[]>([])
@@ -109,15 +123,36 @@ export function LearningArcade({
   const [flippedIds, setFlippedIds] = useState<string[]>([])
   const [matchMoves, setMatchMoves] = useState(0)
 
-  // Build pool when script or scope changes
+  useEffect(() => {
+    if (customPool && customPool.length > 0) {
+      setCustomSelectedKana(new Set(customPool.map((c) => c.kana)))
+      setScope('custom')
+    }
+  }, [customPool])
+
+  // Build pool when script, scope, customPool, or customSelectedKana changes
   const basePool = useMemo(() => {
+    if (scope === 'custom') {
+      if (customSelectedKana.size > 0) {
+        const allPool = getKanaPool(script, 'all')
+        const picked = allPool.filter((c) => customSelectedKana.has(c.kana))
+        if (picked.length > 0) return picked
+      }
+      if (customPool && customPool.length > 0) {
+        return customPool
+      }
+      // If none explicitly selected, default to the first 5 characters (A-row)
+      const firstRow =
+        script === 'katakana' ? KATAKANA_GOJUON[0].items : HIRAGANA_GOJUON[0].items
+      return firstRow.filter(Boolean) as KanaItem[]
+    }
     const pool = getKanaPool(script, scope)
     return pool.length > 0 ? pool : getKanaPool('hiragana', 'gojuon')
-  }, [script, scope])
+  }, [script, scope, customPool, customSelectedKana])
 
   // Initialize / Reset Queue
-  function initQueue(customScope?: KanaDeckScope) {
-    const activePool = [...getKanaPool(script, customScope || scope)]
+  function initQueue() {
+    const activePool = [...basePool]
     for (let i = activePool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[activePool[i], activePool[j]] = [activePool[j], activePool[i]]
@@ -132,7 +167,7 @@ export function LearningArcade({
   useEffect(() => {
     initQueue()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [script, scope])
+  }, [basePool])
 
   // Initialize Memory Match Grid with random pairs and random card positions
   function initMemoryBoard() {
@@ -247,21 +282,26 @@ export function LearningArcade({
   }
 
   // Mode 2 & 3 Handler: Smart Confusion-Pair & Audio Dictation choice
-  function handleOptionSelect(opt: string) {
+  function handleOptionSelect(opt: string, forceExpected?: string) {
     if (!currentItem || selectedOption) return
     setSelectedOption(opt)
     speakJapanese(currentItem.kana)
 
     const correctVal =
-      quizDirection === 'kana-to-romaji'
+      forceExpected ??
+      (gameMode === 'audio-dictation'
+        ? currentItem.kana
+        : quizDirection === 'kana-to-romaji'
         ? cleanRomaji(currentItem.romaji)
-        : currentItem.kana
+        : currentItem.kana)
 
     if (opt === correctVal) {
       const nextStreak = streak + 1
       setStreak(nextStreak)
       setScore((s) => s + 10)
       awardXP(5)
+      // Successfully answered correctly - clear from weak spots if previously present
+      setMissedItems((prev) => prev.filter((m) => m.kana !== currentItem.kana))
       toast.success('Spot on! 🎯')
     } else {
       setStreak(0)
@@ -488,17 +528,39 @@ export function LearningArcade({
           </div>
 
           {gameMode !== 'sentence-builder' && gameMode !== 'leaderboard' && (
-            <select
-              value={scope}
-              onChange={(e) => setScope(e.target.value as KanaDeckScope)}
-              className="h-8 rounded-md border border-input bg-background px-2.5 text-xs font-medium"
-            >
-              <option value="gojuon">Basic (Gojūon 46)</option>
-              <option value="confusion">🔥 Confusion Pairs (Look-Alikes)</option>
-              <option value="dakuten">Voiced (Dakuten 25)</option>
-              <option value="yoon">Combo (Yōon 33)</option>
-              <option value="all">All Kana Combined (104)</option>
-            </select>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <select
+                value={scope}
+                onChange={(e) => {
+                  const newScope = e.target.value as KanaDeckScope
+                  setScope(newScope)
+                  if (newScope === 'custom') setShowCustomPicker(true)
+                }}
+                className="h-8 rounded-md border border-input bg-background px-2.5 text-xs font-medium"
+              >
+                <option value="gojuon">Basic (Gojūon 46)</option>
+                <option value="confusion">🔥 Confusion Pairs (Look-Alikes)</option>
+                <option value="dakuten">Voiced (Dakuten 25)</option>
+                <option value="yoon">Combo (Yōon 33)</option>
+                <option value="all">All Kana Combined (104)</option>
+                <option value="custom">
+                  🎯 Custom Selection ({basePool.length} chars)
+                </option>
+              </select>
+
+              <Button
+                type="button"
+                size="sm"
+                variant={scope === 'custom' || showCustomPicker ? 'default' : 'outline'}
+                className="h-8 text-xs font-semibold gap-1"
+                onClick={() => {
+                  setScope('custom')
+                  setShowCustomPicker(!showCustomPicker)
+                }}
+              >
+                🎯 {scope === 'custom' ? `Pick (${basePool.length})` : 'Pick Characters'}
+              </Button>
+            </div>
           )}
         </div>
 
@@ -523,6 +585,205 @@ export function LearningArcade({
           )}
         </div>
       </div>
+
+      {/* Custom Character Selection Drawer */}
+      {(scope === 'custom' || showCustomPicker) && (
+        <Card className="border-primary/40 bg-primary/5">
+          <CardHeader className="p-4 pb-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <CardTitle className="text-base font-bold flex items-center gap-2">
+                  <span>🎯 Custom Character Selection &amp; SRS</span>
+                  <Badge variant="secondary" className="font-mono text-xs">
+                    {basePool.length} Active Characters
+                  </Badge>
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Pick specific characters (e.g. just the first 5 characters you learned) to quiz yourself or add to your Anki SRS deck.
+                </CardDescription>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8 text-xs"
+                  onClick={() => {
+                    let added = 0
+                    for (const item of basePool) {
+                      const res = addCustomSRSCard({
+                        front: item.kana,
+                        reading: item.romaji,
+                        meaning: `Kana syllable "${cleanRomaji(item.romaji)}"`,
+                        category: 'kana',
+                        jlptLevel: 'N5',
+                        exampleSentence: item.example,
+                        tags: ['kana', script, item.row],
+                      })
+                      if (res.added) added++
+                    }
+                    toast.success(
+                      `Added ${basePool.length} characters (${added} new) to your Anki SRS queue!`
+                    )
+                  }}
+                >
+                  <Plus className="h-3.5 w-3.5 mr-1" />
+                  Add to Anki SRS ({basePool.length})
+                </Button>
+                <Button
+                  size="sm"
+                  className="h-8 text-xs font-bold"
+                  onClick={() => {
+                    initQueue()
+                    setShowCustomPicker(false)
+                    toast.success(`Starting quiz on ${basePool.length} chosen characters!`)
+                  }}
+                >
+                  ⚡ Start Quiz ({basePool.length})
+                </Button>
+                {onExitCustomPool && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 text-xs"
+                    onClick={onExitCustomPool}
+                  >
+                    Exit Custom
+                  </Button>
+                )}
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="p-4 pt-2 space-y-3">
+            {/* Quick Preset Buttons */}
+            <div className="flex flex-wrap items-center gap-1.5 text-xs border-b pb-2">
+              <span className="font-semibold text-muted-foreground mr-1">
+                Quick Presets:
+              </span>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="h-7 text-xs"
+                onClick={() => {
+                  const first5 = (
+                    script === 'katakana'
+                      ? KATAKANA_GOJUON[0].items
+                      : HIRAGANA_GOJUON[0].items
+                  )
+                    .filter(Boolean)
+                    .map((c) => c!.kana)
+                  setCustomSelectedKana(new Set(first5))
+                  setScope('custom')
+                  toast.info('Selected first 5 characters (A-row: a, i, u, e, o)')
+                }}
+              >
+                First 5: A-row ({script === 'katakana' ? 'ア〜オ' : 'あ〜お'})
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="h-7 text-xs"
+                onClick={() => {
+                  const rows =
+                    script === 'katakana'
+                      ? [KATAKANA_GOJUON[0], KATAKANA_GOJUON[1]]
+                      : [HIRAGANA_GOJUON[0], HIRAGANA_GOJUON[1]]
+                  const first10 = rows
+                    .flatMap((r) => r.items)
+                    .filter(Boolean)
+                    .map((c) => c!.kana)
+                  setCustomSelectedKana(new Set(first10))
+                  setScope('custom')
+                  toast.info('Selected first 10 characters (A + Ka rows)')
+                }}
+              >
+                First 10: A + Ka ({script === 'katakana' ? 'ア〜コ' : 'あ〜こ'})
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="h-7 text-xs"
+                onClick={() => {
+                  const rows =
+                    script === 'katakana'
+                      ? [KATAKANA_GOJUON[0], KATAKANA_GOJUON[1], KATAKANA_GOJUON[2]]
+                      : [HIRAGANA_GOJUON[0], HIRAGANA_GOJUON[1], HIRAGANA_GOJUON[2]]
+                  const first15 = rows
+                    .flatMap((r) => r.items)
+                    .filter(Boolean)
+                    .map((c) => c!.kana)
+                  setCustomSelectedKana(new Set(first15))
+                  setScope('custom')
+                  toast.info('Selected first 15 characters (A + Ka + Sa rows)')
+                }}
+              >
+                First 15: A + Ka + Sa
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                className="h-7 text-xs"
+                onClick={() => {
+                  const all = getKanaPool(script, 'gojuon').map((c) => c.kana)
+                  setCustomSelectedKana(new Set(all))
+                  setScope('custom')
+                }}
+              >
+                Select All Gojūon
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                className="h-7 text-xs text-muted-foreground"
+                onClick={() => setCustomSelectedKana(new Set())}
+              >
+                Clear
+              </Button>
+            </div>
+
+            {/* Interactive Grid of Characters */}
+            <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pt-1">
+              {getKanaPool(script, 'gojuon').map((item) => {
+                const isSelected =
+                  customSelectedKana.has(item.kana) ||
+                  (customSelectedKana.size === 0 && basePool.some((b) => b.kana === item.kana))
+                return (
+                  <button
+                    key={item.kana}
+                    type="button"
+                    onClick={() => {
+                      const next = new Set(
+                        customSelectedKana.size === 0
+                          ? basePool.map((b) => b.kana)
+                          : customSelectedKana
+                      )
+                      if (next.has(item.kana)) next.delete(item.kana)
+                      else next.add(item.kana)
+                      setCustomSelectedKana(next)
+                      setScope('custom')
+                    }}
+                    className={`h-9 px-2.5 rounded-lg border text-sm font-bold flex items-center gap-1.5 transition-all ${
+                      isSelected
+                        ? 'bg-primary text-primary-foreground border-primary shadow-xs'
+                        : 'bg-background hover:bg-muted/60 text-muted-foreground'
+                    }`}
+                  >
+                    <span>{item.kana}</span>
+                    <span className="text-[10px] font-normal opacity-80">
+                      {cleanRomaji(item.romaji)}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* GAME MODE 1: TOFUGU-STYLE SPEED RECALL TYPING */}
       {gameMode === 'speed-typing' && currentItem && (
@@ -741,8 +1002,7 @@ export function LearningArcade({
                       className="h-14 text-2xl font-bold"
                       disabled={!!selectedOption}
                       onClick={() => {
-                        setQuizDirection('romaji-to-kana')
-                        handleOptionSelect(kanaOpt)
+                        handleOptionSelect(kanaOpt, currentItem.kana)
                       }}
                     >
                       {kanaOpt}

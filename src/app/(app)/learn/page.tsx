@@ -14,6 +14,10 @@ import {
   ExternalLink,
   ArrowLeft,
   CheckCircle2,
+  Check,
+  Zap,
+  Sparkles,
+  X,
 } from 'lucide-react'
 import {
   HIRAGANA_GOJUON,
@@ -48,6 +52,8 @@ export default function LearnPage() {
   const [selectedKana, setSelectedKana] = useState<KanaItem | null>(null)
   const [readChars, setReadChars] = useState<Set<string>>(new Set())
   const [completedLessons, setCompletedLessons] = useState<string[]>([])
+  const [selectedKanaMap, setSelectedKanaMap] = useState<Record<string, KanaItem>>({})
+  const [customQuizPool, setCustomQuizPool] = useState<KanaItem[] | null>(null)
 
   useEffect(() => {
     const stats = loadUserStats()
@@ -143,10 +149,103 @@ export default function LearnPage() {
     readChars.has(c.kana)
   ).length
 
+  const selectedKanaList = Object.values(selectedKanaMap)
+  const selectedKanaKeys = new Set(Object.keys(selectedKanaMap))
+
+  function toggleKanaSelection(item: KanaItem) {
+    setSelectedKanaMap((prev) => {
+      const next = { ...prev }
+      if (next[item.kana]) {
+        delete next[item.kana]
+      } else {
+        next[item.kana] = item
+      }
+      return next
+    })
+  }
+
+  function selectMultipleKana(items: KanaItem[]) {
+    setSelectedKanaMap((prev) => {
+      const next = { ...prev }
+      items.forEach((item) => {
+        next[item.kana] = item
+      })
+      return next
+    })
+  }
+
+  function deselectMultipleKana(items: KanaItem[]) {
+    setSelectedKanaMap((prev) => {
+      const next = { ...prev }
+      items.forEach((item) => {
+        delete next[item.kana]
+      })
+      return next
+    })
+  }
+
+  function clearSelection() {
+    setSelectedKanaMap({})
+  }
+
+  function handleAddSelectedToSRS() {
+    if (selectedKanaList.length === 0) return
+    let addedCount = 0
+    let existingCount = 0
+
+    for (const item of selectedKanaList) {
+      const isKatakana = KATAKANA_GOJUON.some((r) =>
+        r.items.some((i) => i?.kana === item.kana)
+      )
+      const scriptLabel = isKatakana ? 'Katakana' : 'Hiragana'
+      const res = addCustomSRSCard({
+        front: item.kana,
+        reading: `${item.romaji} (${scriptLabel})`,
+        meaning: `Kana syllable "${item.romaji}"`,
+        category: 'kana',
+        jlptLevel: 'N5',
+        exampleSentence: item.example,
+        tags: ['kana', scriptLabel.toLowerCase(), item.row || 'custom'],
+      })
+      if (res.added) addedCount++
+      else existingCount++
+    }
+
+    if (addedCount > 0) {
+      toast.success(
+        `Added ${addedCount} character${addedCount > 1 ? 's' : ''} to your Anki SRS deck!${
+          existingCount > 0 ? ` (${existingCount} already existed)` : ''
+        }`
+      )
+    } else {
+      toast.info(`All ${existingCount} selected characters are already in your SRS deck.`)
+    }
+  }
+
+  function handleStartCustomQuiz() {
+    if (selectedKanaList.length === 0) return
+    setCustomQuizPool(selectedKanaList)
+    setShowArcade(true)
+    toast.success(`Starting quiz on ${selectedKanaList.length} selected characters!`)
+  }
+
   function renderKanaChart(rows: KanaRow[], scriptLabel: string) {
     const isYoon = kanaSubTab === 'yoon'
+    const currentTabItems = rows.flatMap((r) => r.items.filter(Boolean) as KanaItem[])
+
+    function applyPreset(count: number) {
+      const targetItems = currentTabItems.slice(0, count)
+      selectMultipleKana(targetItems)
+      toast.success(`Selected first ${targetItems.length} ${scriptLabel} characters!`)
+    }
+
+    function selectAllCurrent() {
+      selectMultipleKana(currentTabItems)
+      toast.success(`Selected all ${currentTabItems.length} ${scriptLabel} (${kanaSubTab}) characters!`)
+    }
+
     return (
-      <div className="space-y-5 pt-3">
+      <div className="space-y-4 pt-2">
         {/* Sub-tabs: Gojūon | Dakuten | Yōon */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
           <div className="flex gap-1.5">
@@ -190,48 +289,176 @@ export default function LearnPage() {
           )}
         </div>
 
-        <div className="space-y-2.5">
-          {rows.map((row) => (
-            <div
-              key={row.rowName}
-              className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4"
+        {/* Quick Selection Presets Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-muted/30 p-2.5 rounded-lg border border-dashed text-xs">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="font-semibold text-muted-foreground mr-1 flex items-center gap-1">
+              <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+              Quick Pick:
+            </span>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs px-2.5 bg-background"
+              onClick={() => applyPreset(5)}
             >
-              <div className="w-24 shrink-0 text-xs font-medium text-muted-foreground">
-                {row.rowName}
-              </div>
-              <div
-                className={`grid flex-1 gap-2 ${
-                  isYoon ? 'grid-cols-3' : 'grid-cols-5'
-                }`}
+              First 5 (A-row)
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs px-2.5 bg-background"
+              onClick={() => applyPreset(10)}
+            >
+              First 10 (A + Ka)
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs px-2.5 bg-background"
+              onClick={() => applyPreset(15)}
+            >
+              First 15 (A + Ka + Sa)
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs px-2.5 bg-background"
+              onClick={selectAllCurrent}
+            >
+              Select All
+            </Button>
+          </div>
+
+          {selectedKanaList.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="font-mono text-[11px]">
+                {selectedKanaList.length} picked
+              </Badge>
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                className="h-7 text-xs px-2 text-muted-foreground hover:text-foreground"
+                onClick={clearSelection}
               >
-                {row.items.map((item, idx) =>
-                  item ? (
-                    <button
-                      key={item.kana}
-                      type="button"
-                      onClick={() => handleKanaClick(item, scriptLabel)}
-                      className={`group relative flex flex-col items-center justify-center rounded-lg border p-2.5 transition-all hover:border-primary ${
-                        readChars.has(item.kana)
-                          ? 'border-primary/40 bg-primary/5'
-                          : 'bg-background'
-                      }`}
-                    >
-                      <Volume2 className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 absolute top-1.5 right-1.5 transition-opacity" />
-                      <span className="text-2xl font-bold">{item.kana}</span>
-                      <span className="text-[11px] text-muted-foreground">
-                        {item.romaji}
-                      </span>
-                    </button>
-                  ) : (
-                    <div
-                      key={`empty-${idx}`}
-                      className="rounded-lg border border-dashed bg-muted/10 p-2.5"
-                    />
-                  )
-                )}
-              </div>
+                <X className="h-3 w-3 mr-1" /> Clear
+              </Button>
             </div>
-          ))}
+          )}
+        </div>
+
+        {/* Kana Table Grid with Row-Level and Card-Level Selection */}
+        <div className="space-y-2.5">
+          {rows.map((row) => {
+            const rowItems = row.items.filter(Boolean) as KanaItem[]
+            const isRowAllSelected =
+              rowItems.length > 0 &&
+              rowItems.every((item) => selectedKanaKeys.has(item.kana))
+
+            function toggleRow() {
+              if (isRowAllSelected) {
+                deselectMultipleKana(rowItems)
+              } else {
+                selectMultipleKana(rowItems)
+              }
+            }
+
+            return (
+              <div
+                key={row.rowName}
+                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4"
+              >
+                <div className="w-28 shrink-0 flex items-center justify-between sm:justify-start gap-1.5">
+                  <span className="text-xs font-medium text-muted-foreground truncate">
+                    {row.rowName}
+                  </span>
+                  {rowItems.length > 0 && (
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant={isRowAllSelected ? 'default' : 'ghost'}
+                      className={`h-5 px-1.5 text-[10px] rounded ${
+                        isRowAllSelected
+                          ? 'bg-primary text-primary-foreground font-semibold'
+                          : 'text-muted-foreground hover:text-foreground border border-muted'
+                      }`}
+                      onClick={toggleRow}
+                      title={isRowAllSelected ? 'Deselect row' : 'Select entire row'}
+                    >
+                      {isRowAllSelected ? '✓ Row' : '+ Row'}
+                    </Button>
+                  )}
+                </div>
+
+                <div
+                  className={`grid flex-1 gap-2 ${
+                    isYoon ? 'grid-cols-3' : 'grid-cols-5'
+                  }`}
+                >
+                  {row.items.map((item, idx) => {
+                    if (!item) {
+                      return (
+                        <div
+                          key={`empty-${idx}`}
+                          className="rounded-lg border border-dashed bg-muted/10 p-2.5"
+                        />
+                      )
+                    }
+
+                    const isSelected = selectedKanaKeys.has(item.kana)
+
+                    return (
+                      <button
+                        key={item.kana}
+                        type="button"
+                        onClick={() => {
+                          toggleKanaSelection(item)
+                          handleKanaClick(item, scriptLabel)
+                        }}
+                        className={`group relative flex flex-col items-center justify-center rounded-lg border p-2.5 transition-all text-center ${
+                          isSelected
+                            ? 'border-primary ring-2 ring-primary/40 bg-primary/10 shadow-sm'
+                            : readChars.has(item.kana)
+                            ? 'border-primary/40 bg-primary/5 hover:border-primary'
+                            : 'bg-background hover:border-primary/60'
+                        }`}
+                      >
+                        {/* Selection Check Indicator */}
+                        <span
+                          className={`absolute top-1.5 left-1.5 h-4 w-4 rounded-full flex items-center justify-center transition-colors ${
+                            isSelected
+                              ? 'bg-primary text-primary-foreground'
+                              : 'border border-muted-foreground/30 text-transparent group-hover:border-primary/60'
+                          }`}
+                        >
+                          <Check className="h-2.5 w-2.5 stroke-[3]" />
+                        </span>
+
+                        {/* Speaker Audio Icon */}
+                        <Volume2
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            speakJapanese(item.kana)
+                          }}
+                          className="h-3.5 w-3.5 text-muted-foreground opacity-60 hover:opacity-100 hover:text-primary absolute top-1.5 right-1.5 transition-opacity"
+                        />
+
+                        <span className="text-2xl font-bold mt-1">{item.kana}</span>
+                        <span className="text-[11px] text-muted-foreground font-mono">
+                          {item.romaji}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     )
@@ -245,16 +472,30 @@ export default function LearnPage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setShowArcade(false)}
+            onClick={() => {
+              setShowArcade(false)
+              setCustomQuizPool(null)
+            }}
             className="gap-1.5"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Kana Overview
           </Button>
-          <Badge variant="secondary">Kana Time-Attack &amp; Leaderboard</Badge>
+          <div className="flex items-center gap-2">
+            {customQuizPool && customQuizPool.length > 0 && (
+              <Badge variant="outline" className="border-primary text-primary font-semibold">
+                🎯 Custom Pool: {customQuizPool.length} Chars
+              </Badge>
+            )}
+            <Badge variant="secondary">Kana Time-Attack &amp; Leaderboard</Badge>
+          </div>
         </div>
 
-        <LearningArcade initialScript="hiragana" />
+        <LearningArcade
+          initialScript={expanded === 'katakana' ? 'katakana' : 'hiragana'}
+          customPool={customQuizPool || undefined}
+          onExitCustomPool={() => setCustomQuizPool(null)}
+        />
       </div>
     )
   }
@@ -527,6 +768,53 @@ export default function LearnPage() {
           </div>
         </div>
       </div>
+
+      {/* Floating Action Bar for Selected Kana */}
+      {selectedKanaList.length > 0 && (
+        <div className="fixed bottom-5 left-4 right-4 max-w-2xl mx-auto z-50 rounded-2xl border border-primary/50 bg-background/95 backdrop-blur-md shadow-2xl p-3 sm:p-4 animate-in fade-in slide-in-from-bottom-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 w-full sm:w-auto">
+              <Badge variant="default" className="text-xs px-2.5 py-1 font-bold shrink-0">
+                ✓ {selectedKanaList.length} Kana Selected
+              </Badge>
+              <div className="text-xs text-muted-foreground font-mono truncate max-w-[200px] sm:max-w-xs">
+                {selectedKanaList.map((k) => k.kana).join(' ')}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 text-xs gap-1.5 font-medium"
+                onClick={handleAddSelectedToSRS}
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Add to SRS ({selectedKanaList.length})
+              </Button>
+
+              <Button
+                size="sm"
+                className="h-8 text-xs font-bold gap-1.5 bg-primary text-primary-foreground shadow"
+                onClick={handleStartCustomQuiz}
+              >
+                <Zap className="h-3.5 w-3.5 text-yellow-300" />
+                Start Quiz ({selectedKanaList.length})
+              </Button>
+
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 text-xs px-2 text-muted-foreground hover:text-foreground"
+                onClick={clearSelection}
+                title="Clear selection"
+              >
+                <X className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
