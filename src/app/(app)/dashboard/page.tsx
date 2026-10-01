@@ -21,10 +21,11 @@ import {
   DEFAULT_USER_STATS,
   type UserStudyStats,
 } from '@/data/srs-deck'
+import { CURRICULUM_LESSONS } from '@/data/kana'
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<UserStudyStats>(DEFAULT_USER_STATS)
-  const [dueCount, setDueCount] = useState<number>(28)
+  const [dueCount, setDueCount] = useState<number>(0)
 
   useEffect(() => {
     function sync() {
@@ -38,12 +39,14 @@ export default function DashboardPage() {
     return () => window.removeEventListener('nihongo-stats-updated', sync)
   }, [])
 
-  const jlptProgress = Math.min(
-    100,
-    Math.round(
-      ((stats.completedLessons?.length || 0) / 6) * 60 +
-        Math.min(40, Math.round(stats.vocabCount / 5))
-    )
+  const totalLessons = CURRICULUM_LESSONS.length
+  const completedCount = stats.completedLessons?.length || 0
+  const lessonProgress = totalLessons > 0 ? (completedCount / totalLessons) * 60 : 0
+  const vocabProgress = Math.min(40, Math.round((stats.vocabCount || 0) / 5))
+  const jlptProgress = Math.min(100, Math.round(lessonProgress + vocabProgress))
+
+  const nextLesson = CURRICULUM_LESSONS.find(
+    (l) => !stats.completedLessons?.includes(l.id)
   )
 
   const league = getCurrentLeague(stats.xp)
@@ -192,16 +195,33 @@ export default function DashboardPage() {
           {/* Continue Learning */}
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6">
-              <div>
-                <Badge className="mb-2">Up Next in Curriculum</Badge>
-                <h3 className="font-bold text-xl">「です / だ」 (To be, Is)</h3>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  Practice declarative sentences with minimalist fill-in-the-blank drills.
-                </p>
-              </div>
-              <Link href="/grammar">
-                <Button className="shrink-0">Start Practice &rarr;</Button>
-              </Link>
+              {nextLesson ? (
+                <>
+                  <div>
+                    <Badge className="mb-2">Up Next in Curriculum</Badge>
+                    <h3 className="font-bold text-xl">{nextLesson.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      {nextLesson.summary || nextLesson.subtitle}
+                    </p>
+                  </div>
+                  <Link href={`/learn?lesson=${nextLesson.id}`}>
+                    <Button className="shrink-0">Start Lesson &rarr;</Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <Badge className="mb-2">Foundation Complete</Badge>
+                    <h3 className="font-bold text-xl">All Foundation Lessons Completed! 🎉</h3>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      Great progress! Review your SRS queue or explore the Grammar Library.
+                    </p>
+                  </div>
+                  <Link href="/practice">
+                    <Button className="shrink-0">Review Cards &rarr;</Button>
+                  </Link>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>

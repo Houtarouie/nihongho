@@ -473,28 +473,28 @@ export interface UserStudyStats {
 }
 
 export const DEFAULT_USER_STATS: UserStudyStats = {
-  displayName: 'Kenji',
-  username: 'kenjilearns',
-  email: 'kenji@nihongo.app',
-  avatar: '🌸',
-  bio: 'Studying Japanese daily for JLPT N5 and conversational fluency.',
+  displayName: 'Learner',
+  username: 'learner',
+  email: '',
+  avatar: '🌱',
+  bio: 'Beginning my Japanese learning journey.',
   targetJlpt: 'N5',
   dailyGoalMins: 15,
   audioSpeed: 1.0,
   furiganaMode: 'always',
-  currentStreak: 14,
-  longestStreak: 21,
-  xp: 1240,
-  weeklyXp: 480,
-  totalStudyMins: 320,
+  currentStreak: 0,
+  longestStreak: 0,
+  xp: 0,
+  weeklyXp: 0,
+  totalStudyMins: 0,
   todayStudySeconds: 0,
-  vocabCount: 145,
-  kanjiCount: 42,
-  grammarCount: 28,
+  vocabCount: 0,
+  kanjiCount: 0,
+  grammarCount: 0,
   reviewsCompletedToday: 0,
-  lastStudyDate: new Date().toISOString().split('T')[0],
-  completedLessons: ['hiragana-chart', 'katakana-chart'],
-  isFreshUser: false,
+  lastStudyDate: '',
+  completedLessons: [],
+  isFreshUser: true,
 }
 
 export function loadDeckOptions(): AnkiDeckOptions {
@@ -535,25 +535,7 @@ export function loadReviewLogs(): AnkiReviewLog[] {
   } catch {
     // ignore
   }
-  // Seed initial 14-day review history so the Anki Heatmap is populated on first visit
-  const seeded: AnkiReviewLog[] = []
-  const now = Date.now()
-  const DAY = 24 * 60 * 60 * 1000
-  const ratings: CardRating[] = ['good', 'good', 'easy', 'good', 'hard', 'good']
-  for (let d = 13; d >= 1; d--) {
-    const count = (d % 4) * 4 + 6
-    for (let i = 0; i < count; i++) {
-      seeded.push({
-        id: `seed-${d}-${i}`,
-        cardId: `vocab-${(i % 10) + 1}`,
-        rating: ratings[(d + i) % ratings.length],
-        interval: (i % 7) + 1,
-        timestamp: now - d * DAY + i * 1000,
-      })
-    }
-  }
-  saveReviewLogs(seeded)
-  return seeded
+  return []
 }
 
 export function saveReviewLogs(logs: AnkiReviewLog[]) {
@@ -1058,26 +1040,12 @@ export function resetUserToFreshStart(customName?: string): UserStudyStats {
     kanjiCount: 0,
     grammarCount: 0,
     reviewsCompletedToday: 0,
-    lastStudyDate: new Date().toISOString().split('T')[0],
+    lastStudyDate: '',
     completedLessons: [],
     isFreshUser: true,
   }
   saveUserStats(fresh)
   return fresh
-}
-
-/**
- * Loads the pre-populated Kenji N5 demonstration profile.
- */
-export function resetUserToDemoProfile(): UserStudyStats {
-  const demo: UserStudyStats = {
-    ...DEFAULT_USER_STATS,
-    avatar: '🌸',
-    todayStudySeconds: 0,
-    isFreshUser: false,
-  }
-  saveUserStats(demo)
-  return demo
 }
 
 /**

@@ -25,7 +25,6 @@ import {
   Sliders,
   Download,
   Upload,
-  UserCheck,
   Settings2,
 } from 'lucide-react'
 import {
@@ -33,7 +32,6 @@ import {
   saveUserStats,
   loadSRSCards,
   resetUserToFreshStart,
-  resetUserToDemoProfile,
   exportUserDataBackup,
   importUserDataBackup,
   DEFAULT_USER_STATS,
@@ -150,13 +148,6 @@ export default function ProfilePage() {
       syncData()
       toast.success('Profile reset to clean start (0 stats)!')
     }
-  }
-
-  function handleResetToDemo() {
-    const demo = resetUserToDemoProfile()
-    setStats(demo)
-    syncData()
-    toast.success('Loaded demonstration profile (Kenji N5)!')
   }
 
   function handleSaveCustomStats(e: React.FormEvent) {
@@ -497,33 +488,18 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Quick Actions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
             <Button
               type="button"
               variant="outline"
               onClick={handleResetToFresh}
-              className="justify-start h-auto py-3 px-4 border-dashed border-2 hover:border-red-500/50"
+              className="justify-start h-auto py-3 px-4 border-dashed border-2 hover:border-red-500/50 w-full sm:w-auto"
             >
               <RotateCcw className="h-5 w-5 mr-3 text-red-500 shrink-0" />
               <div className="text-left">
                 <div className="font-bold text-sm">Start Fresh from 0</div>
                 <div className="text-xs text-muted-foreground">
                   Reset streak, time, & XP to zero for your genuine journey
-                </div>
-              </div>
-            </Button>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleResetToDemo}
-              className="justify-start h-auto py-3 px-4"
-            >
-              <UserCheck className="h-5 w-5 mr-3 text-primary shrink-0" />
-              <div className="text-left">
-                <div className="font-bold text-sm">Load Demo Profile (Kenji N5)</div>
-                <div className="text-xs text-muted-foreground">
-                  Pre-fills sample stats for testing and review exploration
                 </div>
               </div>
             </Button>
