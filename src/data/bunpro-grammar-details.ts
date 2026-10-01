@@ -7,6 +7,7 @@ export interface GrammarPointSummary {
   level: string
   lesson?: string | null
   title?: string
+  track?: 'core' | 'reference'
 }
 
 export interface GrammarExampleItem {

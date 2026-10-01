@@ -251,6 +251,11 @@ export function GrammarPointInspector({
           <span className="text-xs text-muted-foreground">
             {(sentenceIdx % examples.length) + 1} / {examples.length}
           </span>
+          {item.track === 'core' && (
+            <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 font-bold">
+              Core Track
+            </Badge>
+          )}
           <Badge variant="secondary">{detail.level}</Badge>
         </div>
       </div>

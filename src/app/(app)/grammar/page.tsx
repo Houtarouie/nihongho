@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import grammarData from '@/data/grammar.json'
+import referenceGrammarData from '@/data/grammar-dictionary-979.json'
+import curatedGrammarData from '@/data/user-grammar-curated.json'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
@@ -15,6 +16,8 @@ import {
   LayoutGrid,
   ListTree,
   ArrowRight,
+  BookOpen,
+  Layers,
 } from 'lucide-react'
 import { addCustomSRSCard, speakJapanese } from '@/data/srs-deck'
 import { GrammarPointInspector } from '@/components/bunpro/grammar-point-inspector'
@@ -24,7 +27,36 @@ import { toast } from 'sonner'
 const LEVELS = ['All', 'N5', 'N4', 'N3', 'N2', 'N1', 'Non-JLPT', '関西弁'] as const
 const MASTERED_GRAMMAR_KEY = 'nihongo_bunpro_mastered_grammar_v1'
 
+const coreGrammarList: GrammarPointSummary[] = curatedGrammarData.grammar.map(
+  (item) => ({
+    grammar: item.grammar,
+    title: item.title,
+    meaning: item.meaning,
+    level: item.level,
+    lesson: item.lesson,
+    track: 'core',
+  })
+)
+
+const referenceGrammarList: GrammarPointSummary[] = (
+  referenceGrammarData as GrammarPointSummary[]
+).map((item) => ({
+  ...item,
+  track: 'reference',
+}))
+
+const combinedList: GrammarPointSummary[] = [
+  ...coreGrammarList,
+  ...referenceGrammarList.filter(
+    (ref) =>
+      !coreGrammarList.some(
+        (c) => c.grammar === ref.grammar && c.level === ref.level
+      )
+  ),
+]
+
 export default function GrammarPage() {
+  const [catalogMode, setCatalogMode] = useState<'core' | 'reference' | 'all'>('core')
   const [selectedLevel, setSelectedLevel] = useState<string>('N5')
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'lessons' | 'grid'>('lessons')
@@ -32,6 +64,12 @@ export default function GrammarPage() {
     useState<GrammarPointSummary | null>(null)
   const [historyTrail, setHistoryTrail] = useState<GrammarPointSummary[]>([])
   const [masteredSet, setMasteredSet] = useState<Set<string>>(new Set())
+
+  const activeCatalog = useMemo(() => {
+    if (catalogMode === 'core') return coreGrammarList
+    if (catalogMode === 'reference') return referenceGrammarList
+    return combinedList
+  }, [catalogMode])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -47,18 +85,19 @@ export default function GrammarPage() {
 
   const filteredPoints = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
-    return (grammarData as GrammarPointSummary[]).filter((item) => {
+    return activeCatalog.filter((item) => {
       const matchesLevel =
         selectedLevel === 'All' || item.level === selectedLevel
       if (!matchesLevel) return false
       if (!q) return true
       return (
         item.grammar.toLowerCase().includes(q) ||
+        (item.title && item.title.toLowerCase().includes(q)) ||
         item.meaning.toLowerCase().includes(q) ||
         (item.lesson && item.lesson.toLowerCase().includes(q))
       )
     })
-  }, [selectedLevel, searchQuery])
+  }, [activeCatalog, selectedLevel, searchQuery])
 
   // Group filtered points by Lesson when in 'lessons' mode
   const groupedByLesson = useMemo(() => {
@@ -110,7 +149,7 @@ export default function GrammarPage() {
     return (
       <GrammarPointInspector
         item={activeGrammar}
-        allGrammar={grammarData as GrammarPointSummary[]}
+        allGrammar={activeCatalog}
         onSelectGrammar={handleSelectGrammar}
         onBack={() => setActiveGrammar(null)}
         historyTrail={historyTrail}
@@ -127,17 +166,20 @@ export default function GrammarPage() {
             Grammar Path
           </h1>
           <p className="text-muted-foreground text-sm">
-            Step-by-step Japanese grammar units from N5 to N1 ({grammarData.length} points). Tap any card to learn, compare, and practice!
+            {catalogMode === 'core'
+              ? `Core Curriculum (${coreGrammarList.length} points) · Structured study path with authentic explanations, nuances & fill-in-the-blank practice.`
+              : catalogMode === 'reference'
+                ? `Reference Dictionary (${referenceGrammarList.length} points) · Comprehensive grammar dictionary covering all JLPT levels, Kansai-ben, and idioms.`
+                : `Combined Grammar Library (${combinedList.length} points) · Browse all core points and reference dictionary items together.`}
           </p>
         </div>
 
         <Button
           onClick={() => {
             const desu =
-              (grammarData as GrammarPointSummary[]).find(
-                (g) => g.grammar === 'です'
-              ) || (grammarData[1] as GrammarPointSummary)
-            handleSelectGrammar(desu)
+              activeCatalog.find((g) => g.grammar === 'です' || g.grammar.startsWith('です')) ||
+              activeCatalog[0]
+            if (desu) handleSelectGrammar(desu)
           }}
           className="shrink-0 gap-1.5 font-bold border-b-4"
         >
@@ -146,13 +188,62 @@ export default function GrammarPage() {
         </Button>
       </div>
 
+      {/* Catalog Selector Tabs: Core Curriculum vs Complete Reference vs All */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-muted/60 rounded-2xl border">
+        <button
+          type="button"
+          onClick={() => {
+            setCatalogMode('core')
+            if (['Non-JLPT', '関西弁'].includes(selectedLevel)) {
+              setSelectedLevel('N5')
+            }
+          }}
+          className={`flex-1 min-w-[140px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 ${
+            catalogMode === 'core'
+              ? 'bg-background text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <Sparkles className="h-4 w-4 text-amber-500" />
+          <span>Core Curriculum ({coreGrammarList.length})</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setCatalogMode('reference')}
+          className={`flex-1 min-w-[140px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 ${
+            catalogMode === 'reference'
+              ? 'bg-background text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <BookOpen className="h-4 w-4 text-blue-500" />
+          <span>Reference Dictionary ({referenceGrammarList.length})</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setCatalogMode('all')}
+          className={`flex-1 min-w-[140px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 ${
+            catalogMode === 'all'
+              ? 'bg-background text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <Layers className="h-4 w-4 text-purple-500" />
+          <span>All Combined ({combinedList.length})</span>
+        </button>
+      </div>
+
       {/* Search, Level Filter & View Mode Toggle */}
       <div className="space-y-3 sticky top-0 z-10 bg-background/95 backdrop-blur py-3 border-b">
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <Search className="h-4 w-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
             <Input
-              placeholder="Search grammar point, meaning, or lesson (e.g. です, だ, たい, Lesson 1)..."
+              placeholder={
+                catalogMode === 'core'
+                  ? 'Search Core Curriculum (e.g. は, です, たい, Unit 1)...'
+                  : 'Search Reference Dictionary (e.g. です, だ, Lesson 1)...'
+              }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
@@ -190,8 +281,8 @@ export default function GrammarPage() {
           {LEVELS.map((level) => {
             const count =
               level === 'All'
-                ? grammarData.length
-                : grammarData.filter((g) => g.level === level).length
+                ? activeCatalog.length
+                : activeCatalog.filter((g) => g.level === level).length
             return (
               <Button
                 key={level}
@@ -265,13 +356,18 @@ export default function GrammarPage() {
                       <CardHeader className="pb-2">
                         <div className="flex items-start justify-between gap-2">
                           <CardTitle className="text-lg font-extrabold leading-snug">
-                            {item.grammar}
+                            {item.title || item.grammar}
                           </CardTitle>
                           <div className="flex items-center gap-1 shrink-0">
                             {isMastered && (
                               <Badge variant="secondary" className="text-[10px] px-1.5 text-emerald-600 dark:text-emerald-400">
                                 <CheckCheck className="h-3 w-3 mr-0.5" />
                                 Done
+                              </Badge>
+                            )}
+                            {item.track === 'core' && (
+                              <Badge variant="outline" className="text-[10px] px-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 font-bold">
+                                Core
                               </Badge>
                             )}
                             <Badge variant="secondary" className="text-[11px]">
@@ -337,11 +433,24 @@ export default function GrammarPage() {
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2">
                     <CardTitle className="text-lg font-extrabold leading-snug">
-                      {item.grammar}
+                      {item.title || item.grammar}
                     </CardTitle>
-                    <Badge variant="secondary" className="shrink-0">
-                      {item.level}
-                    </Badge>
+                    <div className="flex items-center gap-1 shrink-0">
+                      {isMastered && (
+                        <Badge variant="secondary" className="text-[10px] px-1.5 text-emerald-600 dark:text-emerald-400">
+                          <CheckCheck className="h-3 w-3 mr-0.5" />
+                          Done
+                        </Badge>
+                      )}
+                      {item.track === 'core' && (
+                        <Badge variant="outline" className="text-[10px] px-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 font-bold">
+                          Core
+                        </Badge>
+                      )}
+                      <Badge variant="secondary" className="text-[11px]">
+                        {item.level}
+                      </Badge>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
