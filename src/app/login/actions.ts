@@ -3,11 +3,35 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { getSupabaseEnv } from '@/lib/supabase/config'
 
-function isSupabaseConfigured() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  return Boolean(url && key && url.startsWith('http'))
+function validateConfig() {
+  const env = getSupabaseEnv()
+  if (env.isDashboardUrl) {
+    return {
+      valid: false,
+      error:
+        'Invalid NEXT_PUBLIC_SUPABASE_URL: The Supabase Dashboard URL was entered instead of your Project API URL. Please set NEXT_PUBLIC_SUPABASE_URL to https://<project-id>.supabase.co.',
+    }
+  }
+  if (!env.isConfigured) {
+    return {
+      valid: false,
+      error:
+        'Authentication service is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.',
+    }
+  }
+  return { valid: true, error: null }
+}
+
+function extractErrorMessage(err: unknown): string {
+  if (err instanceof Error) {
+    const cause = (err as { cause?: { message?: string; code?: string } }).cause
+    const causeMsg = cause?.message || cause?.code
+    if (causeMsg) return `${err.message} (${causeMsg})`
+    return err.message
+  }
+  return 'An unexpected authentication error occurred.'
 }
 
 export async function login(formData: FormData) {
@@ -18,11 +42,9 @@ export async function login(formData: FormData) {
     return { error: 'Email and password are required.' }
   }
 
-  if (!isSupabaseConfigured()) {
-    return {
-      error:
-        'Authentication service is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.',
-    }
+  const configCheck = validateConfig()
+  if (!configCheck.valid) {
+    return { error: configCheck.error }
   }
 
   try {
@@ -36,12 +58,7 @@ export async function login(formData: FormData) {
       return { error: error.message }
     }
   } catch (err) {
-    return {
-      error:
-        err instanceof Error
-          ? err.message
-          : 'An unexpected authentication error occurred.',
-    }
+    return { error: extractErrorMessage(err) }
   }
 
   revalidatePath('/', 'layout')
@@ -57,16 +74,14 @@ export async function signup(formData: FormData) {
     return { error: 'Email and password are required.' }
   }
 
-  if (!isSupabaseConfigured()) {
-    return {
-      error:
-        'Authentication service is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.',
-    }
+  const configCheck = validateConfig()
+  if (!configCheck.valid) {
+    return { error: configCheck.error }
   }
 
   try {
     const supabase = createClient()
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -79,13 +94,15 @@ export async function signup(formData: FormData) {
     if (error) {
       return { error: error.message }
     }
-  } catch (err) {
-    return {
-      error:
-        err instanceof Error
-          ? err.message
-          : 'An unexpected authentication error occurred.',
+
+    if (data.user && !data.session) {
+      return {
+        error:
+          'Account created, but email confirmation is required. Please turn off "Confirm email" in Supabase Authentication -> Providers -> Email to log in immediately.',
+      }
     }
+  } catch (err) {
+    return { error: extractErrorMessage(err) }
   }
 
   revalidatePath('/', 'layout')
@@ -93,7 +110,8 @@ export async function signup(formData: FormData) {
 }
 
 export async function logout() {
-  if (isSupabaseConfigured()) {
+  const { isConfigured } = getSupabaseEnv()
+  if (isConfigured) {
     try {
       const supabase = createClient()
       await supabase.auth.signOut()

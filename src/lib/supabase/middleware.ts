@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { getSupabaseEnv } from './config'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -17,11 +18,10 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/profile')
   const isAuthRoute = pathname.startsWith('/login')
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const { url: supabaseUrl, key: supabaseKey, isConfigured } = getSupabaseEnv()
 
   // If Supabase credentials are not configured, redirect protected routes to login
-  if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith('http')) {
+  if (!isConfigured) {
     if (isAppRoute) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
