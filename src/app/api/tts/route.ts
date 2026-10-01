@@ -38,12 +38,25 @@ export async function GET(req: Request) {
       cleanText
     )}`
 
-    const response = await fetch(ttsUrl, {
+    let response = await fetch(ttsUrl, {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
       },
     })
+
+    if (!response.ok) {
+      // Secondary fallback to client=gtx
+      const gtxUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=gtx&q=${encodeURIComponent(
+        cleanText
+      )}`
+      response = await fetch(gtxUrl, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        },
+      })
+    }
 
     if (!response.ok) {
       return new NextResponse('TTS upstream error', { status: 502 })

@@ -56,6 +56,7 @@ import {
   type AnkiReviewLog,
 } from '@/data/srs-deck'
 import { renderAnkiText, diffTypedAnswer } from '@/lib/anki/furigana'
+import { convertRomajiToKana } from '@/lib/kana-ime'
 import { AnkiBrowser } from '@/components/anki/anki-browser'
 import { AnkiStats } from '@/components/anki/anki-stats'
 import { AnkiSyncPanel } from '@/components/anki/anki-sync-modal'
@@ -998,6 +999,9 @@ export default function PracticePage() {
                     <form
                       onSubmit={(e) => {
                         e.preventDefault()
+                        setTypedAnswer((prev) =>
+                          convertRomajiToKana(prev, { finalizeTrailingN: true })
+                        )
                         setShowAnswer(true)
                         if (deckOptions.autoPlayAudio)
                           speakJapanese(currentCard.front)
@@ -1006,9 +1010,11 @@ export default function PracticePage() {
                       className="max-w-xs mx-auto space-y-2 pt-2"
                     >
                       <Input
-                        placeholder="Type reading (kana or romaji)..."
+                        placeholder="Type reading (auto-converts romaji → kana)..."
                         value={typedAnswer}
-                        onChange={(e) => setTypedAnswer(e.target.value)}
+                        onChange={(e) =>
+                          setTypedAnswer(convertRomajiToKana(e.target.value))
+                        }
                         className="text-center"
                         autoFocus
                       />

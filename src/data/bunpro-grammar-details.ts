@@ -1,10 +1,12 @@
 import grammarData from '@/data/grammar.json'
+import curatedUserGrammar from '@/data/user-grammar-curated.json'
 
 export interface GrammarPointSummary {
   grammar: string
   meaning: string
   level: string
   lesson?: string | null
+  title?: string
 }
 
 export interface GrammarExampleItem {
@@ -437,9 +439,21 @@ export function getGrammarPointDetail(
 ): GrammarPointRichDetail {
   const cleanTitle = item.grammar.split(' ')[0]
   const curated = CURATED_GRAMMAR_DETAILS[item.grammar] || CURATED_GRAMMAR_DETAILS[cleanTitle]
+  const matchedCurated = curatedUserGrammar.grammar.find(
+    (g) =>
+      g.grammar === item.grammar ||
+      g.grammar === cleanTitle ||
+      g.title === item.grammar ||
+      (item.title && g.title === item.title) ||
+      g.title.startsWith(item.grammar) ||
+      item.grammar.startsWith(g.grammar) ||
+      (g.level === item.level && g.meaning.toLowerCase() === item.meaning.toLowerCase())
+  )
 
   const lessonStr =
-    item.lesson || `${item.level} Core Grammar – Essential Expressions`
+    matchedCurated?.lesson ||
+    item.lesson ||
+    `${item.level} Core Grammar – Essential Expressions`
   const lessonNum = parseLessonNumber(item.lesson)
 
   // Determine register & part of speech heuristically if not curated
@@ -662,25 +676,40 @@ export function getGrammarPointDetail(
 
   return {
     grammar: item.grammar,
-    displayTitle: curated?.displayTitle || cleanTitle,
-    reading: curated?.reading || cleanTitle,
-    meaning: item.meaning,
-    level: item.level,
+    displayTitle: curated?.displayTitle || matchedCurated?.title || cleanTitle,
+    reading: curated?.reading || matchedCurated?.title || cleanTitle,
+    meaning: matchedCurated?.meaning || item.meaning,
+    level: matchedCurated?.level || item.level,
     lesson: lessonStr,
-    cautionBanner: curated?.cautionBanner || defaultCaution,
-    structures: curated?.structures || defaultStructures,
+    cautionBanner:
+      curated?.cautionBanner ||
+      (matchedCurated ? `Nuance: ${matchedCurated.nuance}` : defaultCaution),
+    structures:
+      curated?.structures ||
+      (matchedCurated ? [matchedCurated.structure] : defaultStructures),
     metadata: curated?.metadata || defaultMetadata,
-    aboutParagraphs: curated?.aboutParagraphs || defaultAbout,
-    aboutExamples: curated?.aboutExamples || defaultExamples,
-    allExamples: curated?.allExamples || [
-      ...(curated?.aboutExamples || defaultExamples),
-    ],
+    aboutParagraphs:
+      curated?.aboutParagraphs ||
+      (matchedCurated
+        ? [matchedCurated.explanation, `Nuance & Context: ${matchedCurated.nuance}`]
+        : defaultAbout),
+    aboutExamples:
+      (curated?.aboutExamples as GrammarExampleItem[]) ||
+      (matchedCurated?.examples as unknown as GrammarExampleItem[]) ||
+      defaultExamples,
+    allExamples:
+      (curated?.allExamples as GrammarExampleItem[]) ||
+      (matchedCurated?.examples as unknown as GrammarExampleItem[]) || [
+        ...(curated?.aboutExamples || defaultExamples),
+      ],
     topicCard: curated?.topicCard || {
       title: lessonStr.includes('–')
         ? lessonStr.split(' – ')[1]
         : `${item.level} Core Grammar Path`,
       subtitle: `${item.level} Topic · ${lessonStr.split(' – ')[0]}`,
-      description: `The goal of this ${item.level} topic is to master "${cleanTitle}" (${item.meaning}) in real Japanese contexts, understand how its social register compares to its synonyms, and apply it effortlessly in reading and conversation.`,
+      description: matchedCurated
+        ? matchedCurated.explanation
+        : `The goal of this ${item.level} topic is to master "${cleanTitle}" (${item.meaning}) in real Japanese contexts, understand how its social register compares to its synonyms, and apply it effortlessly in reading and conversation.`,
       readTime: '2m',
     },
     synonyms: dynamicSynonyms,
@@ -689,7 +718,9 @@ export function getGrammarPointDetail(
     vocabItems: curated?.vocabItems || defaultVocab,
     resources: curated?.resources || {
       mnemonic: `Link "${cleanTitle}" visually to "${item.meaning}" by saying the first example sentence out loud 3 times while picturing the scene.`,
-      commonMistake: `Learners often confuse ${cleanTitle} with ${dynamicSynonyms[0]?.grammar || 'similar particles'} when switching between casual speech and polite speech.`,
+      commonMistake:
+        matchedCurated?.nuance ||
+        `Learners often confuse ${cleanTitle} with ${dynamicSynonyms[0]?.grammar || 'similar particles'} when switching between casual speech and polite speech.`,
       readingPassageLesson: lessonNum,
     },
   }

@@ -29,6 +29,7 @@ import {
   speakJapanese,
 } from '@/data/srs-deck'
 import { recordQuizRun } from '@/data/quiz-leaderboard'
+import { convertRomajiToKana, isAnswerMatching } from '@/lib/kana-ime'
 import { toast } from 'sonner'
 
 interface GrammarPointInspectorProps {
@@ -111,7 +112,9 @@ export function GrammarPointInspector({
       return
     }
 
-    const cleanInput = typedValue.trim()
+    const cleanInput = convertRomajiToKana(typedValue.trim(), {
+      finalizeTrailingN: true,
+    })
     const expected = currentEx.clozeAnswer.trim()
 
     if (!cleanInput) {
@@ -122,7 +125,14 @@ export function GrammarPointInspector({
       return
     }
 
-    if (cleanInput === expected || cleanInput === detail.displayTitle) {
+    setTypedValue(cleanInput)
+
+    if (
+      isAnswerMatching(cleanInput, expected, [
+        detail.displayTitle,
+        ...(detail.reading ? [detail.reading] : []),
+      ])
+    ) {
       setStatus('correct')
       setSessionScore((s) => s + 20)
       speakJapanese(currentEx.plainJapanese)
@@ -262,7 +272,7 @@ export function GrammarPointInspector({
                 type="text"
                 value={typedValue}
                 onChange={(e) => {
-                  setTypedValue(e.target.value)
+                  setTypedValue(convertRomajiToKana(e.target.value))
                   if (status !== 'idle') setStatus('idle')
                 }}
                 onKeyDown={(e) => {

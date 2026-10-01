@@ -1,4 +1,5 @@
 import React from 'react'
+import { convertRomajiToKana } from '@/lib/kana-ime'
 
 /**
  * Safely parses Anki Japanese Support furigana syntax `漢字[かんじ]`
@@ -107,9 +108,11 @@ export function diffTypedAnswer(
   expectedRaw: string,
   typedRaw: string
 ): { isExact: boolean; diffs: CharDiff[] } {
-  // Normalize by stripping parenthetical romaji if user only typed kana or only romaji
+  // Normalize by stripping parenthetical romaji and converting typed Romaji to Kana
   const cleanExpected = expectedRaw.replace(/\s*\(.*?\)\s*/g, '').trim()
-  const cleanTyped = typedRaw.trim()
+  const cleanTyped = convertRomajiToKana(typedRaw.trim(), {
+    finalizeTrailingN: true,
+  })
 
   const target =
     cleanTyped.toLowerCase() === expectedRaw.trim().toLowerCase()

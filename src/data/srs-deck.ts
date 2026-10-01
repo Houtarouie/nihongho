@@ -931,6 +931,67 @@ export function speakJapanese(
 
   stopJapaneseSpeech()
 
+  let hasFallenBack = false
+
+  const fallbackToWebSpeech = () => {
+    if (hasFallenBack) return
+    hasFallenBack = true
+
+    try {
+      if (!('speechSynthesis' in window)) {
+        options?.onError?.()
+        return
+      }
+
+      // Chrome/Windows bugfix: resume if audio engine is locked or paused
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume()
+      }
+
+      const utterance = new SpeechSynthesisUtterance(cleanText)
+      utterance.lang = 'ja-JP'
+      utterance.rate = options?.rate ?? 0.95
+
+      const setVoiceAndSpeak = () => {
+        try {
+          const voices = window.speechSynthesis.getVoices()
+          const jaVoice = voices.find(
+            (v) =>
+              v.lang.toLowerCase().startsWith('ja') ||
+              v.lang.toLowerCase().includes('jp')
+          )
+          if (jaVoice) {
+            utterance.voice = jaVoice
+          }
+        } catch {
+          // ignore voice selection error
+        }
+
+        if (options?.onEnd) utterance.onend = () => options.onEnd?.()
+        if (options?.onError) utterance.onerror = () => options.onError?.()
+
+        window.speechSynthesis.speak(utterance)
+      }
+
+      const voices = window.speechSynthesis.getVoices()
+      if (voices.length > 0) {
+        setVoiceAndSpeak()
+      } else {
+        window.speechSynthesis.onvoiceschanged = () => {
+          setVoiceAndSpeak()
+          window.speechSynthesis.onvoiceschanged = null
+        }
+        setTimeout(() => {
+          if (!window.speechSynthesis.speaking) {
+            setVoiceAndSpeak()
+          }
+        }, 150)
+      }
+    } catch {
+      options?.onError?.()
+    }
+  }
+
   try {
     const audio = new Audio(
       `/api/tts?text=${encodeURIComponent(cleanText)}`
@@ -941,38 +1002,20 @@ export function speakJapanese(
     activeJapaneseAudio = audio
 
     if (options?.onEnd) {
-      audio.onended = () => options.onEnd?.()
-    }
-
-    const fallbackToWebSpeech = () => {
-      try {
-        if (!('speechSynthesis' in window)) {
-          options?.onError?.()
-          return
-        }
-        const utterance = new SpeechSynthesisUtterance(cleanText)
-        utterance.lang = 'ja-JP'
-        utterance.rate = options?.rate ?? 0.9
-        const voices = window.speechSynthesis.getVoices()
-        const jaVoice = voices.find((v) =>
-          v.lang.toLowerCase().startsWith('ja')
-        )
-        if (jaVoice) utterance.voice = jaVoice
-        if (options?.onEnd) utterance.onend = () => options.onEnd?.()
-        if (options?.onError) utterance.onerror = () => options.onError?.()
-        window.speechSynthesis.speak(utterance)
-      } catch {
-        options?.onError?.()
+      audio.onended = () => {
+        activeJapaneseAudio = null
+        options.onEnd?.()
       }
     }
 
     audio.onerror = () => fallbackToWebSpeech()
+
     const playPromise = audio.play()
     if (playPromise !== undefined) {
       playPromise.catch(() => fallbackToWebSpeech())
     }
   } catch {
-    options?.onError?.()
+    fallbackToWebSpeech()
   }
 }
 
