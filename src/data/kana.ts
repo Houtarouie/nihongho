@@ -385,8 +385,8 @@ export const KATAKANA_DAKUTEN: KanaRow[] = [
     rowName: 'ダ (D)',
     items: [
       { kana: 'ダ', romaji: 'da', example: 'ダンス (dansu - dance)', row: 'da' },
-      { kana: 'ヂ', romaji: 'ji (di)', example: 'Rare katakana di', row: 'da' },
-      { kana: 'ヅ', romaji: 'zu (du)', example: 'Rare katakana du', row: 'da' },
+      { kana: 'ヂ', romaji: 'ji (di)', example: 'ハナヂ (hanaji - nosebleed)', row: 'da' },
+      { kana: 'ヅ', romaji: 'zu (du)', example: 'ツヅク (tsuzuku - continue)', row: 'da' },
       { kana: 'デ', romaji: 'de', example: 'デザイン (dezain - design)', row: 'da' },
       { kana: 'ド', romaji: 'do', example: 'ドア (doa - door)', row: 'da' },
     ],

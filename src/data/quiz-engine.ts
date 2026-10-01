@@ -34,10 +34,10 @@ export const KANA_CONFUSION_GROUPS: Record<string, string[]> = {
   あ: ['お', 'め', 'ぬ'],
   お: ['あ', 'す', 'む'],
   ね: ['れ', 'わ', 'ぬ'],
-  れ: ['ね', 'わ', '礼'],
+  れ: ['ね', 'わ', 'い'],
   わ: ['ね', 'れ', 'ち'],
   ぬ: ['め', 'ね', 'あ'],
-  め: ['ぬ', 'あ', 'マ'],
+  め: ['ぬ', 'あ', 'の'],
   る: ['ろ', 'そ', 'う'],
   ろ: ['る', 'そ', 'ら'],
   さ: ['き', 'ち', 'ら'],
@@ -121,8 +121,18 @@ export function buildSmartDistractors(
   const correctValue =
     mode === 'kana-to-romaji' ? cleanRomaji(target.romaji) : target.kana
 
-  const lookAlikeKanas = KANA_CONFUSION_GROUPS[target.kana] || []
-  const lookAlikeItems = pool.filter((p) => lookAlikeKanas.includes(p.kana))
+  const isHiragana = /^[\u3040-\u309f]/.test(target.kana)
+  const isKatakana = /^[\u30a0-\u30ff]/.test(target.kana)
+  const matchesScript = (kana: string) => {
+    if (isHiragana) return /^[\u3040-\u309f]/.test(kana)
+    if (isKatakana) return /^[\u30a0-\u30ff]/.test(kana)
+    return true
+  }
+
+  const lookAlikeKanas = (KANA_CONFUSION_GROUPS[target.kana] || []).filter(matchesScript)
+  const lookAlikeItems = pool.filter(
+    (p) => lookAlikeKanas.includes(p.kana) && matchesScript(p.kana)
+  )
 
   const candidateValues: string[] = []
   for (const item of lookAlikeItems) {
@@ -133,9 +143,10 @@ export function buildSmartDistractors(
     }
   }
 
-  // Fill remaining slots from current pool
+  // Fill remaining slots from current pool matching script
   for (const item of pool) {
     if (candidateValues.length >= 3) break
+    if (mode === 'romaji-to-kana' && !matchesScript(item.kana)) continue
     const val =
       mode === 'kana-to-romaji' ? cleanRomaji(item.romaji) : item.kana
     if (val !== correctValue && !candidateValues.includes(val)) {
@@ -143,11 +154,13 @@ export function buildSmartDistractors(
     }
   }
 
-  // If pool was small (e.g. only 2 or 5 items selected), pull extra distractors from base gojuon pool
+  // If pool was small (e.g. only 2 or 5 items selected), pull extra distractors from base gojuon pool of the target script
   if (candidateValues.length < 3) {
-    const fallbackPool = getKanaPool('both', 'gojuon')
+    const targetScript = isHiragana ? 'hiragana' : isKatakana ? 'katakana' : 'both'
+    const fallbackPool = getKanaPool(targetScript, 'gojuon')
     for (const item of fallbackPool) {
       if (candidateValues.length >= 3) break
+      if (mode === 'romaji-to-kana' && !matchesScript(item.kana)) continue
       const val =
         mode === 'kana-to-romaji' ? cleanRomaji(item.romaji) : item.kana
       if (val !== correctValue && !candidateValues.includes(val)) {
