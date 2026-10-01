@@ -27,7 +27,6 @@ import {
   Settings2,
   BarChart3,
   Search,
-  RefreshCw,
   Play,
 } from 'lucide-react'
 import {
@@ -36,7 +35,6 @@ import {
   calculateSM2,
   getIntervalLabels,
   addCustomSRSCard,
-  importAnkiDeckCards,
   loadUserStats,
   saveUserStats,
   recordCompletedStudy,
@@ -60,10 +58,9 @@ import { renderAnkiText, diffTypedAnswer } from '@/lib/anki/furigana'
 import { convertRomajiToKana } from '@/lib/kana-ime'
 import { AnkiBrowser } from '@/components/anki/anki-browser'
 import { AnkiStats } from '@/components/anki/anki-stats'
-import { AnkiSyncPanel } from '@/components/anki/anki-sync-modal'
 import { toast } from 'sonner'
 
-type AnkiTopTab = 'decks' | 'study' | 'add' | 'browse' | 'stats' | 'sync'
+type AnkiTopTab = 'decks' | 'study' | 'add' | 'browse' | 'stats'
 
 const FLAG_COLORS: Record<AnkiFlag, string> = {
   0: 'text-muted-foreground',
@@ -121,29 +118,6 @@ export default function PracticePage() {
       }
     } catch {
       // ignore
-    }
-
-    // Auto-repair any previously imported .apkg deck whose cards lacked English translations
-    const brokenDeckCard = loaded.find(
-      (c) => c.deckName && !/[a-zA-Z]{2,}/.test(c.meaning || '')
-    )
-    if (brokenDeckCard?.deckName) {
-      fetch(
-        `/api/anki-repair?deckName=${encodeURIComponent(brokenDeckCard.deckName)}`
-      )
-        .then((r) => r.json())
-        .then((data) => {
-          if (Array.isArray(data?.cards) && data.cards.length > 0) {
-            const { allCards } = importAnkiDeckCards(
-              brokenDeckCard.deckName!,
-              data.cards
-            )
-            setCards(allCards)
-          }
-        })
-        .catch(() => {
-          // ignore
-        })
     }
   }, [])
 
@@ -499,7 +473,6 @@ export default function PracticePage() {
               { id: 'add', label: 'Add', icon: Plus },
               { id: 'browse', label: 'Browse', icon: Search },
               { id: 'stats', label: 'Stats', icon: BarChart3 },
-              { id: 'sync', label: 'Install / Sync', icon: RefreshCw },
             ] as const
           ).map((t) => {
             const Icon = t.icon
@@ -525,7 +498,7 @@ export default function PracticePage() {
       {/* TAB 1: ANKI DECKS TREE & DECK OPTIONS */}
       {activeTab === 'decks' && (
         <div className="space-y-6">
-          {/* Create Your Own Custom Deck & Install Anki Deck Bar */}
+          {/* Create Your Own Custom Deck */}
           <Card className="border-primary/20 bg-primary/5">
             <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <form
@@ -542,14 +515,6 @@ export default function PracticePage() {
                   <Plus className="h-4 w-4 mr-1" /> Create Deck
                 </Button>
               </form>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setActiveTab('sync')}
-                className="shrink-0"
-              >
-                📥 Install Anki Deck (.apkg / Shared)
-              </Button>
             </CardContent>
           </Card>
 
@@ -1391,28 +1356,6 @@ export default function PracticePage() {
       {/* TAB 5: ANKI STATISTICS & HEATMAP */}
       {activeTab === 'stats' && (
         <AnkiStats cards={cards} reviewLogs={reviewLogs} />
-      )}
-
-      {/* TAB 6: ANKI .APKG IMPORT */}
-      {activeTab === 'sync' && (
-        <AnkiSyncPanel
-          cards={cards}
-          onCardsChanged={updateCards}
-          onImportSuccess={(deckName) => {
-            const updated = Array.from(new Set([...customDecks, deckName]))
-            setCustomDecks(updated)
-            try {
-              localStorage.setItem(
-                'nihongo_custom_anki_decks_v1',
-                JSON.stringify(updated)
-              )
-            } catch {
-              // ignore
-            }
-            setSelectedDeckName(deckName)
-            setActiveTab('decks')
-          }}
-        />
       )}
     </div>
   )
