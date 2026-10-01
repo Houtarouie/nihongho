@@ -15,7 +15,7 @@ import {
   Languages,
 } from 'lucide-react'
 import {
-  getReadingPassage,
+  ALL_CURATED_PASSAGES,
   type ReadingPassage,
   type ReadingGrammarNote,
 } from '@/data/bunpro-reading'
@@ -27,15 +27,6 @@ import {
   stopJapaneseSpeech,
 } from '@/data/srs-deck'
 import { toast } from 'sonner'
-
-const JLPT_LEVELS: ('N5' | 'N4' | 'N3' | 'N2' | 'N1')[] = [
-  'N5',
-  'N4',
-  'N3',
-  'N2',
-  'N1',
-]
-const LESSON_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 type FuriganaMode = 'all' | 'hover' | 'none'
 
@@ -652,55 +643,56 @@ export function BunproReadingPractice() {
         </h2>
       </div>
 
-      {/* Bunpro Info Banner (Exact match to Screenshot 2) */}
+      {/* Graded Reading Info Banner */}
       <div className="rounded-xl border bg-muted/40 p-4 text-sm text-muted-foreground space-y-2 leading-relaxed">
         <p>
-          Below you will find graded reading practices that are divided by JLPT level.
-        </p>
-        <p>
-          If you&apos;re learning via the{' '}
-          <span className="text-primary font-medium">
-            default JLPT grammar Decks
-          </span>
-          , only the grammar taught in each of their respective Lessons will show up on each page. This ensures that whether you&apos;re doing beginner or high-level practice, you&apos;ll never encounter items that you have not learned yet.
+          Below you will find curated graded reading passages with native audio, interactive furigana controls, grammar breakdown, and vertical/horizontal reading modes.
         </p>
       </div>
 
-      {/* N5, N4, N3, N2, N1 Lesson 1-10 Grids */}
+      {/* Curated Graded Passages */}
       <div className="space-y-8">
-        {JLPT_LEVELS.map((level) => (
-          <div key={level} className="space-y-3">
-            <h3 className="text-lg font-bold tracking-tight">{level}</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              {LESSON_NUMBERS.map((lessonNum) => {
-                const passageId = `${level}-${lessonNum}`
-                const isDone = completedPassages.includes(
-                  `reading-${passageId}`
-                )
-                return (
-                  <button
-                    key={passageId}
-                    type="button"
-                    onClick={() => {
-                      const p = getReadingPassage(level, lessonNum)
-                      setSelectedPassage(p)
-                      setActiveSentenceIdx(0)
-                      setSelectedGrammarNote(p.grammarNotes[0] || null)
-                    }}
-                    className="group flex items-center justify-between rounded-lg border bg-card px-4 py-4 text-left font-bold text-sm shadow-sm transition-all hover:border-primary/60 hover:bg-muted/40"
-                  >
-                    <span className="group-hover:text-primary transition-colors">
-                      [{level}] Lesson {lessonNum}
-                    </span>
-                    {isDone && (
-                      <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
-                    )}
-                  </button>
-                )
-              })}
+        {(['N5', 'N4'] as const).map((level) => {
+          const passagesForLevel = ALL_CURATED_PASSAGES.filter(
+            (p) => p.level === level
+          )
+          if (passagesForLevel.length === 0) return null
+
+          return (
+            <div key={level} className="space-y-3">
+              <h3 className="text-lg font-bold tracking-tight">{level}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {passagesForLevel.map((p) => {
+                  const isDone = completedPassages.includes(`reading-${p.id}`)
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedPassage(p)
+                        setActiveSentenceIdx(0)
+                        setSelectedGrammarNote(p.grammarNotes[0] || null)
+                      }}
+                      className="group flex items-center justify-between rounded-lg border bg-card px-4 py-4 text-left shadow-sm transition-all hover:border-primary/60 hover:bg-muted/40"
+                    >
+                      <div className="space-y-1">
+                        <div className="font-bold text-sm group-hover:text-primary transition-colors">
+                          [{p.level}] Lesson {p.lessonNumber}
+                        </div>
+                        <div className="text-xs text-muted-foreground font-normal">
+                          {p.titleEn}
+                        </div>
+                      </div>
+                      {isDone && (
+                        <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 ml-2" />
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

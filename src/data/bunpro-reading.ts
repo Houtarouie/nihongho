@@ -1,5 +1,3 @@
-import grammarData from '@/data/grammar.json'
-
 export interface ReadingGrammarNote {
   num: number
   grammar: string
@@ -235,11 +233,13 @@ const CURATED_PASSAGES: Record<string, Omit<ReadingPassage, 'id' | 'level' | 'le
   },
 }
 
-/**
- * Dynamically generates or retrieves a complete Graded Reading Passage for ANY
- * JLPT Level (N5..N1) and Lesson (1..10), weaving in the exact grammar points
- * from `src/data/grammar.json` for that specific lesson!
- */
+export const ALL_CURATED_PASSAGES: ReadingPassage[] = [
+  { id: 'N5-1', level: 'N5', lessonNumber: 1, ...CURATED_PASSAGES['N5-1'] },
+  { id: 'N5-2', level: 'N5', lessonNumber: 2, ...CURATED_PASSAGES['N5-2'] },
+  { id: 'N5-3', level: 'N5', lessonNumber: 3, ...CURATED_PASSAGES['N5-3'] },
+  { id: 'N4-1', level: 'N4', lessonNumber: 1, ...CURATED_PASSAGES['N4-1'] },
+]
+
 export function getReadingPassage(
   level: 'N5' | 'N4' | 'N3' | 'N2' | 'N1',
   lessonNumber: number
@@ -253,105 +253,5 @@ export function getReadingPassage(
       ...CURATED_PASSAGES[key],
     }
   }
-
-  // Pull the exact grammar points taught in this Level & Lesson from grammar.json
-  const lessonPoints = grammarData
-    .filter(
-      (g) =>
-        g.level === level &&
-        g.lesson &&
-        g.lesson.startsWith(`Lesson ${lessonNumber}`)
-    )
-    .slice(0, 6)
-
-  const notes: ReadingGrammarNote[] =
-    lessonPoints.length > 0
-      ? lessonPoints.map((p, idx) => ({
-          num: idx + 1,
-          grammar: p.grammar.split(' ')[0],
-          meaning: p.meaning,
-        }))
-      : [
-          { num: 1, grammar: 'は', meaning: 'Topic marker' },
-          { num: 2, grammar: 'から', meaning: 'Because, Since' },
-          { num: 3, grammar: 'ために', meaning: 'In order to, For the sake of' },
-        ]
-
-  const g1 = notes[0]?.grammar || 'は'
-  const g2 = notes[1]?.grammar || 'から'
-  const g3 = notes[2]?.grammar || 'です'
-  const g4 = notes[3]?.grammar || 'ます'
-
-  const scenes: ReadingPassage['sceneType'][] = [
-    'classroom',
-    'cafe',
-    'station',
-    'office',
-    'shrine',
-  ]
-  const sceneType = scenes[(lessonNumber - 1) % scenes.length]
-
-  return {
-    id: key,
-    level,
-    lessonNumber,
-    titleJp: `《[${level}] 第[だい]${lessonNumber}課[か]の読解[どっかい]：日常[にちじょう]の会話[かいわ]》`,
-    titleEn: `${level} Lesson ${lessonNumber} Graded Reading: Everyday Context`,
-    durationLabel: '00:40',
-    sceneCaption: `Graded reading dialogue incorporating ${level} Lesson ${lessonNumber} grammar structures (${notes
-      .map((n) => n.grammar)
-      .slice(0, 4)
-      .join(', ')}).`,
-    sceneType,
-    grammarNotes: notes,
-    sentences: [
-      {
-        id: `${key}-s1`,
-        japanese: `今日[きょう]の授業[じゅぎょう]では「${g1}」という表現[ひょうげん]について詳[くわ]しく学[まな]びました。`,
-        english: `In today's class, we learned in detail about the expression "${g1}". (${
-          notes[0]?.meaning || ''
-        })`,
-        grammarRefs: [1],
-      },
-      {
-        id: `${key}-s2`,
-        japanese: `先生[せんせい]の説明[せつめい]はとてもわかりやすかったです。また、「${g2}」の使[つか]い方[かた]も練習[れんしゅう]しました。`,
-        english: `The teacher's explanation was very easy to understand. We also practiced how to use "${g2}". (${
-          notes[1]?.meaning || ''
-        })`,
-        grammarRefs: notes.length >= 2 ? [1, 2] : [1],
-      },
-      {
-        id: `${key}-s3`,
-        japanese: `日本[にほん]の生活[せいかつ]や会話[かいわ]では、「${g3}」のような文法[ぶんぽう]がよく使[つか]われています。`,
-        english: `In Japanese daily life and conversation, grammar like "${g3}" is frequently used. (${
-          notes[2]?.meaning || ''
-        })`,
-        grammarRefs: notes.length >= 3 ? [3] : [1],
-      },
-      {
-        id: `${key}-s4`,
-        japanese: `これからも毎日[まいにち]忘[わす]れないように、「${g4}」を使[つか]って文[ぶん]を作[つく]ってみましょう。`,
-        english: `From now on, so that we don't forget every day, let's try making sentences using "${g4}". (${
-          notes[3]?.meaning || ''
-        })`,
-        grammarRefs: notes.length >= 4 ? [4] : [1],
-      },
-    ],
-    comprehensionQuestion: {
-      question: `Which ${level} Lesson ${lessonNumber} grammar point means "${
-        notes[0]?.meaning || 'Topic marker'
-      }"?`,
-      options: [
-        notes[0]?.grammar || 'は',
-        notes[1]?.grammar || 'けれども',
-        notes[2]?.grammar || 'ながら',
-        '〜ざるを得ない',
-      ],
-      correctIndex: 0,
-      explanation: `In ${level} Lesson ${lessonNumber}, 「${
-        notes[0]?.grammar
-      }」 means "${notes[0]?.meaning}".`,
-    },
-  }
+  return ALL_CURATED_PASSAGES[0]
 }

@@ -41,8 +41,8 @@ export default function ReadingAndVocabPage() {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              50 bite-sized Japanese dialogues from N5 to N1 with audio,
-              furigana controls, and vertical/horizontal reading modes.
+              Curated Japanese graded reading dialogues with native audio,
+              furigana controls, grammar breakdown, and vertical/horizontal reading modes.
             </p>
           </div>
         </button>
