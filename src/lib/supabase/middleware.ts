@@ -6,14 +6,31 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  const { pathname } = request.nextUrl
+  const isAppRoute =
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/learn') ||
+    pathname.startsWith('/grammar') ||
+    pathname.startsWith('/practice') ||
+    pathname.startsWith('/reading') ||
+    pathname.startsWith('/community') ||
+    pathname.startsWith('/profile')
+  const isAuthRoute = pathname.startsWith('/login')
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  // Guard against missing or invalid environment variables so middleware never crashes
+  // If Supabase credentials are not configured, redirect protected routes to login
   if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith('http')) {
+    if (isAppRoute) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
     return supabaseResponse
   }
 
+  let user = null
   try {
     const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
@@ -53,9 +70,23 @@ export async function updateSession(request: NextRequest) {
       },
     })
 
-    await supabase.auth.getUser()
+    const { data } = await supabase.auth.getUser()
+    user = data.user
   } catch {
-    // Prevent middleware crash if Supabase is unreachable
+    user = null
+  }
+
+  if (isAppRoute && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.searchParams.set('next', pathname)
+    return NextResponse.redirect(url)
+  }
+
+  if (isAuthRoute && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
   }
 
   return supabaseResponse

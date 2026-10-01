@@ -18,13 +18,11 @@ export async function login(formData: FormData) {
     return { error: 'Email and password are required.' }
   }
 
-  // Built-in accounts or unconfigured Supabase fallback
-  if (
-    !isSupabaseConfigured() ||
-    email === 'kenji@nihongo.app' ||
-    email === 'sakura@nihongo.app'
-  ) {
-    return { fallback: true }
+  if (!isSupabaseConfigured()) {
+    return {
+      error:
+        'Authentication service is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.',
+    }
   }
 
   try {
@@ -35,13 +33,15 @@ export async function login(formData: FormData) {
     })
 
     if (error) {
-      if (error.message.toLowerCase().includes('fetch failed')) {
-        return { fallback: true }
-      }
       return { error: error.message }
     }
-  } catch {
-    return { fallback: true }
+  } catch (err) {
+    return {
+      error:
+        err instanceof Error
+          ? err.message
+          : 'An unexpected authentication error occurred.',
+    }
   }
 
   revalidatePath('/', 'layout')
@@ -58,7 +58,10 @@ export async function signup(formData: FormData) {
   }
 
   if (!isSupabaseConfigured()) {
-    return { fallback: true }
+    return {
+      error:
+        'Authentication service is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.',
+    }
   }
 
   try {
@@ -74,13 +77,15 @@ export async function signup(formData: FormData) {
     })
 
     if (error) {
-      if (error.message.toLowerCase().includes('fetch failed')) {
-        return { fallback: true }
-      }
       return { error: error.message }
     }
-  } catch {
-    return { fallback: true }
+  } catch (err) {
+    return {
+      error:
+        err instanceof Error
+          ? err.message
+          : 'An unexpected authentication error occurred.',
+    }
   }
 
   revalidatePath('/', 'layout')

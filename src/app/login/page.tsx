@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { login, signup } from './actions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,83 +13,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
-import { Loader2, UserCheck } from 'lucide-react'
-import { saveUserStats } from '@/data/srs-deck'
+import { Loader2 } from 'lucide-react'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 
-const PRESET_ACCOUNTS = [
-  {
-    displayName: 'Fresh Learner',
-    username: 'fresh_learner',
-    email: 'learner@nihongo.app',
-    targetJlpt: 'N5',
-    currentStreak: 0,
-    longestStreak: 0,
-    xp: 0,
-    weeklyXp: 0,
-    totalStudyMins: 0,
-    todayStudySeconds: 0,
-    vocabCount: 0,
-    kanjiCount: 0,
-    grammarCount: 0,
-    completedLessons: [],
-    isFreshUser: true,
-  },
-  {
-    displayName: 'Kenji',
-    username: 'kenjilearns',
-    email: 'kenji@nihongo.app',
-    targetJlpt: 'N5',
-    currentStreak: 14,
-    longestStreak: 21,
-    xp: 1240,
-    weeklyXp: 480,
-    totalStudyMins: 320,
-    todayStudySeconds: 0,
-    vocabCount: 145,
-    kanjiCount: 42,
-    grammarCount: 28,
-    completedLessons: ['hiragana-chart', 'katakana-chart'],
-    isFreshUser: false,
-  },
-  {
-    displayName: 'Sakura',
-    username: 'sakura_tokyo',
-    email: 'sakura@nihongo.app',
-    targetJlpt: 'N3',
-    currentStreak: 38,
-    longestStreak: 45,
-    xp: 4820,
-    weeklyXp: 1150,
-    totalStudyMins: 1450,
-    todayStudySeconds: 0,
-    vocabCount: 620,
-    kanjiCount: 215,
-    grammarCount: 94,
-    completedLessons: [
-      'hiragana-chart',
-      'katakana-chart',
-      'greetings-aisatsu',
-      'self-introduction',
-      'wa-vs-ga',
-      'tai-form',
-    ],
-    isFreshUser: false,
-  },
-]
-
 export default function LoginPage() {
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
-
-  function handlePresetLogin(preset: (typeof PRESET_ACCOUNTS)[number]) {
-    saveUserStats(preset)
-    toast.success(`Signed in as ${preset.displayName}`)
-    router.push('/dashboard')
-  }
 
   async function onSubmit(
     event: React.FormEvent<HTMLFormElement>,
@@ -100,57 +29,34 @@ export default function LoginPage() {
     setIsLoading(true)
 
     const formData = new FormData(event.currentTarget)
-    const email = (formData.get('email') as string)?.trim() || 'student@nihongo.app'
-    const username =
-      (formData.get('username') as string)?.trim() || email.split('@')[0]
-
-    const baseUserData = !isLogin
-      ? {
-          displayName: username,
-          username: username.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'learner',
-          email,
-          avatar: '🌸',
-          targetJlpt: 'N5',
-          currentStreak: 0,
-          longestStreak: 0,
-          xp: 0,
-          weeklyXp: 0,
-          totalStudyMins: 0,
-          todayStudySeconds: 0,
-          vocabCount: 0,
-          kanjiCount: 0,
-          grammarCount: 0,
-          reviewsCompletedToday: 0,
-          completedLessons: [],
-          isFreshUser: true,
-        }
-      : {
-          displayName: username,
-          username: username.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'learner',
-          email,
-        }
 
     try {
       const result = await action(formData)
       setIsLoading(false)
-
-      if (result?.fallback) {
-        saveUserStats(baseUserData)
-        toast.success(`Welcome, ${username}!`)
-        router.push('/dashboard')
-        return
-      }
 
       if (result?.error) {
         toast.error('Authentication Error', {
           description: result.error,
         })
       }
-    } catch {
+    } catch (err) {
       setIsLoading(false)
-      saveUserStats(baseUserData)
-      toast.success(`Signed in as ${username}!`)
-      router.push('/dashboard')
+      // Allow Next.js redirect exceptions (NEXT_REDIRECT) to bubble
+      if (
+        err &&
+        typeof err === 'object' &&
+        'digest' in err &&
+        typeof (err as { digest: string }).digest === 'string' &&
+        (err as { digest: string }).digest.startsWith('NEXT_REDIRECT')
+      ) {
+        throw err
+      }
+      toast.error('Authentication Error', {
+        description:
+          err instanceof Error
+            ? err.message
+            : 'An error occurred during authentication.',
+      })
     }
   }
 
@@ -166,39 +72,6 @@ export default function LoginPage() {
             Learn Japanese together. Every day.
           </p>
         </div>
-
-        {/* Instant 1-Click Built-in Accounts */}
-        <Card className="border-primary/30 bg-primary/5">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <UserCheck className="h-4 w-4 text-primary" /> Quick Access Accounts (No Setup Needed)
-            </CardTitle>
-            <CardDescription className="text-xs">
-              Click either built-in account below to sign in immediately:
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            {PRESET_ACCOUNTS.map((acc) => (
-              <Button
-                key={acc.email}
-                type="button"
-                variant="outline"
-                className="h-auto py-2.5 px-3 flex flex-col items-start text-left bg-background hover:border-primary"
-                onClick={() => handlePresetLogin(acc)}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-bold text-sm">{acc.displayName}</span>
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                    JLPT {acc.targetJlpt}
-                  </Badge>
-                </div>
-                <span className="text-xs text-muted-foreground truncate w-full mt-0.5">
-                  {acc.email}
-                </span>
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
 
         <div className="w-full space-y-4">
           <div className="flex w-full rounded-lg bg-muted p-1">
@@ -242,8 +115,8 @@ export default function LoginPage() {
                       id="login-email"
                       name="email"
                       type="email"
-                      defaultValue="kenji@nihongo.app"
-                      placeholder="kenji@nihongo.app"
+                      placeholder="you@example.com"
+                      autoComplete="email"
                       required
                     />
                   </div>
@@ -253,7 +126,8 @@ export default function LoginPage() {
                       id="login-password"
                       name="password"
                       type="password"
-                      defaultValue="nihongo123"
+                      placeholder="••••••••"
+                      autoComplete="current-password"
                       required
                     />
                   </div>
@@ -284,8 +158,9 @@ export default function LoginPage() {
                     <Input
                       id="signup-username"
                       name="username"
-                      placeholder="kenjilearns"
+                      placeholder="e.g. tarobun"
                       maxLength={30}
+                      autoComplete="username"
                       required
                     />
                   </div>
@@ -295,7 +170,8 @@ export default function LoginPage() {
                       id="signup-email"
                       name="email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="you@example.com"
+                      autoComplete="email"
                       required
                     />
                   </div>
@@ -305,7 +181,9 @@ export default function LoginPage() {
                       id="signup-password"
                       name="password"
                       type="password"
+                      placeholder="At least 6 characters"
                       minLength={6}
+                      autoComplete="new-password"
                       required
                     />
                   </div>
