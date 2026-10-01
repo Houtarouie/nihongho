@@ -10,38 +10,8 @@ A social Japanese-learning platform where users learn Japanese, post what they s
 - Supabase (Auth, PostgreSQL)
 - Vercel
 
-## Local Development Setup
 
-1. **Install Dependencies**
-   ```bash
-   npm install
-   ```
 
-2. **Supabase Setup**
-   - Create a new project on [Supabase](https://supabase.com).
-   - Go to Project Settings -> API and copy your `Project URL` and `anon public` key.
-   - Rename `.env.example` to `.env.local` and add your keys:
-     ```env
-     NEXT_PUBLIC_SUPABASE_URL=your-project-url
-     NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-     ```
-   - Go to the SQL Editor in Supabase and run the script located in `supabase/schema.sql` to create the tables and security policies.
-   - Run the script in `supabase/seed.sql` to insert the initial learning curriculum data.
-
-3. **Run the Development Server**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) with your browser.
-
-## Deployment to Vercel
-
-1. Push your code to a GitHub repository.
-2. Import the project in Vercel.
-3. In the Vercel project settings, add the Environment Variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-4. Deploy!
 
 ## Core Features Implemented
 
