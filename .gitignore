@@ -30,7 +30,6 @@ yarn-error.log*
 
 # vercel
 .vercel
-src/data/grammar-archive-979.json
 
 # typescript
 *.tsbuildinfo

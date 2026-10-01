@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import referenceGrammarData from '@/data/grammar-dictionary-979.json'
+import referenceGrammarData from '@/data/grammar.json'
 import curatedGrammarData from '@/data/user-grammar-curated.json'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
