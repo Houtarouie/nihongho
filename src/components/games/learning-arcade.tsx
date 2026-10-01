@@ -26,8 +26,8 @@ import {
   AlertTriangle,
   Trophy,
   Lightbulb,
-  BookOpen,
   XCircle,
+  Bookmark,
 } from 'lucide-react'
 import {
   getKanaPool,
@@ -49,6 +49,12 @@ import {
   loadUserStats,
   saveUserStats,
 } from '@/data/srs-deck'
+import {
+  loadWeakPoints,
+  addWeakPoint,
+  isWeakPoint,
+  type WeakPointItem,
+} from '@/data/weak-points'
 import {
   loadQuizRuns,
   recordQuizRun,
@@ -134,8 +140,34 @@ export function LearningArcade({
     }
   }, [customPool])
 
-  // Build pool when script, scope, customPool, or customSelectedKana changes
+  // Weak Points tracking
+  const [weakPointsList, setWeakPointsList] = useState<WeakPointItem[]>([])
+  const [savedWeakKeys, setSavedWeakKeys] = useState<Set<string>>(new Set())
+  const [lastSuccessNotice, setLastSuccessNotice] = useState<{
+    kana: string
+    romaji: string
+  } | null>(null)
+
+  useEffect(() => {
+    setWeakPointsList(loadWeakPoints())
+    const handleUpdate = () => setWeakPointsList(loadWeakPoints())
+    window.addEventListener('nihongo-weak-points-updated', handleUpdate)
+    return () =>
+      window.removeEventListener('nihongo-weak-points-updated', handleUpdate)
+  }, [])
+
+  // Build pool when script, scope, customPool, customSelectedKana, or weakPointsList changes
   const basePool = useMemo(() => {
+    if (scope === 'weak-points') {
+      const allPool = getKanaPool(script, 'all')
+      const weakKanas = new Set(
+        weakPointsList.filter((w) => w.type === 'kana').map((w) => w.front)
+      )
+      const picked = allPool.filter((c) => weakKanas.has(c.kana))
+      if (picked.length > 0) return picked
+      // If user hasn't saved any weak points yet, fall back to gojuon
+      return getKanaPool(script, 'gojuon')
+    }
     if (scope === 'custom') {
       if (customSelectedKana.size > 0) {
         const allPool = getKanaPool(script, 'all')
@@ -152,7 +184,7 @@ export function LearningArcade({
     }
     const pool = getKanaPool(script, scope)
     return pool.length > 0 ? pool : getKanaPool('hiragana', 'gojuon')
-  }, [script, scope, customPool, customSelectedKana])
+  }, [script, scope, customPool, customSelectedKana, weakPointsList])
 
   // Initialize / Reset Queue
   function initQueue() {
@@ -265,7 +297,6 @@ export function LearningArcade({
   // Mode 1 Handler: Tofugu-Style Speed Typing
   function handleTypingChange(val: string) {
     setTypedInput(val)
-    setTypingFeedback('idle')
     if (!currentItem) return
 
     const expected = cleanRomaji(currentItem.romaji)
@@ -276,9 +307,15 @@ export function LearningArcade({
       setStreak(nextStreak)
       setScore((s) => s + 10 * Math.min(5, Math.floor(nextStreak / 3) + 1))
       awardXP(5)
+      setLastSuccessNotice({ kana: currentItem.kana, romaji: expected })
       setTypedInput('')
-      setTypingFeedback('correct')
+      setTypingFeedback('idle') // Reset feedback so next card is completely clean!
       setCurrentIndex((i) => i + 1)
+      return
+    }
+
+    if (typingFeedback !== 'idle') {
+      setTypingFeedback('idle')
     }
   }
 
@@ -294,7 +331,7 @@ export function LearningArcade({
       speakJapanese(currentItem.kana)
       requeueMissedItem(currentItem)
       toast.error(
-        `${currentItem.kana} is "${expected}" — Re-queued 3 cards ahead for mastery!`
+        `${currentItem.kana} is "${expected}". Tap "Save as Weak Point" below to review anytime!`
       )
     }
   }
@@ -553,6 +590,9 @@ export function LearningArcade({
                   const newScope = e.target.value as KanaDeckScope
                   setScope(newScope)
                   if (newScope === 'custom') setShowCustomPicker(true)
+                  if (newScope === 'weak-points' && weakPointsList.filter((w) => w.type === 'kana').length === 0) {
+                    toast.info('No weak points saved yet! Save some tricky characters when answering wrong to review them here.')
+                  }
                 }}
                 className="h-8 rounded-md border border-input bg-background px-2.5 text-xs font-medium"
               >
@@ -561,6 +601,9 @@ export function LearningArcade({
                 <option value="dakuten">Voiced (Dakuten 25)</option>
                 <option value="yoon">Combo (Yōon 33)</option>
                 <option value="all">All Kana Combined (104)</option>
+                <option value="weak-points">
+                  📌 Weak Points ({weakPointsList.filter((w) => w.type === 'kana').length} chars)
+                </option>
                 <option value="custom">
                   🎯 Custom Selection ({basePool.length} chars)
                 </option>
@@ -860,6 +903,15 @@ export function LearningArcade({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {lastSuccessNotice && typingFeedback === 'idle' && (
+              <div className="flex justify-center animate-in fade-in duration-150">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  Spot on! {lastSuccessNotice.kana} = {lastSuccessNotice.romaji} (+10 XP)
+                </span>
+              </div>
+            )}
+
             <form onSubmit={handleTypingSubmit} className="space-y-3">
               <Input
                 value={typedInput}
@@ -890,44 +942,28 @@ export function LearningArcade({
               </div>
             </form>
 
-            {typingFeedback !== 'idle' && feedbackInfo && (
-              <div className={`rounded-lg border p-3 text-xs space-y-2.5 ${
-                typingFeedback === 'correct'
-                  ? 'border-green-500/30 bg-green-500/10'
-                  : 'border-red-500/30 bg-red-500/10'
-              }`}>
+            {typingFeedback === 'wrong' && feedbackInfo && (
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs space-y-2.5 animate-in fade-in duration-150">
                 {/* Result header */}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5">
-                    {typingFeedback === 'correct' ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0" />
-                    ) : (
-                      <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
-                    )}
-                    <span className={`font-bold text-sm ${
-                      typingFeedback === 'correct'
-                        ? 'text-green-700 dark:text-green-400'
-                        : 'text-red-700 dark:text-red-400'
-                    }`}>
-                      {typingFeedback === 'correct'
-                        ? `Correct! ${currentItem.kana} = ${cleanRomaji(currentItem.romaji)}`
-                        : `Answer: ${currentItem.kana} = ${cleanRomaji(currentItem.romaji)}`}
+                    <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+                    <span className="font-bold text-sm text-red-700 dark:text-red-400">
+                      Answer: {currentItem.kana} = {cleanRomaji(currentItem.romaji)}
                     </span>
                   </div>
-                  {typingFeedback === 'wrong' && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-7 text-xs shrink-0"
-                      onClick={() => {
-                        setTypingFeedback('idle')
-                        setTypedInput('')
-                        setCurrentIndex((i) => i + 1)
-                      }}
-                    >
-                      Next &rarr;
-                    </Button>
-                  )}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-xs shrink-0"
+                    onClick={() => {
+                      setTypingFeedback('idle')
+                      setTypedInput('')
+                      setCurrentIndex((i) => i + 1)
+                    }}
+                  >
+                    Next &rarr;
+                  </Button>
                 </div>
 
                 {/* Example word */}
@@ -955,46 +991,70 @@ export function LearningArcade({
                   </div>
                 )}
 
-                {/* Practice suggestions */}
-                {typingFeedback === 'wrong' && (
-                  <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/50">
-                    <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    <span className="font-semibold text-foreground/70 text-[10px] uppercase tracking-wide">Try next:</span>
-                    {feedbackInfo.suggestions
-                      .filter((s) => s.action !== 'srs')
-                      .map((s) => (
-                        <button
-                          key={s.action}
-                          type="button"
-                          onClick={() => {
-                            setGameMode(s.action as GameMode)
-                            if (s.action === 'confusion-pairs') setScope('confusion')
-                          }}
-                          className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
-                        >
-                          {s.label}
-                        </button>
-                      ))}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        addCustomSRSCard({
-                          front: currentItem.kana,
-                          reading: currentItem.romaji,
-                          meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
-                          category: 'kana',
-                          jlptLevel: 'N5',
-                          exampleSentence: currentItem.example,
-                          tags: ['kana', script, currentItem.row],
-                        })
-                        toast.success(`${currentItem.kana} added to SRS deck!`)
-                      }}
-                      className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
-                    >
-                      Add to SRS Deck
-                    </button>
-                  </div>
-                )}
+                {/* Save to Weak Points & Practice suggestions */}
+                <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-border/50">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      addWeakPoint({
+                        id: `kana-${currentItem.kana}`,
+                        type: 'kana',
+                        front: currentItem.kana,
+                        reading: cleanRomaji(currentItem.romaji),
+                        meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
+                        notes: feedbackInfo.mnemonic || undefined,
+                        lookAlikes: feedbackInfo.lookAlikeKanas,
+                      })
+                      setSavedWeakKeys((prev) => {
+                        const next = new Set(prev)
+                        next.add(currentItem.kana)
+                        return next
+                      })
+                      toast.success(`Saved ${currentItem.kana} to your Weak Points list!`)
+                    }}
+                    className="text-xs rounded-md border border-amber-500/50 bg-amber-500/10 px-2.5 py-1 font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors flex items-center gap-1.5 shadow-2xs"
+                  >
+                    <Bookmark className="h-3.5 w-3.5" />
+                    {savedWeakKeys.has(currentItem.kana) || isWeakPoint(currentItem.kana)
+                      ? 'Saved to Weak Points ✓'
+                      : '📌 Save as Weak Point'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      addCustomSRSCard({
+                        front: currentItem.kana,
+                        reading: currentItem.romaji,
+                        meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
+                        category: 'kana',
+                        jlptLevel: 'N5',
+                        exampleSentence: currentItem.example,
+                        tags: ['kana', script, currentItem.row],
+                      })
+                      toast.success(`${currentItem.kana} added to SRS deck!`)
+                    }}
+                    className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-1 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                  >
+                    Add to SRS Deck
+                  </button>
+
+                  {feedbackInfo.suggestions
+                    .filter((s) => s.action !== 'srs')
+                    .map((s) => (
+                      <button
+                        key={s.action}
+                        type="button"
+                        onClick={() => {
+                          setGameMode(s.action as GameMode)
+                          if (s.action === 'confusion-pairs') setScope('confusion')
+                        }}
+                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-1 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                </div>
               </div>
             )}
           </CardContent>
@@ -1110,11 +1170,36 @@ export function LearningArcade({
                     </div>
                   )}
 
-                  {/* Practice suggestions */}
+                  {/* Practice suggestions & Weak Point Saving */}
                   {!wasCorrect && (
-                    <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/50">
-                      <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                      <span className="font-semibold text-foreground/70 text-[10px] uppercase tracking-wide">Try next:</span>
+                    <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-border/50">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addWeakPoint({
+                            id: `kana-${currentItem.kana}`,
+                            type: 'kana',
+                            front: currentItem.kana,
+                            reading: cleanRomaji(currentItem.romaji),
+                            meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
+                            notes: feedbackInfo.mnemonic || undefined,
+                            lookAlikes: feedbackInfo.lookAlikeKanas,
+                          })
+                          setSavedWeakKeys((prev) => {
+                            const next = new Set(prev)
+                            next.add(currentItem.kana)
+                            return next
+                          })
+                          toast.success(`Saved "${currentItem.kana}" to your Weak Points list!`)
+                        }}
+                        className="text-xs rounded-md border border-amber-500/50 bg-amber-500/10 px-2.5 py-1 font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors flex items-center gap-1.5 shadow-2xs"
+                      >
+                        <Bookmark className="h-3.5 w-3.5" />
+                        {savedWeakKeys.has(currentItem.kana) || isWeakPoint(currentItem.kana)
+                          ? 'Saved to Weak Points ✓'
+                          : '📌 Save as Weak Point'}
+                      </button>
+
                       <button
                         type="button"
                         onClick={() => {
@@ -1129,14 +1214,14 @@ export function LearningArcade({
                           })
                           toast.success(`${currentItem.kana} added to SRS deck!`)
                         }}
-                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-1 font-semibold text-primary hover:bg-primary/20 transition-colors"
                       >
                         Add to SRS Deck
                       </button>
                       <button
                         type="button"
                         onClick={() => { setGameMode('audio-dictation') }}
-                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-1 font-semibold text-primary hover:bg-primary/20 transition-colors"
                       >
                         Ear Training
                       </button>
@@ -1261,14 +1346,39 @@ export function LearningArcade({
 
                   {/* Practice suggestions when wrong */}
                   {!wasCorrect && (
-                    <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/50">
-                      <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                      <span className="font-semibold text-foreground/70 text-[10px] uppercase tracking-wide">Try next:</span>
+                    <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-border/50">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addWeakPoint({
+                            id: `kana-${currentItem.kana}`,
+                            type: 'kana',
+                            front: currentItem.kana,
+                            reading: cleanRomaji(currentItem.romaji),
+                            meaning: `Kana syllable "${cleanRomaji(currentItem.romaji)}"`,
+                            notes: feedbackInfo.mnemonic || undefined,
+                            lookAlikes: feedbackInfo.lookAlikeKanas,
+                          })
+                          setSavedWeakKeys((prev) => {
+                            const next = new Set(prev)
+                            next.add(currentItem.kana)
+                            return next
+                          })
+                          toast.success(`Saved "${currentItem.kana}" to your Weak Points list!`)
+                        }}
+                        className="text-xs rounded-md border border-amber-500/50 bg-amber-500/10 px-2.5 py-1 font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors flex items-center gap-1.5 shadow-2xs"
+                      >
+                        <Bookmark className="h-3.5 w-3.5" />
+                        {savedWeakKeys.has(currentItem.kana) || isWeakPoint(currentItem.kana)
+                          ? 'Saved to Weak Points ✓'
+                          : '📌 Save as Weak Point'}
+                      </button>
+
                       {feedbackInfo.lookAlikeKanas.length > 0 && (
                         <button
                           type="button"
                           onClick={() => { setGameMode('confusion-pairs'); setScope('confusion') }}
-                          className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                          className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-1 font-semibold text-primary hover:bg-primary/20 transition-colors"
                         >
                           Train Look-Alikes
                         </button>
@@ -1287,7 +1397,7 @@ export function LearningArcade({
                           })
                           toast.success(`${currentItem.kana} added to SRS deck!`)
                         }}
-                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-0.5 font-semibold text-primary hover:bg-primary/20 transition-colors"
+                        className="text-[10px] rounded-md border border-primary/50 bg-primary/10 px-2 py-1 font-semibold text-primary hover:bg-primary/20 transition-colors"
                       >
                         Add to SRS Deck
                       </button>

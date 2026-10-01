@@ -75,6 +75,7 @@ export type KanaDeckScope =
   | 'confusion'
   | 'all'
   | 'custom'
+  | 'weak-points'
 
 export function getKanaPool(
   script: 'hiragana' | 'katakana' | 'both',

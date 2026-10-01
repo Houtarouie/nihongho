@@ -15,7 +15,6 @@ import {
   Sparkles,
   LayoutGrid,
   ListTree,
-  ArrowRight,
   BookOpen,
   Layers,
 } from 'lucide-react'
@@ -62,6 +61,7 @@ export default function GrammarPage() {
   const [viewMode, setViewMode] = useState<'lessons' | 'grid'>('lessons')
   const [activeGrammar, setActiveGrammar] =
     useState<GrammarPointSummary | null>(null)
+  const [inspectorTab, setInspectorTab] = useState<'study' | 'quiz'>('study')
   const [historyTrail, setHistoryTrail] = useState<GrammarPointSummary[]>([])
   const [masteredSet, setMasteredSet] = useState<Set<string>>(new Set())
 
@@ -117,8 +117,9 @@ export default function GrammarPage() {
     return groups
   }, [filteredPoints])
 
-  function handleSelectGrammar(target: GrammarPointSummary) {
+  function handleSelectGrammar(target: GrammarPointSummary, tab: 'study' | 'quiz' = 'study') {
     setActiveGrammar(target)
+    setInspectorTab(tab)
     setHistoryTrail((prev) => {
       const filtered = prev.filter((p) => p.grammar !== target.grammar)
       return [...filtered, target]
@@ -150,9 +151,10 @@ export default function GrammarPage() {
       <GrammarPointInspector
         item={activeGrammar}
         allGrammar={activeCatalog}
-        onSelectGrammar={handleSelectGrammar}
+        onSelectGrammar={(target) => handleSelectGrammar(target, 'study')}
         onBack={() => setActiveGrammar(null)}
         historyTrail={historyTrail}
+        initialTab={inspectorTab}
       />
     )
   }
@@ -381,10 +383,23 @@ export default function GrammarPage() {
                           {item.meaning}
                         </p>
                         <div className="flex items-center justify-between pt-2 border-t">
-                          <span className="text-xs font-extrabold text-primary flex items-center gap-1">
-                            Start Lesson <ArrowRight className="h-3.5 w-3.5" />
+                          <span className="text-xs font-extrabold text-primary flex items-center gap-1 group-hover:underline">
+                            <BookOpen className="h-3.5 w-3.5" />
+                            Guide &amp; Examples
                           </span>
                           <div className="flex items-center gap-1">
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              className="h-7 px-2 text-[11px] font-bold gap-1"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleSelectGrammar(item, 'quiz')
+                              }}
+                              title="Jump directly to practice quiz"
+                            >
+                              ⚡ Quiz
+                            </Button>
                             <Button
                               size="sm"
                               variant="ghost"
@@ -458,11 +473,23 @@ export default function GrammarPage() {
                     {item.meaning}
                   </p>
                   <div className="flex items-center justify-between pt-2 border-t">
-                    <span className="text-xs text-primary font-extrabold">
-                      {item.lesson ? item.lesson.split(' – ')[0] : item.level}{' '}
-                      &rarr;
+                    <span className="text-xs text-primary font-extrabold flex items-center gap-1 group-hover:underline">
+                      <BookOpen className="h-3.5 w-3.5" />
+                      Guide
                     </span>
                     <div className="flex items-center gap-1">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="h-7 px-2 text-[11px] font-bold gap-1"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleSelectGrammar(item, 'quiz')
+                        }}
+                        title="Jump directly to practice quiz"
+                      >
+                        ⚡ Quiz
+                      </Button>
                       <Button
                         size="sm"
                         variant="ghost"

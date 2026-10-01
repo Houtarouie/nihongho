@@ -726,3 +726,121 @@ export function getGrammarPointDetail(
     },
   }
 }
+
+/**
+ * Returns a rich, pedagogical explanation of WHY the specific cloze answer is correct
+ * for this exact sentence (e.g. why へ is used for "京都へ行きます" vs に).
+ */
+export function getWhyAnswerExplanation(
+  detail: GrammarPointRichDetail,
+  example: GrammarExampleItem
+): {
+  headline: string
+  reason: string
+  rule: string
+  nuance: string
+} {
+  const token = example.clozeAnswer.trim()
+  const cleanTitle = detail.displayTitle.split(' ')[0]
+
+  const PARTICLE_EXPLANATIONS: Record<string, { reason: string; nuance: string }> = {
+    'へ': {
+      reason:
+        "In this sentence, へ (pronounced 'e') is the directional particle. It marks Kyoto (京都) as the direction of motion for the movement verb 行きます (to go). Motion verbs like 行く, 来る, and 帰る naturally take へ to establish the vector of travel.",
+      nuance:
+        "へ vs に: へ emphasizes heading toward the destination (the journey/direction), whereas に emphasizes reaching the final destination point. Notice: written with the kana 'へ', but pronounced as 'e'!",
+    },
+    'は': {
+      reason:
+        "は (pronounced 'wa') is the topic marker. It sets the overarching topic of the sentence ('As for X...' or 'Speaking of X...'). Everything following it comments on this topic.",
+      nuance:
+        "は vs が: は introduces known or contextual topics; が marks the grammatical subject and brings focus to the noun before it. Pronounced 'wa' when used as a particle.",
+    },
+    'が': {
+      reason:
+        "が is the subject marker. It marks the entity actively performing the action or possessing the condition. It highlights who or what specifically is involved.",
+      nuance:
+        "Essential with existence verbs (ある, いる), ability/preference adjectives (好き, 上手, わかる), and question words (誰が, 何が).",
+    },
+    'を': {
+      reason:
+        "を (pronounced 'o') marks the direct object of a transitive verb. It indicates what receives the direct action (eating an apple, reading a book, studying grammar).",
+      nuance:
+        "Can also mark an open space or route through which movement occurs (e.g. 空を飛ぶ 'fly through the sky', 公園を歩く 'walk through the park').",
+    },
+    'に': {
+      reason:
+        "に indicates a specific temporal point (at 5:00, on Monday), a target arrival destination, or the static location of existence with います / あります.",
+      nuance:
+        "に marks static presence or exact arrival points; で marks active event locations where actions occur.",
+    },
+    'で': {
+      reason:
+        "で marks the location where an activity takes place, or the tool/means/method by which an action is executed (by train, in Japanese, with chopsticks).",
+      nuance:
+        "で indicates action occurring in a place; に indicates static existence in a place.",
+    },
+    'の': {
+      reason:
+        "の links two nouns together to indicate possession, association, or description (Noun1's Noun2 / Noun2 of Noun1).",
+      nuance:
+        "Can also nominalize verbs/clauses or act as an informal conversational question marker at the end of a sentence.",
+    },
+    'と': {
+      reason:
+        "と acts as 'and' for an exhaustive list of nouns, or indicates doing an action together with a partner ('with someone').",
+      nuance:
+        "と lists all items completely; や lists items non-exhaustively ('things like A and B').",
+    },
+    'も': {
+      reason:
+        "も is the inclusive particle meaning 'also' or 'too'. It directly replaces は, が, or を when the same condition applies to another entity.",
+      nuance:
+        "Can be chained with other particles (e.g., にも 'also to/at', でも 'even by/at').",
+    },
+    'から': {
+      reason:
+        "から marks the origin or starting point in space or time ('from...'), or when placed after a sentence/clause, indicates the reason ('because...').",
+      nuance:
+        "Often paired with まで ('from X until Y').",
+    },
+    'まで': {
+      reason:
+        "まで marks the terminal point or boundary in space or time ('until / as far as...').",
+      nuance:
+        "まで means 'up to and including'; までに means 'by a specific deadline'.",
+    },
+    'です': {
+      reason:
+        "です is the polite copula ('to be / is / am / are'). It attaches to nouns and adjectives to make a polite declarative statement.",
+      nuance:
+        "Unlike casual だ, です can attach directly to both い-adjectives and な-adjectives in standard polite Japanese.",
+    },
+  }
+
+  const particleKey = Object.keys(PARTICLE_EXPLANATIONS).find(
+    (k) => token === k || cleanTitle === k
+  )
+
+  if (particleKey) {
+    const p = PARTICLE_EXPLANATIONS[particleKey]
+    return {
+      headline: `Why "${token}"?`,
+      reason: p.reason,
+      rule: detail.structures[0] || `${cleanTitle} formation`,
+      nuance: p.nuance,
+    }
+  }
+
+  return {
+    headline: `Why "${token}"?`,
+    reason:
+      detail.aboutParagraphs[0] ||
+      `In this sentence, "${token}" expresses "${detail.meaning}". It satisfies the ${detail.level} Japanese grammar requirement for this context.`,
+    rule: detail.structures[0] || `Pattern: ${cleanTitle}`,
+    nuance:
+      detail.cautionBanner ||
+      `Ensure correct conjugation of the preceding word when attaching ${token}.`,
+  }
+}
+

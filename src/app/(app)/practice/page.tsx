@@ -28,7 +28,13 @@ import {
   BarChart3,
   Search,
   Play,
+  Bookmark,
 } from 'lucide-react'
+import {
+  addWeakPoint,
+  isWeakPoint,
+  type WeakPointItem,
+} from '@/data/weak-points'
 import {
   loadSRSCards,
   saveSRSCards,
@@ -1087,12 +1093,49 @@ export default function PracticePage() {
 
               {/* Anki 4-Button Rating Bar (Dark Mode Compatible) */}
               {showAnswer ? (
-                <div className="grid grid-cols-4 gap-2 sm:gap-3">
-                  <Button
-                    variant="outline"
-                    className="h-auto py-3 flex flex-col border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/10"
-                    onClick={() => handleRate('again')}
-                  >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs px-1">
+                    <span className="text-muted-foreground">
+                      Rate your active recall:
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addWeakPoint({
+                          id: currentCard.id,
+                          type: currentCard.category as WeakPointItem['type'],
+                          front: currentCard.front,
+                          reading: currentCard.reading,
+                          meaning: currentCard.meaning,
+                          notes: currentCard.exampleSentence,
+                        })
+                        toast.success(`Saved "${currentCard.front}" to your Weak Points list!`)
+                      }}
+                      className="inline-flex items-center gap-1 font-bold text-amber-600 dark:text-amber-400 hover:underline"
+                    >
+                      <Bookmark className="h-3.5 w-3.5" />
+                      {isWeakPoint(currentCard.id) || isWeakPoint(currentCard.front)
+                        ? 'Saved to Weak Points ✓'
+                        : '📌 Save as Weak Point'}
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2 sm:gap-3">
+                    <Button
+                      variant="outline"
+                      className="h-auto py-3 flex flex-col border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/10"
+                      onClick={() => {
+                        addWeakPoint({
+                          id: currentCard.id,
+                          type: currentCard.category as WeakPointItem['type'],
+                          front: currentCard.front,
+                          reading: currentCard.reading,
+                          meaning: currentCard.meaning,
+                          notes: currentCard.exampleSentence,
+                        })
+                        handleRate('again')
+                      }}
+                    >
                     <span className="font-semibold text-xs sm:text-sm">
                       Again
                     </span>
@@ -1137,7 +1180,8 @@ export default function PracticePage() {
                     </span>
                   </Button>
                 </div>
-              ) : (
+              </div>
+            ) : (
                 <Button
                   size="lg"
                   className="w-full"
