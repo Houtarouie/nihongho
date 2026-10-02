@@ -10,6 +10,7 @@ import {
   Search,
   ChevronRight,
   Volume2,
+  X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -22,6 +23,7 @@ import referenceGrammarData from '@/data/grammar.json'
 import curatedGrammarData from '@/data/user-grammar-curated.json'
 import type { GrammarPointSummary } from '@/data/bunpro-grammar-details'
 import { speakJapanese } from '@/data/srs-deck'
+import { convertRomajiToKana } from '@/lib/kana-ime'
 
 type LibraryTab = 'grammar' | 'kana' | 'vocab' | 'reading'
 
@@ -74,19 +76,62 @@ function LibraryContent() {
     return combinedList
   }, [catalogTrack])
 
-  // Filtered grammar points
+  // Filtered grammar points with Smart Multilingual Matching & Ranking
   const filteredGrammar = useMemo(() => {
     const q = grammarSearch.trim().toLowerCase()
-    return currentCatalog.filter((item) => {
-      const matchesLevel = selectedLevel === 'All' || item.level === selectedLevel
-      if (!matchesLevel) return false
-      if (!q) return true
-      return (
-        item.grammar.toLowerCase().includes(q) ||
-        (item.title && item.title.toLowerCase().includes(q)) ||
-        item.meaning.toLowerCase().includes(q)
-      )
-    })
+    const levelFiltered = currentCatalog.filter(
+      (item) => selectedLevel === 'All' || item.level === selectedLevel
+    )
+
+    if (!q) return levelFiltered
+
+    const kanaQ =
+      q === 'wa' ? 'は' : q === 'e' ? 'へ' : q === 'o' || q === 'wo' ? 'を' : convertRomajiToKana(q)
+
+    const scored = levelFiltered
+      .map((item) => {
+        let score = 0
+        const grammarLower = item.grammar.toLowerCase()
+        const titleLower = (item.title || '').toLowerCase()
+        const meaningLower = item.meaning.toLowerCase()
+
+        // 1. Exact or prefix Japanese pattern match (Highest priority)
+        if (grammarLower === q || grammarLower === kanaQ) score += 130
+        else if (grammarLower.startsWith(kanaQ) || grammarLower.startsWith(q)) score += 100
+        else if (grammarLower.includes(kanaQ) || grammarLower.includes(q)) score += 90
+
+        // Special particle overrides
+        if (q === 'wa' && item.grammar === 'は') score = 150
+        if (q === 'e' && item.grammar === 'へ') score = 150
+        if ((q === 'o' || q === 'wo') && item.grammar === 'を') score = 150
+
+        // 2. Title matching
+        if (titleLower.includes(q) || (kanaQ && titleLower.includes(kanaQ))) {
+          if (q.length <= 2 && /^[a-z]+$/.test(q)) {
+            const wordBound = new RegExp(`\\b${q}\\b`, 'i')
+            if (wordBound.test(titleLower) || titleLower.startsWith(q)) score += 50
+          } else {
+            score += 60
+          }
+        }
+
+        // 3. Meaning matching
+        if (meaningLower.includes(q)) {
+          if (q.length <= 2 && /^[a-z]+$/.test(q)) {
+            const wordBound = new RegExp(`\\b${q}\\b`, 'i')
+            if (wordBound.test(meaningLower)) score += 30
+          } else {
+            score += 40
+          }
+        }
+
+        return { item, score }
+      })
+      .filter((s) => s.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((s) => s.item)
+
+    return scored
   }, [currentCatalog, selectedLevel, grammarSearch])
 
   return (
@@ -170,11 +215,19 @@ function LibraryContent() {
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search grammar point or English meaning..."
+                    placeholder="Search grammar (e.g. te, wa, 〜てください, 〜ている, past)..."
                     value={grammarSearch}
                     onChange={(e) => setGrammarSearch(e.target.value)}
-                    className="pl-9 h-9 text-xs rounded-xl"
+                    className="pl-9 pr-8 h-9 text-xs rounded-xl"
                   />
+                  {grammarSearch && (
+                    <button
+                      onClick={() => setGrammarSearch('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  )}
                 </div>
 
                 {/* Track selector */}
@@ -202,6 +255,21 @@ function LibraryContent() {
                 </div>
               </div>
 
+              {/* Search Result Counter */}
+              {grammarSearch && (
+                <div className="flex items-center justify-between text-xs px-1 text-muted-foreground">
+                  <span>
+                    Found <strong>{filteredGrammar.length}</strong> grammar point{filteredGrammar.length === 1 ? '' : 's'} matching &ldquo;{grammarSearch}&rdquo; in {selectedLevel}
+                  </span>
+                  <button
+                    onClick={() => setGrammarSearch('')}
+                    className="text-primary hover:underline font-medium text-[11px]"
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              )}
+
               {/* JLPT Level Pills */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
                 {JLPT_LEVELS.map((lvl) => (
@@ -222,8 +290,28 @@ function LibraryContent() {
               {/* Grammar Cards List */}
               <div className="rounded-2xl border divide-y overflow-hidden bg-card">
                 {filteredGrammar.length === 0 ? (
-                  <div className="p-8 text-center text-xs text-muted-foreground">
-                    No grammar points found matching &ldquo;{grammarSearch}&rdquo; in {selectedLevel}.
+                  <div className="p-8 text-center space-y-3 text-xs text-muted-foreground">
+                    <p>No grammar points found matching &ldquo;{grammarSearch}&rdquo; in {selectedLevel}.</p>
+                    <div className="flex justify-center gap-2 pt-1">
+                      {selectedLevel !== 'All' && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedLevel('All')}
+                          className="rounded-xl h-7 text-xs"
+                        >
+                          Search All Levels
+                        </Button>
+                      )}
+                      <Button
+                        size="sm"
+                        onClick={() => window.dispatchEvent(new CustomEvent('open-omni-search'))}
+                        className="rounded-xl h-7 text-xs gap-1.5"
+                      >
+                        <Search className="h-3 w-3" />
+                        Search Dictionary in OmniSearch
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   filteredGrammar.map((item) => (

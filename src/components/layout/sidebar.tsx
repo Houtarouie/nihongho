@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 import { useProgress } from '@/lib/progress'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { AvatarMenu } from '@/components/layout/avatar-menu'
+import { OmniSearchTriggerButton } from '@/components/search/omni-search-dialog'
 
 const navItems = [
   { name: 'Today', href: '/today', icon: CalendarCheck },
@@ -37,8 +38,13 @@ export function Sidebar() {
           <ThemeToggle />
         </div>
 
+        {/* Global Quick Search Button */}
+        <div className="p-3 pb-0">
+          <OmniSearchTriggerButton className="w-full" />
+        </div>
+
         {/* Navigation Links */}
-        <div className="py-4">
+        <div className="py-3">
           <nav className="grid items-start gap-1 px-3 text-sm font-medium">
             {navItems.map((item) => {
               const Icon = item.icon

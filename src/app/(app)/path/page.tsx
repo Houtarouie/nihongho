@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   Compass,
   CheckCircle2,
@@ -14,9 +14,10 @@ import {
   Layers,
   Search,
   Zap,
+  X,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
-import { CURRICULUM_PATH, type CurriculumUnit } from '@/data/curriculum-path'
+import { CURRICULUM_PATH, type CurriculumUnit, type CurriculumLessonItem } from '@/data/curriculum-path'
 import {
   HIRAGANA_GOJUON,
   HIRAGANA_DAKUTEN,
@@ -28,6 +29,30 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { KanaQuizModal } from '@/components/quiz/kana-quiz-modal'
+import { GrammarPointInspector } from '@/components/bunpro/grammar-point-inspector'
+import curatedGrammarData from '@/data/user-grammar-curated.json'
+import referenceGrammarData from '@/data/grammar.json'
+import type { GrammarPointSummary } from '@/data/bunpro-grammar-details'
+import { convertRomajiToKana } from '@/lib/kana-ime'
+
+const ALL_GRAMMAR_POINTS: GrammarPointSummary[] = [
+  ...curatedGrammarData.grammar.map((g) => ({
+    grammar: g.grammar,
+    title: g.title,
+    meaning: g.meaning,
+    level: g.level,
+    lesson: g.lesson,
+    track: 'core' as const,
+  })),
+  ...(referenceGrammarData as GrammarPointSummary[]).map((r) => ({
+    grammar: r.grammar,
+    meaning: r.meaning,
+    level: r.level,
+    lesson: r.lesson,
+    title: r.title || r.grammar,
+    track: 'reference' as const,
+  })),
+]
 
 const TYPE_ICONS = {
   kana: GraduationCap,
@@ -71,6 +96,7 @@ const JLPT_LEVELS = [
 type LevelFilter = (typeof JLPT_LEVELS)[number]['id']
 
 export default function PathPage() {
+  const router = useRouter()
   const { stats } = useProgress()
   const [selectedLevel, setSelectedLevel] = useState<LevelFilter>('N5')
   const [expandedUnits, setExpandedUnits] = useState<Record<string, boolean>>({
@@ -84,6 +110,9 @@ export default function PathPage() {
   const [isQuizOpen, setIsQuizOpen] = useState(false)
   const [quizItems, setQuizItems] = useState<KanaItem[]>([])
   const [quizTitle, setQuizTitle] = useState('Lesson Quiz')
+
+  // Grammar Point Inspector Modal State
+  const [inspectingGrammar, setInspectingGrammar] = useState<GrammarPointSummary | null>(null)
 
   const completedLessonIds = new Set(stats.completedLessons || [])
 
@@ -103,6 +132,34 @@ export default function PathPage() {
     }
   }
 
+  function handleStudyLesson(lesson: CurriculumLessonItem) {
+    if (lesson.type === 'grammar') {
+      const titleLower = lesson.title.toLowerCase()
+      const match = ALL_GRAMMAR_POINTS.find(
+        (g) =>
+          lesson.title.includes(g.grammar) ||
+          g.title?.toLowerCase().includes(titleLower) ||
+          lesson.keyPoints.some((k) => k.includes(g.grammar))
+      )
+      if (match) {
+        setInspectingGrammar(match)
+        return
+      }
+    }
+
+    if (lesson.type === 'kana') {
+      const pool = KANA_LESSON_POOLS[lesson.id]
+      if (pool && pool.length > 0) {
+        setQuizItems(pool)
+        setQuizTitle(`${lesson.title} Practice`)
+        setIsQuizOpen(true)
+        return
+      }
+    }
+
+    router.push(lesson.actionUrl)
+  }
+
   // Filter lessons by level & search
   const levelFilteredUnits = CURRICULUM_PATH.filter(
     (unit) => selectedLevel === 'ALL' || unit.jlptLevel === selectedLevel
@@ -110,14 +167,43 @@ export default function PathPage() {
 
   const filteredUnits = levelFilteredUnits
     .map((unit) => {
-      if (!searchQuery.trim()) return unit
-      const q = searchQuery.toLowerCase()
-      const matchingLessons = unit.lessons.filter(
-        (l) =>
-          l.title.toLowerCase().includes(q) ||
-          l.description.toLowerCase().includes(q) ||
-          l.keyPoints.some((k) => k.toLowerCase().includes(q))
-      )
+      const q = searchQuery.trim().toLowerCase()
+      if (!q) return unit
+
+      const kanaQ =
+        q === 'wa' ? 'は' : q === 'e' ? 'へ' : q === 'o' || q === 'wo' ? 'を' : convertRomajiToKana(q)
+
+      const matchingLessons = unit.lessons.filter((l) => {
+        const titleLower = l.title.toLowerCase()
+        if (titleLower.includes(q) || (kanaQ && titleLower.includes(kanaQ))) {
+          if (q.length <= 2 && /^[a-z]+$/.test(q)) {
+            const wordBound = new RegExp(`\\b${q}\\b`, 'i')
+            if (wordBound.test(titleLower) || titleLower.startsWith(q)) return true
+          } else {
+            return true
+          }
+        }
+
+        if (
+          l.keyPoints.some(
+            (kp) => kp.toLowerCase().includes(q) || (kanaQ && kp.includes(kanaQ))
+          )
+        ) {
+          return true
+        }
+
+        const descLower = l.description.toLowerCase()
+        if (descLower.includes(q)) {
+          if (q.length <= 2 && /^[a-z]+$/.test(q)) {
+            const wordBound = new RegExp(`\\b${q}\\b`, 'i')
+            return wordBound.test(descLower)
+          }
+          return true
+        }
+
+        return false
+      })
+
       return {
         ...unit,
         lessons: matchingLessons,
@@ -149,14 +235,22 @@ export default function PathPage() {
           </p>
         </div>
 
-        <div className="relative w-full sm:w-64">
+        <div className="relative w-full sm:w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search lessons or topics..."
+            placeholder="Search topics (e.g. te-form, wa, kanji)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-9 text-xs rounded-xl"
+            className="pl-9 pr-8 h-9 text-xs rounded-xl"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -192,6 +286,32 @@ export default function PathPage() {
           )
         })}
       </div>
+
+      {/* Search Result Banner */}
+      {searchQuery && (
+        <div className="flex items-center justify-between text-xs px-3 py-2 text-muted-foreground bg-muted/40 rounded-xl border">
+          <span>
+            Found <strong>{filteredUnits.reduce((acc, u) => acc + u.lessons.length, 0)}</strong> lesson{filteredUnits.reduce((acc, u) => acc + u.lessons.length, 0) === 1 ? '' : 's'} matching &ldquo;{searchQuery}&rdquo;
+          </span>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-omni-search'))}
+              className="h-6 text-[11px] rounded-lg gap-1 font-normal"
+            >
+              <Search className="h-3 w-3" />
+              Search Dictionary
+            </Button>
+            <button
+              onClick={() => setSearchQuery('')}
+              className="text-primary hover:underline font-medium text-[11px]"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Units Roadmap */}
       <div className="space-y-4">
@@ -303,12 +423,15 @@ export default function PathPage() {
                               </Button>
                             )}
 
-                            <Link href={lesson.actionUrl}>
-                              <Button size="sm" variant={isCompleted ? 'outline' : 'default'} className="h-8 text-xs rounded-xl gap-1.5">
-                                Study Lesson
-                                <ArrowRight className="h-3.5 w-3.5" />
-                              </Button>
-                            </Link>
+                            <Button
+                              size="sm"
+                              variant={isCompleted ? 'outline' : 'default'}
+                              onClick={() => handleStudyLesson(lesson)}
+                              className="h-8 text-xs rounded-xl gap-1.5"
+                            >
+                              Study Lesson
+                              <ArrowRight className="h-3.5 w-3.5" />
+                            </Button>
                           </div>
                         </div>
                       )
@@ -329,6 +452,34 @@ export default function PathPage() {
         title={quizTitle}
         initialMode="kana-to-romaji"
       />
+
+      {/* Grammar Lesson Inspection Modal */}
+      {inspectingGrammar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in-50 duration-150">
+          <div className="w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-3xl border-2 shadow-2xl bg-card p-4 sm:p-6 space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b">
+              <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                Grammar Lesson Inspection
+              </span>
+              <button
+                onClick={() => setInspectingGrammar(null)}
+                className="p-1 rounded-xl text-muted-foreground hover:bg-muted"
+                aria-label="Close"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <GrammarPointInspector
+              item={inspectingGrammar}
+              allGrammar={ALL_GRAMMAR_POINTS}
+              onSelectGrammar={(g) => setInspectingGrammar(g)}
+              onBack={() => setInspectingGrammar(null)}
+              historyTrail={[]}
+              initialTab="study"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -550,7 +550,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I ate breakfast.</span>"
         }
       ],
-      "grammar": "Polite",
+      "grammar": "〜ます / 〜ません",
       "lesson": "Lesson 2 – Connections, Directions & Polite Forms"
     },
     {
@@ -596,7 +596,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I live in Tokyo.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ている / 〜ています",
       "lesson": "Lesson 3 – Actions, Requests & Existence"
     },
     {
@@ -642,7 +642,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Please wait a moment.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てください",
       "lesson": "Lesson 3 – Actions, Requests & Existence"
     },
     {
@@ -688,7 +688,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Please don't run.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ないでください",
       "lesson": "Lesson 3 – Actions, Requests & Existence"
     },
     {
@@ -734,7 +734,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I don't want to eat anything today.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜たい",
       "lesson": "Lesson 3 – Actions, Requests & Existence"
     },
     {
@@ -780,7 +780,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Let's rest a little.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ましょう / 〜ませんか",
       "lesson": "Lesson 3 – Actions, Requests & Existence"
     },
     {
@@ -1286,7 +1286,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I'll contact you after work is done.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てから",
       "lesson": "Lesson 5 – Likes, Reasons & Sequencing"
     },
     {
@@ -1332,7 +1332,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">This shop is cheap and tasty.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜て (て形)",
       "lesson": "Lesson 5 – Likes, Reasons & Sequencing"
     },
     {
@@ -1378,7 +1378,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">The room became clean.</span>"
         }
       ],
-      "grammar": "Adjective",
+      "grammar": "〜くなる / 〜になる",
       "lesson": "Lesson 5 – Likes, Reasons & Sequencing"
     },
     {
@@ -1424,7 +1424,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">There are five students.</span>"
         }
       ],
-      "grammar": "Counters",
+      "grammar": "助数詞 (〜つ, 〜本, 〜枚, 〜匹)",
       "lesson": "Lesson 6 – Numbers, Time & Ability"
     },
     {
@@ -1470,7 +1470,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Who is that person?</span>"
         }
       ],
-      "grammar": "Question",
+      "grammar": "疑問詞 (何, 誰, どこ, いつ, どう)",
       "lesson": "Lesson 6 – Numbers, Time & Ability"
     },
     {
@@ -1562,7 +1562,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I get up at six every day.</span>"
         }
       ],
-      "grammar": "Days,",
+      "grammar": "時間・日付 (〜時, 〜日, 〜月)",
       "lesson": "Lesson 6 – Numbers, Time & Ability"
     },
     {
@@ -1608,7 +1608,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">You can take photos here.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ことができる",
       "lesson": "Lesson 6 – Numbers, Time & Ability"
     },
     {
@@ -1654,7 +1654,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">You can go home.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てもいい",
       "lesson": "Lesson 1 – Permissions, Obligations & Thoughts"
     },
     {
@@ -1700,7 +1700,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">You mustn't be late.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てはいけない",
       "lesson": "Lesson 1 – Permissions, Obligations & Thoughts"
     },
     {
@@ -1746,7 +1746,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I must take my medicine.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜なければならない",
       "lesson": "Lesson 1 – Permissions, Obligations & Thoughts"
     },
     {
@@ -1792,7 +1792,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">You don't have to eat it all.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜なくてもいい",
       "lesson": "Lesson 1 – Permissions, Obligations & Thoughts"
     },
     {
@@ -1838,7 +1838,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I think it will rain tomorrow.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜と思う",
       "lesson": "Lesson 1 – Permissions, Obligations & Thoughts"
     },
     {
@@ -1884,7 +1884,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Mom said she won't go.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜と言う",
       "lesson": "Lesson 1 – Permissions, Obligations & Thoughts"
     },
     {
@@ -1930,7 +1930,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Actually, I'm a student.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜んです / 〜のです",
       "lesson": "Lesson 2 – Explanations, Experiences & Conditions"
     },
     {
@@ -1976,7 +1976,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Sometimes I can't sleep at night.</span>"
         }
       ],
-      "grammar": "Plain",
+      "grammar": "〜たことがある",
       "lesson": "Lesson 2 – Explanations, Experiences & Conditions"
     },
     {
@@ -2022,7 +2022,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">On the weekend I cleaned, did laundry, etc.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜たり〜たりする",
       "lesson": "Lesson 2 – Explanations, Experiences & Conditions"
     },
     {
@@ -2068,7 +2068,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Can you come tomorrow?</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜(ら)れる (可能形)",
       "lesson": "Lesson 2 – Explanations, Experiences & Conditions"
     },
     {
@@ -2114,7 +2114,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">Let's go to bed soon.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜よう / 〜おう (意向形)",
       "lesson": "Lesson 2 – Explanations, Experiences & Conditions"
     },
     {
@@ -2160,7 +2160,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">When I opened the door, there was a cat.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜たら",
       "lesson": "Lesson 2 – Explanations, Experiences & Conditions"
     },
     {
@@ -2206,7 +2206,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">If you turn right, there's a station.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜と",
       "lesson": "Lesson 3 – Hypotheses, Voices & Extremes"
     },
     {
@@ -2252,7 +2252,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">If you study hard, you can pass.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ば",
       "lesson": "Lesson 3 – Hypotheses, Voices & Extremes"
     },
     {
@@ -2298,7 +2298,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">If you want to go, you may.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜なら",
       "lesson": "Lesson 3 – Hypotheses, Voices & Extremes"
     },
     {
@@ -2344,7 +2344,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I got rained on and soaked.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜(ら)れる (受身形)",
       "lesson": "Lesson 3 – Hypotheses, Voices & Extremes"
     },
     {
@@ -2390,7 +2390,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I'll let the child play.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜(さ)せる (使役形)",
       "lesson": "Lesson 3 – Hypotheses, Voices & Extremes"
     },
     {
@@ -2436,7 +2436,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">He's so quiet that I'm worried.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜すぎる",
       "lesson": "Lesson 3 – Hypotheses, Voices & Extremes"
     },
     {
@@ -2482,7 +2482,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">This pen is easy to write with.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜やすい / 〜にくい",
       "lesson": "Lesson 4 – Ease, Simultaneous Action & Favors"
     },
     {
@@ -2528,7 +2528,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I eat while watching TV.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ながら",
       "lesson": "Lesson 4 – Ease, Simultaneous Action & Favors"
     },
     {
@@ -2574,7 +2574,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I go home to eat lunch.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜に行く",
       "lesson": "Lesson 4 – Ease, Simultaneous Action & Favors"
     },
     {
@@ -2620,7 +2620,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I got my brother to help me.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てあげる / 〜てくれる / 〜てもらう",
       "lesson": "Lesson 4 – Ease, Simultaneous Action & Favors"
     },
     {
@@ -2666,7 +2666,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I'd like to try going once.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てみる",
       "lesson": "Lesson 4 – Ease, Simultaneous Action & Favors"
     },
     {
@@ -2712,7 +2712,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I did the homework in advance.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ておく",
       "lesson": "Lesson 4 – Ease, Simultaneous Action & Favors"
     },
     {
@@ -2758,7 +2758,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I ate it all up.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てしまう",
       "lesson": "Lesson 5 – Completion, Habits & Conjecture"
     },
     {
@@ -2804,7 +2804,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">A memo has been written.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜てある",
       "lesson": "Lesson 5 – Completion, Habits & Conjecture"
     },
     {
@@ -2850,7 +2850,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I make a point of exercising daily.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ようになる / 〜ようにする",
       "lesson": "Lesson 5 – Completion, Habits & Conjecture"
     },
     {
@@ -2896,7 +2896,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I decided not to drink alcohol.</span>"
         }
       ],
-      "grammar": "Verb",
+      "grammar": "〜ことにする / 〜ことになる",
       "lesson": "Lesson 5 – Completion, Habits & Conjecture"
     },
     {
@@ -2942,7 +2942,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">I hear that shop is expensive.</span>"
         }
       ],
-      "grammar": "Plain",
+      "grammar": "〜そうだ (伝聞)",
       "lesson": "Lesson 5 – Completion, Habits & Conjecture"
     },
     {
@@ -2988,7 +2988,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">He looks well.</span>"
         }
       ],
-      "grammar": "Stem",
+      "grammar": "〜そうだ (様態)",
       "lesson": "Lesson 5 – Completion, Habits & Conjecture"
     },
     {
@@ -3356,7 +3356,7 @@
           "englishHtml": "<span class=\"text-[#e15b64] underline decoration-dotted font-semibold\">What will you have?</span>"
         }
       ],
-      "grammar": "Honorific",
+      "grammar": "敬語 (お〜になる / お〜する)",
       "lesson": "Lesson 6 – Resemblance, Causes & Politeness"
     },
     {
