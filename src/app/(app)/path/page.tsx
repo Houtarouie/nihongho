@@ -1,42 +1,217 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Compass,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  ArrowRight,
+  BookOpen,
+  GraduationCap,
+  Sparkles,
+  Layers,
+  Search,
+} from 'lucide-react'
+import { useProgress } from '@/lib/progress'
+import { CURRICULUM_PATH, type CurriculumUnit } from '@/data/curriculum-path'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ChevronRight } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+
+const TYPE_ICONS = {
+  kana: GraduationCap,
+  grammar: BookOpen,
+  vocab: Sparkles,
+  review: Layers,
+}
+
+const TYPE_COLORS = {
+  kana: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
+  grammar: 'text-primary bg-primary/10 border-primary/20',
+  vocab: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20',
+  review: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
+}
 
 export default function PathPage() {
+  const { stats } = useProgress()
+  const [expandedUnits, setExpandedUnits] = useState<Record<string, boolean>>({
+    'unit-0': true,
+    'unit-1': true,
+  })
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const completedLessonIds = new Set(stats.completedLessons || [])
+
+  function toggleUnit(unitId: string) {
+    setExpandedUnits((prev) => ({
+      ...prev,
+      [unitId]: !prev[unitId],
+    }))
+  }
+
+  // Filter lessons if searching
+  const filteredUnits = CURRICULUM_PATH.map((unit) => {
+    if (!searchQuery.trim()) return unit
+    const q = searchQuery.toLowerCase()
+    const matchingLessons = unit.lessons.filter(
+      (l) =>
+        l.title.toLowerCase().includes(q) ||
+        l.description.toLowerCase().includes(q) ||
+        l.keyPoints.some((k) => k.toLowerCase().includes(q))
+    )
+    return {
+      ...unit,
+      lessons: matchingLessons,
+    }
+  }).filter((unit) => unit.lessons.length > 0)
+
+  const totalLessons = CURRICULUM_PATH.reduce((acc, u) => acc + u.lessons.length, 0)
+  const completedCount = completedLessonIds.size
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Learning Path</h1>
-        <p className="text-sm text-muted-foreground">
-          Step-by-step roadmap from Kana basics to JLPT N5 mastery.
-        </p>
+    <div className="space-y-6 pb-16">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Badge variant="outline" className="text-xs font-semibold text-primary border-primary/30 gap-1.5">
+              <Compass className="h-3.5 w-3.5 text-primary" />
+              JLPT N5 Curriculum
+            </Badge>
+            <span className="text-xs text-muted-foreground font-mono">
+              {completedCount} / {totalLessons} Lessons Done
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Learning Path</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Step-by-step sequential syllabus from Kana to complete N5 competency.
+          </p>
+        </div>
+
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search lessons or topics..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 h-9 text-xs rounded-xl"
+          />
+        </div>
       </div>
 
+      {/* Units Roadmap */}
       <div className="space-y-4">
-        <Card className="rounded-2xl border-primary/20">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">Unit 0</span>
-              <span className="text-xs text-muted-foreground">4 Lessons</span>
-            </div>
-            <CardTitle className="text-lg">Kana Foundations</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              Master the Hiragana and Katakana phonetic scripts, pronunciation, and sound variations.
-            </p>
-            <Link href="/library?tab=kana">
-              <Button variant="outline" size="sm" className="gap-1.5 rounded-xl">
-                Open Kana Chart
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
+        {filteredUnits.map((unit: CurriculumUnit) => {
+          const isExpanded = expandedUnits[unit.id] ?? false
+          const unitCompletedCount = unit.lessons.filter((l) => completedLessonIds.has(l.id)).length
+          const isUnitFullyDone = unitCompletedCount === unit.lessons.length && unit.lessons.length > 0
+
+          return (
+            <Card
+              key={unit.id}
+              className={`rounded-2xl transition-all overflow-hidden border ${
+                unit.unitNumber === 0 || unit.unitNumber === 1
+                  ? 'border-primary/30 shadow-xs'
+                  : 'border-border/80'
+              }`}
+            >
+              <CardHeader
+                className="cursor-pointer select-none pb-3 hover:bg-muted/30 transition-colors"
+                onClick={() => toggleUnit(unit.id)}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                        Unit {unit.unitNumber}
+                      </span>
+                      <span className="text-xs text-muted-foreground">•</span>
+                      <span className="text-xs text-muted-foreground">
+                        {unit.lessons.length} Lesson{unit.lessons.length === 1 ? '' : 's'}
+                      </span>
+                      {isUnitFullyDone && (
+                        <Badge variant="outline" className="text-[10px] py-0 gap-1 text-emerald-600 border-emerald-500/30">
+                          <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                          Completed
+                        </Badge>
+                      )}
+                    </div>
+                    <CardTitle className="text-lg sm:text-xl">{unit.title}</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">{unit.subtitle}</CardDescription>
+                  </div>
+
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 shrink-0 rounded-lg">
+                    {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </CardHeader>
+
+              {isExpanded && (
+                <CardContent className="pt-2 pb-5 border-t bg-muted/10 space-y-3">
+                  <div className="grid gap-3">
+                    {unit.lessons.map((lesson) => {
+                      const Icon = TYPE_ICONS[lesson.type] || BookOpen
+                      const typeClass = TYPE_COLORS[lesson.type] || 'text-primary bg-primary/10'
+                      const isCompleted = completedLessonIds.has(lesson.id)
+
+                      return (
+                        <div
+                          key={lesson.id}
+                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border bg-background hover:border-primary/30 transition-colors"
+                        >
+                          <div className="space-y-1.5 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-mono text-xs font-bold text-muted-foreground">
+                                {lesson.lessonNumber}
+                              </span>
+                              <Badge variant="outline" className={`text-[10px] py-0 px-2 uppercase font-semibold border ${typeClass}`}>
+                                <Icon className="h-2.5 w-2.5 mr-1" />
+                                {lesson.type}
+                              </Badge>
+                              <h4 className="text-sm font-bold text-foreground">{lesson.title}</h4>
+                            </div>
+
+                            <p className="text-xs text-muted-foreground">{lesson.description}</p>
+
+                            <div className="flex flex-wrap gap-1.5 pt-1">
+                              {lesson.keyPoints.map((point, idx) => (
+                                <span
+                                  key={idx}
+                                  className="text-[11px] font-japanese bg-muted/60 text-muted-foreground px-2 py-0.5 rounded-md"
+                                >
+                                  {point}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0 pt-2 sm:pt-0">
+                            {isCompleted ? (
+                              <Badge variant="outline" className="text-xs text-emerald-600 gap-1 border-emerald-500/20 py-1">
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                Done
+                              </Badge>
+                            ) : null}
+
+                            <Link href={lesson.actionUrl}>
+                              <Button size="sm" variant={isCompleted ? 'outline' : 'default'} className="h-8 text-xs rounded-xl gap-1.5">
+                                Study Lesson
+                                <ArrowRight className="h-3.5 w-3.5" />
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </CardContent>
+              )}
+            </Card>
+          )
+        })}
       </div>
     </div>
   )
