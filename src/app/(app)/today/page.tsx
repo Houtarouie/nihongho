@@ -18,22 +18,33 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge'
 
 export default function TodayPage() {
-  const { stats, cards, weakPoints, isLoading } = useProgress()
+  const { stats, cards, weakPoints, deckOptions, isLoading } = useProgress()
 
   const now = Date.now()
   const tomorrow = now + 24 * 60 * 60 * 1000
 
   // Derive honest metrics from cards
   const activeCards = cards.filter((c) => c.queue !== 'suspended')
-  const dueToday = activeCards.filter((c) => (c.dueDate || 0) <= now)
-  const dueTomorrow = activeCards.filter((c) => (c.dueDate || 0) > now && (c.dueDate || 0) <= tomorrow)
 
-  const stageNew = activeCards.filter((c) => c.status === 'new' || (c.repetition === 0 && c.interval === 0)).length
+  // 1. Review cards due (already learned cards scheduled for today)
+  const reviewsDue = activeCards.filter((c) => c.status !== 'new' && (c.dueDate || 0) <= now)
+  const dueTomorrow = activeCards.filter(
+    (c) => c.status !== 'new' && (c.dueDate || 0) > now && (c.dueDate || 0) <= tomorrow
+  )
+
+  // 2. New cards introduced today (capped by daily new limit)
+  const newCardsAll = activeCards.filter((c) => c.status === 'new' || (c.repetition === 0 && c.interval === 0))
+  const newCardsCap = Math.max(5, deckOptions.newCardsPerDay || 20)
+  const newCardsToday = newCardsAll.slice(0, newCardsCap)
+
+  // Today's actual study queue
+  const dueTodayCount = reviewsDue.length + newCardsToday.length
+  const estimatedMins = Math.max(1, Math.ceil(dueTodayCount * 0.4))
+
+  const stageNew = newCardsAll.length
   const stageLearning = activeCards.filter((c) => c.status === 'learning' || (c.interval > 0 && c.interval < 7)).length
   const stageReview = activeCards.filter((c) => c.status === 'review' || (c.interval >= 7 && c.interval < 21)).length
   const stageMature = activeCards.filter((c) => c.status === 'mastered' || c.interval >= 21).length
-
-  const estimatedMins = Math.max(1, Math.ceil(dueToday.length * 0.4))
 
   // Time-of-day greeting
   const currentHour = new Date().getHours()
@@ -81,7 +92,7 @@ export default function TodayPage() {
               <CalendarCheck className="h-3.5 w-3.5 text-primary" />
               Today&apos;s Focus
             </Badge>
-            {dueToday.length > 0 && (
+            {dueTodayCount > 0 && (
               <span className="text-xs text-muted-foreground font-mono">
                 ~{estimatedMins} min session
               </span>
@@ -90,26 +101,26 @@ export default function TodayPage() {
           <CardTitle className="text-xl sm:text-2xl mt-1">
             {isLoading
               ? 'Loading your study queue...'
-              : dueToday.length > 0
+              : dueTodayCount > 0
               ? 'Daily Spaced-Repetition Review'
               : 'All caught up on reviews! 🎉'}
           </CardTitle>
           <CardDescription className="text-sm">
             {isLoading
               ? 'Fetching your cards from storage...'
-              : dueToday.length > 0
-              ? `You have ${dueToday.length} card${dueToday.length === 1 ? '' : 's'} scheduled for recall today.`
+              : dueTodayCount > 0
+              ? `You have ${dueTodayCount} card${dueTodayCount === 1 ? '' : 's'} scheduled for recall today (${reviewsDue.length} reviews + ${newCardsToday.length} new).`
               : 'Zero pending reviews. Continue progressing along your curriculum path.'}
           </CardDescription>
         </CardHeader>
 
         <CardContent className="pt-1">
           <div className="flex flex-wrap items-center gap-3">
-            {dueToday.length > 0 ? (
+            {dueTodayCount > 0 ? (
               <Link href="/review">
                 <Button size="lg" className="rounded-xl font-semibold gap-2 shadow-sm">
                   <Layers className="h-4 w-4" />
-                  Start Reviews ({dueToday.length})
+                  Start Reviews ({dueTodayCount})
                   <ArrowRight className="h-4 w-4 ml-0.5" />
                 </Button>
               </Link>
@@ -139,11 +150,11 @@ export default function TodayPage() {
           <CardHeader className="pb-1 pt-4">
             <CardDescription className="text-xs font-medium">Due Today</CardDescription>
             <CardTitle className="text-2xl font-bold font-mono text-primary">
-              {isLoading ? '...' : dueToday.length}
+              {isLoading ? '...' : dueTodayCount}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-4 text-xs text-muted-foreground">
-            Cards waiting for retrieval
+            {reviewsDue.length} reviews + {newCardsToday.length} new
           </CardContent>
         </Card>
 

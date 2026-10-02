@@ -14,6 +14,8 @@ import {
   ArrowRight,
   BookOpen,
   X,
+  FileCode,
+  Upload,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import {
@@ -24,6 +26,7 @@ import {
   type CardRating,
   type CardCategory,
 } from '@/data/srs-deck'
+import { parseAnkiApkgBinary } from '@/lib/anki/importer'
 import { renderAnkiText } from '@/lib/anki/furigana'
 import { convertRomajiToKana } from '@/lib/kana-ime'
 import { Button } from '@/components/ui/button'
@@ -42,6 +45,7 @@ function ReviewContent() {
   const {
     cards,
     updateCards,
+    upsertCards,
     recordReview,
     weakPoints,
     addWeakPoint,
@@ -67,26 +71,38 @@ function ReviewContent() {
   const [searchQuery, setSearchQuery] = useState('')
 
   // Add Card form state
+  const [addMode, setAddMode] = useState<'single' | 'apkg'>('single')
   const [newFront, setNewFront] = useState('')
   const [newReading, setNewReading] = useState('')
   const [newMeaning, setNewMeaning] = useState('')
   const [newCategory, setNewCategory] = useState<CardCategory>('vocabulary')
   const [newJlpt, setNewJlpt] = useState('N5')
+  const [isImportingApkg, setIsImportingApkg] = useState(false)
 
-  // Initialize review queue
+  // Initialize review queue (reviews due + capped new cards for realistic daily session)
   useEffect(() => {
     if (isLoading) return
     const now = Date.now() + 60 * 1000
-    const due = cards.filter((c) => (c.dueDate || 0) <= now && c.queue !== 'suspended')
+    const activeCards = cards.filter((c) => c.queue !== 'suspended')
+
+    // 1. Cards scheduled for review today
+    const reviewsDue = activeCards.filter((c) => c.status !== 'new' && (c.dueDate || 0) <= now)
+
+    // 2. New cards capped by daily limit
+    const newCardsAll = activeCards.filter((c) => c.status === 'new' || (c.repetition === 0 && c.interval === 0))
+    const newCardsCap = Math.max(5, deckOptions.newCardsPerDay || 20)
+    const newCardsToday = newCardsAll.slice(0, newCardsCap)
+
+    const sessionQueue = [...reviewsDue, ...newCardsToday]
     // Shuffle slightly for spaced review
-    const shuffled = [...due].sort(() => Math.random() - 0.5)
+    const shuffled = [...sessionQueue].sort(() => Math.random() - 0.5)
     setSessionCards(shuffled)
     setCurrentIndex(0)
     setIsRevealed(false)
     setTypedInput('')
     setCompletedCount(0)
     setSessionLapses([])
-  }, [cards, isLoading])
+  }, [cards, isLoading, deckOptions.newCardsPerDay])
 
   const currentCard: SRSCard | undefined = sessionCards[currentIndex]
 
@@ -235,6 +251,45 @@ function ReviewContent() {
     setActiveTab('review')
   }
 
+  async function handleImportApkgFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setIsImportingApkg(true)
+    try {
+      toast.info(`Extracting cards from ${file.name}...`)
+      const parsed = await parseAnkiApkgBinary(file)
+      if (parsed && parsed.length > 0) {
+        const newCards: SRSCard[] = parsed.map((p, idx) => ({
+          id: `apkg-${Date.now()}-${idx}`,
+          front: p.front,
+          reading: p.reading,
+          meaning: p.meaning,
+          category: p.category || 'vocabulary',
+          jlptLevel: p.jlptLevel || 'N5',
+          exampleSentence: p.exampleSentence,
+          exampleTranslation: p.exampleTranslation,
+          tags: p.tags,
+          interval: 0,
+          repetition: 0,
+          efactor: 2.5,
+          dueDate: Date.now(),
+          status: 'new' as const,
+          queue: 'active' as const,
+          lapses: 0,
+        }))
+        const res = await upsertCards(newCards)
+        toast.success(`Successfully imported ${res.addedCount} cards from ${file.name}!`)
+        setActiveTab('browse')
+      } else {
+        toast.error('No readable notes or cards found in this .apkg file')
+      }
+    } catch {
+      toast.error('Failed to parse .apkg file')
+    } finally {
+      setIsImportingApkg(false)
+    }
+  }
+
   // Filter cards for Browse tab
   const filteredCards = useMemo(() => {
     if (!searchQuery.trim()) return cards
@@ -296,15 +351,32 @@ function ReviewContent() {
             Browse ({cards.length})
           </button>
           <button
-            onClick={() => setActiveTab('add')}
+            onClick={() => {
+              setActiveTab('add')
+              setAddMode('single')
+            }}
             className={`px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1 ${
-              activeTab === 'add'
+              activeTab === 'add' && addMode === 'single'
                 ? 'bg-background text-foreground shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             <Plus className="h-3.5 w-3.5" />
             Add
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('add')
+              setAddMode('apkg')
+            }}
+            className={`px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
+              activeTab === 'add' && addMode === 'apkg'
+                ? 'bg-background text-foreground shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <FileCode className="h-3.5 w-3.5 text-primary" />
+            Import .apkg
           </button>
         </div>
       </div>
@@ -670,90 +742,214 @@ function ReviewContent() {
         </div>
       )}
 
-      {/* 4. ADD NEW CARD TAB */}
+      {/* 4. ADD / IMPORT CARDS TAB */}
       {activeTab === 'add' && (
         <Card className="p-6 rounded-2xl max-w-lg mx-auto">
-          <CardHeader className="p-0 pb-4">
-            <CardTitle className="text-lg">Create Custom SRS Flashcard</CardTitle>
-            <CardDescription className="text-xs">
-              Add your own custom vocabulary or grammar point to your spaced repetition queue.
-            </CardDescription>
-          </CardHeader>
-          <form onSubmit={handleAddCard} className="space-y-4 text-xs">
-            <div className="space-y-1.5">
-              <Label htmlFor="front" className="text-xs font-semibold">
-                Front (Kanji or Word)
-              </Label>
-              <Input
-                id="front"
-                placeholder="e.g. 友達 or ともだち"
-                value={newFront}
-                onChange={(e) => setNewFront(e.target.value)}
-                className="font-japanese text-sm rounded-xl h-9"
-                required
-              />
-            </div>
+          {/* Sub-mode selector */}
+          <div className="flex items-center p-1 rounded-xl bg-muted/60 mb-5 border text-xs">
+            <button
+              type="button"
+              onClick={() => setAddMode('single')}
+              className={`flex-1 py-1.5 rounded-lg font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                addMode === 'single'
+                  ? 'bg-background text-foreground shadow-xs'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Create Flashcard
+            </button>
+            <button
+              type="button"
+              onClick={() => setAddMode('apkg')}
+              className={`flex-1 py-1.5 rounded-lg font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                addMode === 'apkg'
+                  ? 'bg-background text-foreground shadow-xs'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <FileCode className="h-3.5 w-3.5 text-primary" />
+              Import Anki .apkg
+            </button>
+          </div>
 
-            <div className="space-y-1.5">
-              <Label htmlFor="reading" className="text-xs font-semibold">
-                Reading (Hiragana)
-              </Label>
-              <Input
-                id="reading"
-                placeholder="e.g. ともだち"
-                value={newReading}
-                onChange={(e) => setNewReading(convertRomajiToKana(e.target.value))}
-                className="font-japanese text-sm rounded-xl h-9"
-              />
-            </div>
+          {addMode === 'single' ? (
+            <>
+              <CardHeader className="p-0 pb-4">
+                <CardTitle className="text-lg">Create Custom SRS Flashcard</CardTitle>
+                <CardDescription className="text-xs">
+                  Add your own custom vocabulary or grammar point to your spaced repetition queue.
+                </CardDescription>
+              </CardHeader>
+              <form onSubmit={handleAddCard} className="space-y-4 text-xs">
+                <div className="space-y-1.5">
+                  <Label htmlFor="front" className="text-xs font-semibold">
+                    Front (Kanji or Word)
+                  </Label>
+                  <Input
+                    id="front"
+                    placeholder="e.g. 友達 or ともだち"
+                    value={newFront}
+                    onChange={(e) => setNewFront(e.target.value)}
+                    className="font-japanese text-sm rounded-xl h-9"
+                    required
+                  />
+                </div>
 
-            <div className="space-y-1.5">
-              <Label htmlFor="meaning" className="text-xs font-semibold">
-                Meaning (English)
-              </Label>
-              <Input
-                id="meaning"
-                placeholder="e.g. Friend"
-                value={newMeaning}
-                onChange={(e) => setNewMeaning(e.target.value)}
-                className="text-sm rounded-xl h-9"
-                required
-              />
-            </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="reading" className="text-xs font-semibold">
+                    Reading (Hiragana)
+                  </Label>
+                  <Input
+                    id="reading"
+                    placeholder="e.g. ともだち"
+                    value={newReading}
+                    onChange={(e) => setNewReading(convertRomajiToKana(e.target.value))}
+                    className="font-japanese text-sm rounded-xl h-9"
+                  />
+                </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label className="text-xs font-semibold">Category</Label>
-                <select
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value as CardCategory)}
-                  className="w-full h-9 rounded-xl border bg-background px-3 text-xs"
-                >
-                  <option value="vocabulary">Vocabulary</option>
-                  <option value="kanji">Kanji</option>
-                  <option value="grammar">Grammar</option>
-                  <option value="kana">Kana</option>
-                </select>
+                <div className="space-y-1.5">
+                  <Label htmlFor="meaning" className="text-xs font-semibold">
+                    Meaning (English)
+                  </Label>
+                  <Input
+                    id="meaning"
+                    placeholder="e.g. Friend"
+                    value={newMeaning}
+                    onChange={(e) => setNewMeaning(e.target.value)}
+                    className="text-sm rounded-xl h-9"
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-semibold">Category</Label>
+                    <select
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value as CardCategory)}
+                      className="w-full h-9 rounded-xl border bg-background px-3 text-xs"
+                    >
+                      <option value="vocabulary">Vocabulary</option>
+                      <option value="kanji">Kanji</option>
+                      <option value="grammar">Grammar</option>
+                      <option value="kana">Kana</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-semibold">JLPT Level</Label>
+                    <select
+                      value={newJlpt}
+                      onChange={(e) => setNewJlpt(e.target.value)}
+                      className="w-full h-9 rounded-xl border bg-background px-3 text-xs"
+                    >
+                      <option value="N5">N5</option>
+                      <option value="N4">N4</option>
+                      <option value="N3">N3</option>
+                      <option value="N2">N2</option>
+                      <option value="N1">N1</option>
+                    </select>
+                  </div>
+                </div>
+
+                <Button type="submit" className="w-full rounded-xl h-9 text-xs font-semibold mt-2">
+                  Save Card to SRS Queue
+                </Button>
+              </form>
+            </>
+          ) : (
+            <div className="space-y-4 text-xs">
+              <CardHeader className="p-0 pb-1">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <FileCode className="h-5 w-5 text-primary" />
+                  Import Anki Deck (.apkg / .colpkg)
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Directly load your exported Anki deck files into your personal spaced repetition queue.
+                </CardDescription>
+              </CardHeader>
+
+              <div
+                onClick={() => document.getElementById('anki-tab-file-input')?.click()}
+                onDragOver={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }}
+                onDrop={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  const file = e.dataTransfer.files?.[0]
+                  if (file) {
+                    const fakeEvent = {
+                      target: { files: [file] },
+                    } as unknown as React.ChangeEvent<HTMLInputElement>
+                    handleImportApkgFile(fakeEvent)
+                  }
+                }}
+                className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
+                  isImportingApkg
+                    ? 'border-primary bg-primary/5 animate-pulse'
+                    : 'border-muted-foreground/30 hover:border-primary/50 hover:bg-muted/30'
+                }`}
+              >
+                <input
+                  id="anki-tab-file-input"
+                  type="file"
+                  accept=".apkg,.colpkg"
+                  onChange={handleImportApkgFile}
+                  className="hidden"
+                  disabled={isImportingApkg}
+                />
+                <div className="space-y-3">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+                    {isImportingApkg ? (
+                      <div className="h-5 w-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Upload className="h-6 w-6" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm">
+                      {isImportingApkg
+                        ? 'Decompressing & extracting cards...'
+                        : 'Choose .apkg file or drag & drop here'}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground mt-1">
+                      Supports Anki 2.1 packages, Core 2k/6k, JLPT decks, Kaishi 1.5k, and custom decks
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="rounded-xl text-xs gap-1.5"
+                    disabled={isImportingApkg}
+                  >
+                    <FileCode className="h-3.5 w-3.5" />
+                    Select Deck from Computer
+                  </Button>
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <Label className="text-xs font-semibold">JLPT Level</Label>
-                <select
-                  value={newJlpt}
-                  onChange={(e) => setNewJlpt(e.target.value)}
-                  className="w-full h-9 rounded-xl border bg-background px-3 text-xs"
-                >
-                  <option value="N5">N5</option>
-                  <option value="N4">N4</option>
-                  <option value="N3">N3</option>
-                </select>
+              <div className="p-3.5 rounded-xl border bg-muted/20 space-y-2 text-[11px] text-muted-foreground">
+                <p className="font-semibold text-foreground flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                  Client-side SQLite Processing
+                </p>
+                <p>
+                  Decompressed and extracted directly in your browser without uploading to any external server.
+                </p>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  <Badge variant="outline" className="text-[10px] py-0">Anki 2.1 SQLite</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0">Furigana [kanji;reading]</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0">Cloze deletions</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0">Tags preserved</Badge>
+                </div>
               </div>
             </div>
-
-            <Button type="submit" className="w-full rounded-xl h-9 text-xs font-semibold mt-2">
-              Save Card to SRS Queue
-            </Button>
-          </form>
+          )}
         </Card>
       )}
     </div>

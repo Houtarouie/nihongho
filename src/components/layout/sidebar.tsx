@@ -12,6 +12,7 @@ import {
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useProgress } from '@/lib/progress'
+import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { AvatarMenu } from '@/components/layout/avatar-menu'
 
 const navItems = [
@@ -33,7 +34,7 @@ export function Sidebar() {
           <Link href="/today" className="flex items-center gap-2 font-bold">
             <span className="text-xl tracking-tight text-primary">Nihongo</span>
           </Link>
-          <AvatarMenu />
+          <ThemeToggle />
         </div>
 
         {/* Navigation Links */}
@@ -63,27 +64,32 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Clean User Status Footer */}
+      {/* Clean User Status Footer with AvatarMenu trigger */}
       <div className="p-3 border-t bg-muted/20">
-        <div className="flex items-center justify-between p-2.5 rounded-xl border border-border/60 bg-background/80">
-          <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="h-8 w-8 rounded-full bg-primary/15 flex items-center justify-center text-base shrink-0">
-              {stats.avatar || '🌸'}
+        <AvatarMenu
+          align="left"
+          trigger={
+            <div className="flex items-center justify-between p-2.5 rounded-xl border border-border/60 bg-background/80 hover:bg-muted/60 hover:border-primary/40 transition-all cursor-pointer">
+              <div className="flex items-center gap-2.5 overflow-hidden">
+                <div className="h-8 w-8 rounded-full bg-primary/15 flex items-center justify-center text-base shrink-0">
+                  {stats.avatar || '🌸'}
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-xs font-bold truncate">{stats.displayName || 'Learner'}</p>
+                  <p className="text-[10px] text-muted-foreground font-mono">
+                    {stats.totalStudyMins}m studied
+                  </p>
+                </div>
+              </div>
+              {stats.currentStreak > 0 && (
+                <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-2 py-0.5 text-xs font-bold text-orange-500">
+                  <Flame className="h-3.5 w-3.5 fill-orange-500" />
+                  <span>{stats.currentStreak}d</span>
+                </div>
+              )}
             </div>
-            <div className="overflow-hidden">
-              <p className="text-xs font-bold truncate">{stats.displayName || 'Learner'}</p>
-              <p className="text-[10px] text-muted-foreground font-mono">
-                {stats.totalStudyMins}m studied
-              </p>
-            </div>
-          </div>
-          {stats.currentStreak > 0 && (
-            <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-2 py-0.5 text-xs font-bold text-orange-500">
-              <Flame className="h-3.5 w-3.5 fill-orange-500" />
-              <span>{stats.currentStreak}d</span>
-            </div>
-          )}
-        </div>
+          }
+        />
       </div>
     </aside>
   )

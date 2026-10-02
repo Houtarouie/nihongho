@@ -59,11 +59,24 @@ const KANA_LESSON_POOLS: Record<string, KanaItem[]> = {
   ),
 }
 
+const JLPT_LEVELS = [
+  { id: 'ALL', label: 'All' },
+  { id: 'N5', label: 'N5 (Beginner)' },
+  { id: 'N4', label: 'N4 (Elementary)' },
+  { id: 'N3', label: 'N3 (Intermediate)' },
+  { id: 'N2', label: 'N2 (Pre-Advanced)' },
+  { id: 'N1', label: 'N1 (Advanced)' },
+] as const
+
+type LevelFilter = (typeof JLPT_LEVELS)[number]['id']
+
 export default function PathPage() {
   const { stats } = useProgress()
+  const [selectedLevel, setSelectedLevel] = useState<LevelFilter>('N5')
   const [expandedUnits, setExpandedUnits] = useState<Record<string, boolean>>({
     'unit-0': true,
     'unit-1': true,
+    'unit-8': true,
   })
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -90,24 +103,31 @@ export default function PathPage() {
     }
   }
 
-  // Filter lessons if searching
-  const filteredUnits = CURRICULUM_PATH.map((unit) => {
-    if (!searchQuery.trim()) return unit
-    const q = searchQuery.toLowerCase()
-    const matchingLessons = unit.lessons.filter(
-      (l) =>
-        l.title.toLowerCase().includes(q) ||
-        l.description.toLowerCase().includes(q) ||
-        l.keyPoints.some((k) => k.toLowerCase().includes(q))
-    )
-    return {
-      ...unit,
-      lessons: matchingLessons,
-    }
-  }).filter((unit) => unit.lessons.length > 0)
+  // Filter lessons by level & search
+  const levelFilteredUnits = CURRICULUM_PATH.filter(
+    (unit) => selectedLevel === 'ALL' || unit.jlptLevel === selectedLevel
+  )
 
-  const totalLessons = CURRICULUM_PATH.reduce((acc, u) => acc + u.lessons.length, 0)
-  const completedCount = completedLessonIds.size
+  const filteredUnits = levelFilteredUnits
+    .map((unit) => {
+      if (!searchQuery.trim()) return unit
+      const q = searchQuery.toLowerCase()
+      const matchingLessons = unit.lessons.filter(
+        (l) =>
+          l.title.toLowerCase().includes(q) ||
+          l.description.toLowerCase().includes(q) ||
+          l.keyPoints.some((k) => k.toLowerCase().includes(q))
+      )
+      return {
+        ...unit,
+        lessons: matchingLessons,
+      }
+    })
+    .filter((unit) => unit.lessons.length > 0)
+
+  const currentLevelLessons = levelFilteredUnits.flatMap((u) => u.lessons)
+  const totalLessons = currentLevelLessons.length
+  const completedCount = currentLevelLessons.filter((l) => completedLessonIds.has(l.id)).length
 
   return (
     <div className="space-y-6 pb-16">
@@ -117,7 +137,7 @@ export default function PathPage() {
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="outline" className="text-xs font-semibold text-primary border-primary/30 gap-1.5">
               <Compass className="h-3.5 w-3.5 text-primary" />
-              JLPT N5 Curriculum
+              {selectedLevel === 'ALL' ? 'Complete Syllabus (N5–N1)' : `JLPT ${selectedLevel} Curriculum`}
             </Badge>
             <span className="text-xs text-muted-foreground font-mono">
               {completedCount} / {totalLessons} Lessons Done
@@ -125,7 +145,7 @@ export default function PathPage() {
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Learning Path</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Step-by-step sequential syllabus from Kana to complete N5 competency.
+            Step-by-step sequential syllabus from absolute beginner to advanced proficiency.
           </p>
         </div>
 
@@ -138,6 +158,39 @@ export default function PathPage() {
             className="pl-9 h-9 text-xs rounded-xl"
           />
         </div>
+      </div>
+
+      {/* JLPT Level Selector Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        {JLPT_LEVELS.map((lvl) => {
+          const isSelected = selectedLevel === lvl.id
+          const count =
+            lvl.id === 'ALL'
+              ? CURRICULUM_PATH.length
+              : CURRICULUM_PATH.filter((u) => u.jlptLevel === lvl.id).length
+          return (
+            <button
+              key={lvl.id}
+              onClick={() => setSelectedLevel(lvl.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 border ${
+                isSelected
+                  ? 'bg-primary text-primary-foreground border-primary shadow-xs'
+                  : 'bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground border-transparent'
+              }`}
+            >
+              <span>{lvl.label}</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                  isSelected
+                    ? 'bg-primary-foreground/20 text-primary-foreground'
+                    : 'bg-muted-foreground/15 text-muted-foreground'
+                }`}
+              >
+                {count} {count === 1 ? 'unit' : 'units'}
+              </span>
+            </button>
+          )
+        })}
       </div>
 
       {/* Units Roadmap */}
@@ -166,6 +219,9 @@ export default function PathPage() {
                       <span className="text-xs font-bold uppercase tracking-wider text-primary">
                         Unit {unit.unitNumber}
                       </span>
+                      <Badge variant="secondary" className="text-[10px] py-0 font-semibold">
+                        {unit.jlptLevel}
+                      </Badge>
                       <span className="text-xs text-muted-foreground">•</span>
                       <span className="text-xs text-muted-foreground">
                         {unit.lessons.length} Lesson{unit.lessons.length === 1 ? '' : 's'}
