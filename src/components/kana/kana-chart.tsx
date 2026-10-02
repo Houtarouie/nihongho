@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   HIRAGANA_GOJUON,
   HIRAGANA_DAKUTEN,
@@ -11,11 +11,24 @@ import {
   type KanaItem,
   type KanaRow,
 } from '@/data/kana'
-import { speakJapanese } from '@/data/srs-deck'
+import { speakJapanese, type SRSCard } from '@/data/srs-deck'
 import { useProgress } from '@/lib/progress'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import {
+  AlertCircle,
+  Eye,
+  EyeOff,
+  Sparkles,
+  Plus,
+  Play,
+  CheckSquare,
+  Square,
+  X,
+  Zap,
+} from 'lucide-react'
+import { KanaQuizModal, type QuizMode } from '@/components/quiz/kana-quiz-modal'
 import { toast } from 'sonner'
 
 type ScriptType = 'hiragana' | 'katakana'
@@ -55,11 +68,21 @@ const CONFUSION_PAIRS = [
 ]
 
 export function KanaChart() {
-  const { stats } = useProgress()
+  const { stats, upsertCards } = useProgress()
   const [script, setScript] = useState<ScriptType>('hiragana')
   const [section, setSection] = useState<SectionType>('gojuon')
   const [showRomaji, setShowRomaji] = useState(true)
   const [activeItem, setActiveItem] = useState<KanaItem | null>(null)
+
+  // Custom Selection State
+  const [isSelectMode, setIsSelectMode] = useState(false)
+  const [selectedKanaMap, setSelectedKanaMap] = useState<Record<string, KanaItem>>({})
+
+  // Quiz Modal State
+  const [isQuizOpen, setIsQuizOpen] = useState(false)
+  const [quizItems, setQuizItems] = useState<KanaItem[]>([])
+  const [quizTitle, setQuizTitle] = useState('Kana Quiz')
+  const [quizMode, setQuizMode] = useState<QuizMode>('kana-to-romaji')
 
   const rows: KanaRow[] =
     script === 'hiragana'
@@ -74,16 +97,189 @@ export function KanaChart() {
       ? KATAKANA_DAKUTEN
       : KATAKANA_YOON
 
-  function handlePlayKana(item: KanaItem) {
-    setActiveItem(item)
-    speakJapanese(item.kana, { rate: stats.audioSpeed || 1.0 })
-    toast.success(`${item.kana} (${item.romaji}) — ${item.example}`, { duration: 1500 })
+  const currentFlatKana = useMemo(() => {
+    const list: KanaItem[] = []
+    for (const r of rows) {
+      for (const it of r.items) {
+        if (it) list.push(it)
+      }
+    }
+    return list
+  }, [rows])
+
+  function handleKanaClick(item: KanaItem) {
+    if (isSelectMode) {
+      setSelectedKanaMap((prev) => {
+        const next = { ...prev }
+        if (next[item.kana]) {
+          delete next[item.kana]
+        } else {
+          next[item.kana] = item
+        }
+        return next
+      })
+    } else {
+      setActiveItem(item)
+      speakJapanese(item.kana, { rate: stats.audioSpeed || 1.0 })
+      toast.success(`${item.kana} (${item.romaji}) — ${item.example}`, { duration: 1500 })
+    }
   }
 
+  function handleSelectRow(row: KanaRow) {
+    const newItems: Record<string, KanaItem> = {}
+    row.items.forEach((it) => {
+      if (it) newItems[it.kana] = it
+    })
+    setSelectedKanaMap((prev) => ({ ...prev, ...newItems }))
+    setIsSelectMode(true)
+    toast.success(`Selected ${row.rowName}-row for quiz`)
+  }
+
+  // Launch quiz for a specific row
+  function handleQuizRow(row: KanaRow) {
+    const items = row.items.filter((i): i is KanaItem => Boolean(i))
+    if (items.length === 0) return
+    setQuizItems(items)
+    setQuizTitle(`${row.rowName}-Row Quick Quiz`)
+    setQuizMode('kana-to-romaji')
+    setIsQuizOpen(true)
+  }
+
+  // Add a specific row directly to daily SRS
+  async function handleAddRowToSRS(row: KanaRow) {
+    const items = row.items.filter((i): i is KanaItem => Boolean(i))
+    if (items.length === 0) return
+
+    const newCards: SRSCard[] = items.map((it) => ({
+      id: `kana-${it.kana}`,
+      front: it.kana,
+      reading: it.romaji,
+      meaning: `Kana character for "${it.romaji}"`,
+      category: 'kana',
+      jlptLevel: 'N5',
+      exampleSentence: it.example,
+      interval: 0,
+      repetition: 0,
+      efactor: 2.5,
+      dueDate: Date.now(),
+      status: 'new',
+      queue: 'active',
+      lapses: 0,
+    }))
+
+    const res = await upsertCards(newCards)
+    toast.success(`Added ${res.addedCount} cards from ${row.rowName}-row to your Daily SRS Reviews!`)
+  }
+
+  // Launch custom quiz from selected items
+  function handleLaunchCustomQuiz() {
+    const items = Object.values(selectedKanaMap)
+    if (items.length === 0) {
+      toast.error('Select at least 1 character to start a custom quiz')
+      return
+    }
+    setQuizItems(items)
+    setQuizTitle(`Custom Kana Quiz (${items.length} characters)`)
+    setQuizMode('kana-to-romaji')
+    setIsQuizOpen(true)
+  }
+
+  // Add all selected items into daily SRS
+  async function handleAddSelectedToSRS() {
+    const items = Object.values(selectedKanaMap)
+    if (items.length === 0) return
+
+    const newCards: SRSCard[] = items.map((it) => ({
+      id: `kana-${it.kana}`,
+      front: it.kana,
+      reading: it.romaji,
+      meaning: `Kana character for "${it.romaji}"`,
+      category: 'kana',
+      jlptLevel: 'N5',
+      exampleSentence: it.example,
+      interval: 0,
+      repetition: 0,
+      efactor: 2.5,
+      dueDate: Date.now(),
+      status: 'new',
+      queue: 'active',
+      lapses: 0,
+    }))
+
+    const res = await upsertCards(newCards)
+    toast.success(`Added ${res.addedCount} selected characters to your Daily SRS Queue!`)
+  }
+
+  // Quick launch all current
+  function handleQuizAll() {
+    setQuizItems(currentFlatKana)
+    setQuizTitle(`Full ${script === 'hiragana' ? 'Hiragana' : 'Katakana'} (${section}) Quiz`)
+    setQuizMode('kana-to-romaji')
+    setIsQuizOpen(true)
+  }
+
+  // Quick launch confusion drill
+  function handleQuizConfusion() {
+    const confusionItems = currentFlatKana.filter((it) =>
+      CONFUSION_PAIRS.some((p) => p.chars.includes(it.kana))
+    )
+    setQuizItems(confusionItems.length >= 4 ? confusionItems : currentFlatKana.slice(0, 10))
+    setQuizTitle(`${script === 'hiragana' ? 'Hiragana' : 'Katakana'} Look-Alike Drill`)
+    setQuizMode('kana-to-romaji')
+    setIsQuizOpen(true)
+  }
+
+  const selectedCount = Object.keys(selectedKanaMap).length
   const scriptConfusions = CONFUSION_PAIRS.filter((c) => c.script === script)
 
   return (
     <div className="space-y-6">
+      {/* Top Banner: Quick Quizzes & Custom Selection Toggle */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl border bg-gradient-to-r from-primary/10 via-background to-muted/40 shadow-xs">
+        <div className="space-y-0.5">
+          <h3 className="text-sm font-bold flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            Active Kana Quizzing &amp; SRS
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Test yourself with smart look-alike distractors or pick custom characters to drill.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            size="sm"
+            onClick={handleQuizAll}
+            className="h-8 text-xs rounded-xl gap-1.5 font-semibold"
+          >
+            <Play className="h-3.5 w-3.5 fill-current" />
+            Quiz All
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleQuizConfusion}
+            className="h-8 text-xs rounded-xl gap-1.5"
+          >
+            <AlertCircle className="h-3.5 w-3.5 text-amber-500" />
+            Confusion Drill
+          </Button>
+
+          <Button
+            variant={isSelectMode ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setIsSelectMode(!isSelectMode)}
+            className={`h-8 text-xs rounded-xl gap-1.5 ${
+              isSelectMode ? 'bg-primary text-primary-foreground font-bold' : ''
+            }`}
+          >
+            {isSelectMode ? <CheckSquare className="h-3.5 w-3.5" /> : <Square className="h-3.5 w-3.5" />}
+            {isSelectMode ? 'Selecting Mode (Active)' : 'Select Custom Characters'}
+          </Button>
+        </div>
+      </div>
+
       {/* Control Switchers */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border bg-card">
         {/* Hiragana vs Katakana */}
@@ -162,28 +358,72 @@ export function KanaChart() {
         <div className="space-y-4">
           {rows.map((row) => (
             <div key={row.rowName} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-              <span className="text-xs font-mono font-bold text-muted-foreground w-12 shrink-0 uppercase">
-                {row.rowName}-row
-              </span>
+              {/* Row title with quick actions */}
+              <div className="flex items-center justify-between sm:justify-start gap-2 w-28 shrink-0">
+                <span className="text-xs font-mono font-bold text-muted-foreground uppercase">
+                  {row.rowName}-row
+                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => handleQuizRow(row)}
+                    className="p-1 rounded-md text-primary hover:bg-primary/10 transition-colors"
+                    title={`Quiz ${row.rowName}-row`}
+                  >
+                    <Zap className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() => handleAddRowToSRS(row)}
+                    className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    title={`Add ${row.rowName}-row to Daily SRS Reviews`}
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                  </button>
+                  {isSelectMode && (
+                    <button
+                      onClick={() => handleSelectRow(row)}
+                      className="text-[10px] text-primary hover:underline font-semibold"
+                    >
+                      +all
+                    </button>
+                  )}
+                </div>
+              </div>
 
+              {/* Row Characters */}
               <div className="grid grid-cols-5 gap-2 sm:gap-3 flex-1">
                 {row.items.map((item, idx) => {
                   if (!item) {
                     return <div key={`empty-${idx}`} className="min-h-[58px] sm:min-h-[64px]" />
                   }
-                  const isSelected = activeItem?.kana === item.kana
+                  const isSelectedInQuiz = Boolean(selectedKanaMap[item.kana])
+                  const isActive = activeItem?.kana === item.kana
 
                   return (
                     <button
                       key={`${item.kana}-${idx}`}
-                      onClick={() => handlePlayKana(item)}
-                      className={`min-h-[58px] sm:min-h-[64px] flex flex-col items-center justify-center p-2 rounded-2xl border transition-all select-none ${
-                        isSelected
-                          ? 'border-primary bg-primary/10 ring-2 ring-primary/20 scale-102'
+                      onClick={() => handleKanaClick(item)}
+                      className={`relative min-h-[58px] sm:min-h-[64px] flex flex-col items-center justify-center p-2 rounded-2xl border transition-all select-none ${
+                        isSelectedInQuiz
+                          ? 'border-primary bg-primary/15 ring-2 ring-primary'
+                          : isActive
+                          ? 'border-primary bg-primary/10 scale-102'
                           : 'border-border/70 hover:border-primary/50 hover:bg-muted/40'
                       }`}
                       aria-label={`Character ${item.kana}, pronunciation ${item.romaji}`}
                     >
+                      {/* Checkbox indicator when in select mode */}
+                      {isSelectMode && (
+                        <span
+                          className={`absolute top-1.5 right-1.5 h-3.5 w-3.5 rounded-md flex items-center justify-center border text-[9px] ${
+                            isSelectedInQuiz
+                              ? 'bg-primary text-primary-foreground border-primary font-bold'
+                              : 'border-muted-foreground/40 bg-background/80'
+                          }`}
+                        >
+                          {isSelectedInQuiz && '✓'}
+                        </span>
+                      )}
+
                       <span className="text-2xl sm:text-3xl font-bold font-japanese leading-none">
                         {item.kana}
                       </span>
@@ -201,13 +441,77 @@ export function KanaChart() {
         </div>
       </Card>
 
+      {/* Floating Bottom Selection Bar (When user has selected items) */}
+      {selectedCount > 0 && (
+        <div className="fixed bottom-16 md:bottom-6 left-4 right-4 max-w-2xl mx-auto z-40 p-4 rounded-2xl border-2 border-primary/40 bg-background/95 backdrop-blur-md shadow-2xl animate-in slide-in-from-bottom-5 duration-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <Badge variant="default" className="text-xs font-bold">
+                  {selectedCount} Selected
+                </Badge>
+                <button
+                  onClick={() => setSelectedKanaMap({})}
+                  className="text-xs text-muted-foreground hover:text-destructive flex items-center gap-1"
+                >
+                  <X className="h-3.5 w-3.5" />
+                  Clear
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-1 max-h-12 overflow-y-auto">
+                {Object.values(selectedKanaMap).map((it) => (
+                  <span
+                    key={it.kana}
+                    className="font-japanese text-xs bg-primary/10 text-primary font-bold px-1.5 py-0.5 rounded"
+                  >
+                    {it.kana}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleAddSelectedToSRS}
+                className="h-9 text-xs rounded-xl gap-1.5"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                + Add to SRS
+              </Button>
+
+              <Button
+                size="sm"
+                onClick={handleLaunchCustomQuiz}
+                className="h-9 text-xs rounded-xl gap-1.5 font-bold shadow-xs"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                Start Quiz ({selectedCount})
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Confusion Pairs Reference */}
       <Card className="rounded-2xl border-amber-500/20 bg-amber-500/5">
         <CardHeader className="pb-2">
-          <CardTitle className="text-base flex items-center gap-2 text-amber-600 dark:text-amber-400">
-            <AlertCircle className="h-4 w-4" />
-            Look-Alike Character Distinctions
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base flex items-center gap-2 text-amber-600 dark:text-amber-400">
+              <AlertCircle className="h-4 w-4" />
+              Look-Alike Character Distinctions
+            </CardTitle>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleQuizConfusion}
+              className="h-7 text-xs rounded-lg gap-1 border-amber-500/30 text-amber-700 dark:text-amber-300"
+            >
+              <Zap className="h-3 w-3" />
+              Drill Look-Alikes
+            </Button>
+          </div>
           <CardDescription className="text-xs">
             Tricky pairs that frequently cause confusion for Japanese beginners.
           </CardDescription>
@@ -231,6 +535,15 @@ export function KanaChart() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Interactive Quiz Modal */}
+      <KanaQuizModal
+        isOpen={isQuizOpen}
+        onClose={() => setIsQuizOpen(false)}
+        items={quizItems}
+        title={quizTitle}
+        initialMode={quizMode}
+      />
     </div>
   )
 }

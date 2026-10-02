@@ -13,13 +13,21 @@ import {
   Sparkles,
   Layers,
   Search,
+  Zap,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import { CURRICULUM_PATH, type CurriculumUnit } from '@/data/curriculum-path'
+import {
+  HIRAGANA_GOJUON,
+  HIRAGANA_DAKUTEN,
+  KATAKANA_GOJUON,
+  type KanaItem,
+} from '@/data/kana'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { KanaQuizModal } from '@/components/quiz/kana-quiz-modal'
 
 const TYPE_ICONS = {
   kana: GraduationCap,
@@ -35,6 +43,22 @@ const TYPE_COLORS = {
   review: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
 }
 
+// Pre-defined kana pools for Unit 0 lessons
+const KANA_LESSON_POOLS: Record<string, KanaItem[]> = {
+  'kana-0-1': HIRAGANA_GOJUON.slice(0, 5)
+    .flatMap((r) => r.items)
+    .filter((it): it is KanaItem => Boolean(it)),
+  'kana-0-2': HIRAGANA_GOJUON.slice(5)
+    .flatMap((r) => r.items)
+    .filter((it): it is KanaItem => Boolean(it)),
+  'kana-0-3': HIRAGANA_DAKUTEN.flatMap((r) => r.items).filter(
+    (it): it is KanaItem => Boolean(it)
+  ),
+  'kana-0-4': KATAKANA_GOJUON.flatMap((r) => r.items).filter(
+    (it): it is KanaItem => Boolean(it)
+  ),
+}
+
 export default function PathPage() {
   const { stats } = useProgress()
   const [expandedUnits, setExpandedUnits] = useState<Record<string, boolean>>({
@@ -43,6 +67,11 @@ export default function PathPage() {
   })
   const [searchQuery, setSearchQuery] = useState('')
 
+  // Quiz Modal State
+  const [isQuizOpen, setIsQuizOpen] = useState(false)
+  const [quizItems, setQuizItems] = useState<KanaItem[]>([])
+  const [quizTitle, setQuizTitle] = useState('Lesson Quiz')
+
   const completedLessonIds = new Set(stats.completedLessons || [])
 
   function toggleUnit(unitId: string) {
@@ -50,6 +79,15 @@ export default function PathPage() {
       ...prev,
       [unitId]: !prev[unitId],
     }))
+  }
+
+  function handleStartLessonQuiz(lessonId: string, title: string) {
+    const pool = KANA_LESSON_POOLS[lessonId]
+    if (pool && pool.length > 0) {
+      setQuizItems(pool)
+      setQuizTitle(`${title} Recall Quiz`)
+      setIsQuizOpen(true)
+    }
   }
 
   // Filter lessons if searching
@@ -156,6 +194,7 @@ export default function PathPage() {
                       const Icon = TYPE_ICONS[lesson.type] || BookOpen
                       const typeClass = TYPE_COLORS[lesson.type] || 'text-primary bg-primary/10'
                       const isCompleted = completedLessonIds.has(lesson.id)
+                      const hasKanaQuiz = Boolean(KANA_LESSON_POOLS[lesson.id])
 
                       return (
                         <div
@@ -196,6 +235,18 @@ export default function PathPage() {
                               </Badge>
                             ) : null}
 
+                            {hasKanaQuiz && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleStartLessonQuiz(lesson.id, lesson.title)}
+                                className="h-8 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+                              >
+                                <Zap className="h-3.5 w-3.5" />
+                                Quiz
+                              </Button>
+                            )}
+
                             <Link href={lesson.actionUrl}>
                               <Button size="sm" variant={isCompleted ? 'outline' : 'default'} className="h-8 text-xs rounded-xl gap-1.5">
                                 Study Lesson
@@ -213,6 +264,15 @@ export default function PathPage() {
           )
         })}
       </div>
+
+      {/* Lesson Quiz Modal */}
+      <KanaQuizModal
+        isOpen={isQuizOpen}
+        onClose={() => setIsQuizOpen(false)}
+        items={quizItems}
+        title={quizTitle}
+        initialMode="kana-to-romaji"
+      />
     </div>
   )
 }
