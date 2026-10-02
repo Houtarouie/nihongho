@@ -1,33 +1,28 @@
 'use client'
 
+import React from 'react'
 import Link from 'next/link'
 import {
-  Home,
-  GraduationCap,
-  BookOpen,
-  BookMarked,
+  CalendarCheck,
+  Compass,
   Layers,
-  Users,
-  User,
+  BookOpen,
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { name: 'Home', href: '/dashboard', icon: Home },
-  { name: 'Kana', href: '/learn', icon: GraduationCap },
-  { name: 'Grammar', href: '/grammar', icon: BookOpen },
-  { name: 'Reading', href: '/reading', icon: BookMarked },
-  { name: 'Anki SRS', href: '/practice', icon: Layers },
-  { name: 'Social', href: '/community', icon: Users },
-  { name: 'Profile', href: '/profile', icon: User },
+  { name: 'Today', href: '/today', icon: CalendarCheck },
+  { name: 'Path', href: '/path', icon: Compass },
+  { name: 'Review', href: '/review', icon: Layers },
+  { name: 'Library', href: '/library', icon: BookOpen },
 ]
 
 export function BottomNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex h-16 items-center justify-around border-t bg-background/95 backdrop-blur px-1 md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 flex h-16 pb-[env(safe-area-inset-bottom)] items-center justify-around border-t bg-background/95 backdrop-blur px-2 md:hidden">
       {navItems.map((item) => {
         const Icon = item.icon
         const isActive =
@@ -37,17 +32,19 @@ export function BottomNav() {
             key={item.name}
             href={item.href}
             className={cn(
-              'relative flex flex-col items-center justify-center gap-1 flex-1 h-full text-[10px] sm:text-xs font-medium transition-colors',
+              'relative flex flex-col items-center justify-center gap-1 min-w-[56px] min-h-[48px] px-3 py-1 text-xs font-medium transition-colors rounded-xl',
               isActive
-                ? 'text-primary font-semibold'
+                ? 'text-primary font-bold'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
             {isActive && (
-              <span className="absolute top-0 h-0.5 w-8 rounded-full bg-primary" />
+              <span className="absolute top-0 h-1 w-10 rounded-full bg-primary" />
             )}
-            <Icon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-            <span className="truncate max-w-[56px]">{item.name}</span>
+            <Icon className="h-5 w-5 shrink-0" />
+            <span className="text-[11px] leading-tight font-medium tracking-tight">
+              {item.name}
+            </span>
           </Link>
         )
       })}

@@ -1,65 +1,44 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import {
-  Home,
-  GraduationCap,
-  BookOpen,
-  BookMarked,
+  CalendarCheck,
+  Compass,
   Layers,
-  Users,
-  User,
+  BookOpen,
   Flame,
-  Sparkles,
-  Clock,
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { ThemeToggle } from '@/components/layout/theme-toggle'
-import {
-  loadUserStats,
-  DEFAULT_USER_STATS,
-  type UserStudyStats,
-} from '@/data/srs-deck'
+import { useProgress } from '@/lib/progress'
+import { AvatarMenu } from '@/components/layout/avatar-menu'
 
 const navItems = [
-  { name: 'Home', href: '/dashboard', icon: Home },
-  { name: 'Learn Kana', href: '/learn', icon: GraduationCap },
-  { name: 'Grammar', href: '/grammar', icon: BookOpen },
-  { name: 'Reading & Vocab', href: '/reading', icon: BookMarked },
-  { name: 'Anki SRS', href: '/practice', icon: Layers },
-  { name: 'Community & League', href: '/community', icon: Users },
-  { name: 'Profile & Settings', href: '/profile', icon: User },
+  { name: 'Today', href: '/today', icon: CalendarCheck },
+  { name: 'Path', href: '/path', icon: Compass },
+  { name: 'Review', href: '/review', icon: Layers },
+  { name: 'Library', href: '/library', icon: BookOpen },
 ]
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [stats, setStats] = useState<UserStudyStats>(DEFAULT_USER_STATS)
-
-  useEffect(() => {
-    function sync() {
-      setStats(loadUserStats())
-    }
-    sync()
-    window.addEventListener('nihongo-stats-updated', sync)
-    return () => window.removeEventListener('nihongo-stats-updated', sync)
-  }, [])
+  const { stats } = useProgress()
 
   return (
     <aside className="hidden w-64 flex-col border-r bg-background md:flex h-screen sticky top-0 justify-between">
       <div>
+        {/* Brand Header */}
         <div className="flex h-14 items-center justify-between border-b px-4 py-4 lg:h-[60px] lg:px-6">
-          <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-            <span className="text-xl font-bold text-primary">Nihongo</span>
-            <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
-              Anki
-            </span>
+          <Link href="/today" className="flex items-center gap-2 font-bold">
+            <span className="text-xl tracking-tight text-primary">Nihongo</span>
           </Link>
-          <ThemeToggle />
+          <AvatarMenu />
         </div>
-        <div className="py-3">
-          <nav className="grid items-start gap-1 px-2 text-sm font-medium lg:px-4">
+
+        {/* Navigation Links */}
+        <div className="py-4">
+          <nav className="grid items-start gap-1 px-3 text-sm font-medium">
             {navItems.map((item) => {
               const Icon = item.icon
               const isActive =
@@ -69,14 +48,14 @@ export function Sidebar() {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all hover:text-primary',
+                    'flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-medium transition-all',
                     isActive
-                      ? 'bg-primary/10 text-primary font-semibold'
-                      : 'text-muted-foreground hover:bg-muted/60'
+                      ? 'bg-primary/10 text-primary font-bold shadow-xs'
+                      : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
                   )}
                 >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  {item.name}
+                  <Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-primary' : 'text-muted-foreground')} />
+                  <span>{item.name}</span>
                 </Link>
               )
             })}
@@ -84,35 +63,27 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* User Live Status & Time Tracker Footer */}
+      {/* Clean User Status Footer */}
       <div className="p-3 border-t bg-muted/20">
-        <Link
-          href="/profile"
-          className="flex items-center justify-between p-2 rounded-xl hover:bg-muted/60 transition-all border border-border/50"
-        >
-          <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-full bg-primary/15 flex items-center justify-center text-lg shrink-0">
+        <div className="flex items-center justify-between p-2.5 rounded-xl border border-border/60 bg-background/80">
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            <div className="h-8 w-8 rounded-full bg-primary/15 flex items-center justify-center text-base shrink-0">
               {stats.avatar || '🌸'}
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-bold truncate">{stats.displayName}</p>
-              <p className="text-[10px] text-muted-foreground flex items-center gap-1 font-mono">
-                <Clock className="h-3 w-3 text-blue-500 animate-pulse" />
+              <p className="text-xs font-bold truncate">{stats.displayName || 'Learner'}</p>
+              <p className="text-[10px] text-muted-foreground font-mono">
                 {stats.totalStudyMins}m studied
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-1">
-            <span className="flex items-center gap-0.5 text-[11px] font-bold text-orange-500">
+          {stats.currentStreak > 0 && (
+            <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-2 py-0.5 text-xs font-bold text-orange-500">
               <Flame className="h-3.5 w-3.5 fill-orange-500" />
-              {stats.currentStreak}d
-            </span>
-            <span className="flex items-center gap-0.5 text-[10px] font-bold text-yellow-600 dark:text-yellow-400">
-              <Sparkles className="h-2.5 w-2.5" />
-              {stats.xp} XP
-            </span>
-          </div>
-        </Link>
+              <span>{stats.currentStreak}d</span>
+            </div>
+          )}
+        </div>
       </div>
     </aside>
   )
