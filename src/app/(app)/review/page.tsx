@@ -26,6 +26,7 @@ import {
   type CardRating,
   type CardCategory,
 } from '@/data/srs-deck'
+import { planDailySession, type PlannedCard } from '@/lib/srs/session-planner'
 import { parseAnkiApkgBinary } from '@/lib/anki/importer'
 import { renderAnkiText } from '@/lib/anki/furigana'
 import { convertRomajiToKana } from '@/lib/kana-ime'
@@ -69,12 +70,12 @@ function ReviewContent() {
   const weakKanaList = useMemo(() => weakKana(kanaMastery), [kanaMastery])
 
   // Current session queue
-  const [sessionCards, setSessionCards] = useState<SRSCard[]>([])
+  const [sessionCards, setSessionCards] = useState<PlannedCard[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isRevealed, setIsRevealed] = useState(false)
   const [typedInput, setTypedInput] = useState('')
   const [completedCount, setCompletedCount] = useState(0)
-  const [sessionLapses, setSessionLapses] = useState<SRSCard[]>([])
+  const [sessionLapses, setSessionLapses] = useState<PlannedCard[]>([])
 
   // Browse search
   const [searchQuery, setSearchQuery] = useState('')
@@ -88,32 +89,31 @@ function ReviewContent() {
   const [newJlpt, setNewJlpt] = useState('N5')
   const [isImportingApkg, setIsImportingApkg] = useState(false)
 
-  // Initialize review queue (reviews due + capped new cards for realistic daily session)
+  // Initialize review queue through pure daily session planner
   useEffect(() => {
     if (isLoading) return
     const now = Date.now() + 60 * 1000
-    const activeCards = cards.filter((c) => c.queue !== 'suspended')
 
-    // 1. Cards scheduled for review today
-    const reviewsDue = activeCards.filter((c) => c.status !== 'new' && (c.dueDate || 0) <= now)
+    const plan = planDailySession({
+      deck: cards,
+      kanaMastery,
+      options: {
+        newCardsPerDay: deckOptions.newCardsPerDay || 5,
+        maxReviewsPerDay: deckOptions.maxReviewsPerDay || 200,
+        backlogThreshold: 30,
+      },
+      today: now,
+    })
 
-    // 2. New cards capped by daily limit
-    const newCardsAll = activeCards.filter((c) => c.status === 'new' || (c.repetition === 0 && c.interval === 0))
-    const newCardsCap = Math.max(5, deckOptions.newCardsPerDay || 20)
-    const newCardsToday = newCardsAll.slice(0, newCardsCap)
-
-    const sessionQueue = [...reviewsDue, ...newCardsToday]
-    // Shuffle slightly for spaced review
-    const shuffled = [...sessionQueue].sort(() => Math.random() - 0.5)
-    setSessionCards(shuffled)
+    setSessionCards(plan.sessionQueue)
     setCurrentIndex(0)
     setIsRevealed(false)
     setTypedInput('')
     setCompletedCount(0)
     setSessionLapses([])
-  }, [cards, isLoading, deckOptions.newCardsPerDay])
+  }, [cards, kanaMastery, isLoading, deckOptions.newCardsPerDay, deckOptions.maxReviewsPerDay])
 
-  const currentCard: SRSCard | undefined = sessionCards[currentIndex]
+  const currentCard: PlannedCard | undefined = sessionCards[currentIndex]
 
   // Play audio on reveal if autoPlayAudio is enabled
   useEffect(() => {
@@ -457,6 +457,16 @@ function ReviewContent() {
 
               {/* Flashcard Box */}
               <Card className="min-h-[320px] sm:min-h-[380px] flex flex-col justify-between p-6 sm:p-8 rounded-3xl border-2 border-border shadow-md transition-all">
+                {/* Seed deck migration warning banner */}
+                {currentCard.requiresKanaWarning && (
+                  <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-2 mb-2 text-left">
+                    <AlertCircle className="h-4 w-4 shrink-0 text-amber-500" />
+                    <span>
+                      <strong>Prerequisite Note:</strong> This card uses kana you haven&apos;t mastered to Solid yet. You can still practice, but mastering Kana first is recommended.
+                    </span>
+                  </div>
+                )}
+
                 {/* Front Side */}
                 <div className="space-y-6 text-center">
                   <div className="space-y-2">

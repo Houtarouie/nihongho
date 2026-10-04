@@ -26,6 +26,7 @@ import {
   detectKanaScript,
 } from '@/lib/kana/mastery-engine'
 import { getUnitState, getNextCurriculumStep } from '@/lib/curriculum/curriculum-engine'
+import { planDailySession } from '@/lib/srs/session-planner'
 
 export default function TodayPage() {
   const { stats, cards, weakPoints, deckOptions, kanaMastery, isLoading } = useProgress()
@@ -33,23 +34,39 @@ export default function TodayPage() {
   const now = Date.now()
   const tomorrow = now + 24 * 60 * 60 * 1000
 
-  // Derive honest metrics from cards
-  const activeCards = cards.filter((c) => c.queue !== 'suspended')
+  // Plan daily session using pure session planner
+  const sessionPlan = React.useMemo(() => {
+    return planDailySession({
+      deck: cards,
+      kanaMastery,
+      options: {
+        newCardsPerDay: deckOptions.newCardsPerDay || 5,
+        maxReviewsPerDay: deckOptions.maxReviewsPerDay || 200,
+        backlogThreshold: 30,
+      },
+      today: now,
+    })
+  }, [cards, kanaMastery, deckOptions.newCardsPerDay, deckOptions.maxReviewsPerDay, now])
 
-  // 1. Review cards due (already learned cards scheduled for today)
-  const reviewsDue = activeCards.filter((c) => c.status !== 'new' && (c.dueDate || 0) <= now)
+  // Derive metrics
+  const activeCards = cards.filter((c) => c.queue !== 'suspended')
+  const reviewsDue = sessionPlan.dueReviews
+  const dueTodayCount = sessionPlan.totalDue
+  const estimatedMins = Math.max(1, Math.ceil(dueTodayCount * 0.4))
+
   const dueTomorrow = activeCards.filter(
     (c) => c.status !== 'new' && (c.dueDate || 0) > now && (c.dueDate || 0) <= tomorrow
   )
 
-  // 2. New cards introduced today (capped by daily new limit)
-  const newCardsAll = activeCards.filter((c) => c.status === 'new' || (c.repetition === 0 && c.interval === 0))
-  const newCardsCap = Math.max(5, deckOptions.newCardsPerDay || 20)
-  const newCardsToday = newCardsAll.slice(0, newCardsCap)
-
-  // Today's actual study queue
-  const dueTodayCount = reviewsDue.length + newCardsToday.length
-  const estimatedMins = Math.max(1, Math.ceil(dueTodayCount * 0.4))
+  const newCardsAll = activeCards.filter(
+    (c) =>
+      c.status === 'new' ||
+      (c.status !== 'review' &&
+        c.status !== 'learning' &&
+        c.status !== 'mastered' &&
+        c.repetition === 0 &&
+        c.interval === 0)
+  )
 
   const stageNew = newCardsAll.length
   const stageLearning = activeCards.filter((c) => c.status === 'learning' || (c.interval > 0 && c.interval < 7)).length
@@ -176,11 +193,16 @@ export default function TodayPage() {
               <CalendarCheck className="h-3.5 w-3.5 text-primary" />
               Today&apos;s Focus
             </Badge>
-            {dueTodayCount > 0 && (
+            {sessionPlan.backlogPaused ? (
+              <Badge variant="outline" className="text-xs text-amber-600 border-amber-500/30 gap-1 bg-amber-500/10">
+                <AlertCircle className="h-3 w-3" />
+                Review Backlog ({reviewsDue.length})
+              </Badge>
+            ) : dueTodayCount > 0 ? (
               <span className="text-xs text-muted-foreground font-mono">
                 ~{estimatedMins} min session
               </span>
-            )}
+            ) : null}
           </div>
           <CardTitle className="text-xl sm:text-2xl mt-1">
             {isLoading
@@ -192,9 +214,7 @@ export default function TodayPage() {
           <CardDescription className="text-sm">
             {isLoading
               ? 'Fetching your cards from storage...'
-              : dueTodayCount > 0
-              ? `You have ${dueTodayCount} card${dueTodayCount === 1 ? '' : 's'} scheduled for recall today (${reviewsDue.length} reviews + ${newCardsToday.length} new).`
-              : 'Zero pending reviews. Continue progressing along your curriculum path.'}
+              : sessionPlan.description}
           </CardDescription>
         </CardHeader>
 
@@ -274,7 +294,7 @@ export default function TodayPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-4 text-xs text-muted-foreground">
-            {reviewsDue.length} reviews + {newCardsToday.length} new
+            {sessionPlan.summaryLabel}
           </CardContent>
         </Card>
 

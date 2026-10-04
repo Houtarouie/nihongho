@@ -5,6 +5,8 @@ export type AnkiFlag = 0 | 1 | 2 | 3 | 4 // 0=None, 1=Red, 2=Orange, 3=Green, 4=
 export type AnkiQueue = 'active' | 'buried' | 'suspended'
 export type AnkiAlgorithm = 'fsrs' | 'sm2'
 
+export type CardTrack = 'kana' | 'basic_grammar' | 'kana_vocab' | 'kanji_vocab' | 'other'
+
 export interface SRSCard {
   id: string
   front: string
@@ -21,6 +23,10 @@ export interface SRSCard {
   queue?: AnkiQueue
   lapses?: number
   tags?: string[]
+  // Curriculum & Gating Metadata
+  track?: CardTrack
+  requires?: string[]
+  requiresKanaWarning?: boolean
   // SM-2 & FSRS state
   interval: number // in days (0 = intraday learning)
   repetition: number
@@ -45,7 +51,7 @@ export interface AnkiDeckOptions {
 export const DEFAULT_DECK_OPTIONS: AnkiDeckOptions = {
   algorithm: 'fsrs',
   desiredRetention: 0.9,
-  newCardsPerDay: 25,
+  newCardsPerDay: 5,
   maxReviewsPerDay: 200,
   graduatingInterval: 1,
   easyInterval: 4,
@@ -79,6 +85,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'たべる (taberu)',
     meaning: 'to eat',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['た', 'べ', 'る'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -92,6 +100,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'のむ',
     meaning: 'to drink',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['の', 'む'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'type',
     jlptLevel: 'N5',
@@ -105,6 +115,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'みる (miru)',
     meaning: 'to see, to watch, to look',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['み', 'る'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'cloze',
     jlptLevel: 'N5',
@@ -118,6 +130,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'いく (iku)',
     meaning: 'to go',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['い', 'く'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'reversed',
     jlptLevel: 'N5',
@@ -131,6 +145,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'くる (kuru)',
     meaning: 'to come',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['く', 'る'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -144,6 +160,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'べんきょうする',
     meaning: 'to study',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['べ', 'ん', 'き', 'ょ', 'う', 'す', 'る'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'type',
     jlptLevel: 'N5',
@@ -157,6 +175,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'おいしい (oishii)',
     meaning: 'delicious, tasty',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['お', 'い', 'し', 'い'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -170,6 +190,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'やくそく (yakusoku)',
     meaning: 'promise, appointment',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['や', 'く', 'そ', 'く'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'basic',
     jlptLevel: 'N4',
@@ -183,6 +205,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'じゅんび (junbi)',
     meaning: 'preparation, setup',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['じ', 'ゅ', 'ん', 'び'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'cloze',
     jlptLevel: 'N4',
@@ -196,6 +220,8 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'けいけん (keiken)',
     meaning: 'experience',
     category: 'vocabulary',
+    track: 'kanji_vocab',
+    requires: ['け', 'い', 'け', 'ん'],
     deckName: 'Japanese::JLPT Vocabulary',
     noteType: 'reversed',
     jlptLevel: 'N4',
@@ -210,6 +236,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'ニチ・ジツ / ひ・か',
     meaning: 'day, sun, Japan',
     category: 'kanji',
+    track: 'kanji_vocab',
     deckName: 'Japanese::JLPT Kanji',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -223,6 +250,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'ホン / もと',
     meaning: 'book, origin, main',
     category: 'kanji',
+    track: 'kanji_vocab',
     deckName: 'Japanese::JLPT Kanji',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -236,6 +264,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'ガク / まな(ぶ)',
     meaning: 'study, learning, science',
     category: 'kanji',
+    track: 'kanji_vocab',
     deckName: 'Japanese::JLPT Kanji',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -249,6 +278,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'ゴ / かた(る)',
     meaning: 'word, speech, language',
     category: 'kanji',
+    track: 'kanji_vocab',
     deckName: 'Japanese::JLPT Kanji',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -262,6 +292,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'デン',
     meaning: 'electricity',
     category: 'kanji',
+    track: 'kanji_vocab',
     deckName: 'Japanese::JLPT Kanji',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -275,6 +306,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'ワ / はな(す)・はなし',
     meaning: 'speak, talk, story',
     category: 'kanji',
+    track: 'kanji_vocab',
     deckName: 'Japanese::JLPT Kanji',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -289,6 +321,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'a',
     meaning: 'Vowel "a" as in father',
     category: 'kana',
+    track: 'kana',
     deckName: 'Japanese::Hiragana & Katakana',
     noteType: 'type',
     jlptLevel: 'N5',
@@ -302,6 +335,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'ki',
     meaning: 'Syllable "ki" (looks like a key)',
     category: 'kana',
+    track: 'kana',
     deckName: 'Japanese::Hiragana & Katakana',
     noteType: 'type',
     jlptLevel: 'N5',
@@ -315,6 +349,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'tsu',
     meaning: 'Syllable "tsu" (like a tsunami wave)',
     category: 'kana',
+    track: 'kana',
     deckName: 'Japanese::Hiragana & Katakana',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -328,6 +363,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'shi',
     meaning: 'Katakana "shi" (strokes align left & sweep up)',
     category: 'kana',
+    track: 'kana',
     deckName: 'Japanese::Hiragana & Katakana',
     noteType: 'type',
     jlptLevel: 'N5',
@@ -341,6 +377,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'tsu',
     meaning: 'Katakana "tsu" (strokes align top & sweep down)',
     category: 'kana',
+    track: 'kana',
     deckName: 'Japanese::Hiragana & Katakana',
     noteType: 'type',
     jlptLevel: 'N5',
@@ -354,6 +391,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'n',
     meaning: 'Katakana "n" (Compare with ソ "so")',
     category: 'kana',
+    track: 'kana',
     deckName: 'Japanese::Hiragana & Katakana',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -368,6 +406,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'Verb [ます-stem] + たい',
     meaning: 'Want to do (something)',
     category: 'grammar',
+    track: 'basic_grammar',
     deckName: 'Japanese::JLPT Grammar',
     noteType: 'cloze',
     jlptLevel: 'N5',
@@ -381,6 +420,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'Verb [て-form] + ください',
     meaning: 'Please do (polite request)',
     category: 'grammar',
+    track: 'basic_grammar',
     deckName: 'Japanese::JLPT Grammar',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -394,6 +434,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'Verb [た-form] + ことがある',
     meaning: 'Have done before (past experience)',
     category: 'grammar',
+    track: 'basic_grammar',
     deckName: 'Japanese::JLPT Grammar',
     noteType: 'cloze',
     jlptLevel: 'N5',
@@ -407,6 +448,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'Verb [た / ない] + ほうがいい',
     meaning: 'Had better do / Should do',
     category: 'grammar',
+    track: 'basic_grammar',
     deckName: 'Japanese::JLPT Grammar',
     noteType: 'basic',
     jlptLevel: 'N5',
@@ -420,6 +462,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'Plain form + かもしれない',
     meaning: 'Might, maybe, perhaps',
     category: 'grammar',
+    track: 'basic_grammar',
     deckName: 'Japanese::JLPT Grammar',
     noteType: 'basic',
     jlptLevel: 'N4',
@@ -433,6 +476,7 @@ export const DEFAULT_SRS_CARDS: Omit<
     reading: 'Verb [Dictionary / ない] + ようにする',
     meaning: 'To try to, to make sure to (habitual effort)',
     category: 'grammar',
+    track: 'basic_grammar',
     deckName: 'Japanese::JLPT Grammar',
     noteType: 'basic',
     jlptLevel: 'N4',
@@ -576,6 +620,9 @@ export function loadSRSCards(): SRSCard[] {
           tags: c.tags || [c.jlptLevel, c.category],
           stability: c.stability ?? Math.max(1, c.interval || 1),
           difficulty: c.difficulty ?? 5.0,
+          track: c.track,
+          requires: c.requires,
+          requiresKanaWarning: c.requiresKanaWarning,
         }))
       }
     }
