@@ -36,7 +36,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { weakKana, getAllKanaItems } from '@/lib/kana/mastery-engine'
+import { weakKana, getAllKanaItems, makeKanaId } from '@/lib/kana/mastery-engine'
 import { KanaQuizModal } from '@/components/quiz/kana-quiz-modal'
 import type { KanaItem } from '@/data/kana'
 import { Flame } from 'lucide-react'
@@ -52,6 +52,7 @@ function ReviewContent() {
     updateCards,
     upsertCards,
     recordReview,
+    recordKanaAttempt,
     weakPoints,
     addWeakPoint,
     removeWeakPoint,
@@ -171,6 +172,25 @@ function ReviewContent() {
         })
       }
 
+      // If this card tests a kana, feed the result to the authoritative Kana Mastery Engine
+      const isKanaCard =
+        currentCard.category === 'kana' ||
+        currentCard.track === 'kana' ||
+        /^[\u3040-\u30ff]$/.test(currentCard.front.trim())
+
+      if (isKanaCard) {
+        const kanaChar = currentCard.front.trim()
+        const kanaId = makeKanaId(kanaChar)
+        const isCorrect = rating === 'good' || rating === 'easy'
+        await recordKanaAttempt({
+          kanaId,
+          mode: 'srs',
+          correct: isCorrect,
+          source: 'srs-review',
+          now,
+        })
+      }
+
       // Update in main cards collection
       const nextAllCards = cards.map((c) => (c.id === currentCard.id ? updatedCard : c))
       await updateCards(nextAllCards)
@@ -190,7 +210,7 @@ function ReviewContent() {
       setIsRevealed(false)
       setTypedInput('')
     },
-    [currentCard, deckOptions, cards, recordReview, addWeakPoint, updateCards, updateStats, stats]
+    [currentCard, deckOptions, cards, recordReview, recordKanaAttempt, addWeakPoint, updateCards, updateStats, stats]
   )
 
   // Keyboard shortcuts (Space = reveal, 1 = Again, 2 = Hard, 3 = Good, 4 = Easy)
