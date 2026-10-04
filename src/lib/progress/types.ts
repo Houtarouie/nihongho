@@ -21,6 +21,8 @@ export interface MigrationResult {
   error?: string
 }
 
+import type { KanaMasteryRecord, QuizModeType } from '@/lib/kana/types'
+
 export interface ProgressRepository {
   readonly userId: string
 
@@ -53,7 +55,21 @@ export interface ProgressRepository {
   getReadKana(): Promise<string[]>
   saveReadKana(list: string[]): Promise<void>
 
-  // Data Migration & Sync
+  // Kana Mastery Tracking (Phase B)
+  getKanaMastery(): Promise<Record<string, KanaMasteryRecord>>
+  saveKanaMastery(map: Record<string, KanaMasteryRecord>): Promise<void>
+  recordKanaAttempt(params: {
+    kanaId: string
+    mode: QuizModeType | 'srs'
+    correct: boolean
+    responseMs?: number
+    source?: string
+    pickedKanaId?: string
+    now?: number
+  }): Promise<KanaMasteryRecord>
+
+  // Data Migration, Sync & Reset
   migrateLegacyData(): Promise<MigrationResult>
   syncRemote(): Promise<SyncResult>
+  resetAllProgress(): Promise<void>
 }

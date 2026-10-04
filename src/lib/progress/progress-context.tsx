@@ -21,6 +21,7 @@ import {
 import type { WeakPointItem } from '@/data/weak-points'
 import { createClient } from '@/lib/supabase/client'
 import { getSupabaseEnv } from '@/lib/supabase/config'
+import type { KanaMasteryRecord, QuizModeType } from '@/lib/kana/types'
 import type { ProgressRepository, SyncResult, MigrationResult } from './types'
 import { LocalRepository } from './local-repository'
 import { SupabaseRepository } from './supabase-repository'
@@ -33,6 +34,7 @@ interface ProgressContextValue {
   cards: SRSCard[]
   weakPoints: WeakPointItem[]
   deckOptions: AnkiDeckOptions
+  kanaMastery: Record<string, KanaMasteryRecord>
   isLoading: boolean
   isSyncing: boolean
 
@@ -43,6 +45,16 @@ interface ProgressContextValue {
   recordReview: (log: Omit<AnkiReviewLog, 'id'>) => Promise<void>
   addWeakPoint: (item: Omit<WeakPointItem, 'missCount' | 'lastMissed'>) => Promise<WeakPointItem>
   removeWeakPoint: (idOrFront: string) => Promise<void>
+  recordKanaAttempt: (params: {
+    kanaId: string
+    mode: QuizModeType | 'srs'
+    correct: boolean
+    responseMs?: number
+    source?: string
+    pickedKanaId?: string
+    now?: number
+  }) => Promise<KanaMasteryRecord>
+  resetAllProgress: () => Promise<void>
   syncNow: () => Promise<SyncResult>
   migrateLegacy: () => Promise<MigrationResult>
   refreshAll: () => Promise<void>
@@ -57,6 +69,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const [cards, setCards] = useState<SRSCard[]>([])
   const [weakPoints, setWeakPoints] = useState<WeakPointItem[]>([])
   const [deckOptions, setDeckOptions] = useState<AnkiDeckOptions>(DEFAULT_DECK_OPTIONS)
+  const [kanaMastery, setKanaMastery] = useState<Record<string, KanaMasteryRecord>>({})
   const [isLoading, setIsLoading] = useState(true)
   const [isSyncing, setIsSyncing] = useState(false)
 
@@ -67,16 +80,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const refreshAll = useCallback(async (targetRepo?: ProgressRepository) => {
     const active = targetRepo || repoRef.current
     try {
-      const [newStats, newCards, newWeak, newOpts] = await Promise.all([
+      const [newStats, newCards, newWeak, newOpts, newKana] = await Promise.all([
         active.getStats(),
         active.getCards(),
         active.getWeakPoints(),
         active.getDeckOptions(),
+        active.getKanaMastery(),
       ])
       setStats(newStats)
       setCards(newCards)
       setWeakPoints(newWeak)
       setDeckOptions(newOpts)
+      setKanaMastery(newKana)
     } catch {
       // ignore read error
     } finally {
@@ -258,6 +273,28 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     return res
   }, [refreshAll])
 
+  const recordKanaAttempt = useCallback(
+    async (params: {
+      kanaId: string
+      mode: QuizModeType | 'srs'
+      correct: boolean
+      responseMs?: number
+      source?: string
+      pickedKanaId?: string
+      now?: number
+    }): Promise<KanaMasteryRecord> => {
+      const updated = await repoRef.current.recordKanaAttempt(params)
+      setKanaMastery((prev) => ({ ...prev, [params.kanaId]: updated }))
+      return updated
+    },
+    []
+  )
+
+  const resetAllProgress = useCallback(async (): Promise<void> => {
+    await repoRef.current.resetAllProgress()
+    await refreshAll()
+  }, [refreshAll])
+
   const value: ProgressContextValue = {
     repository,
     userId,
@@ -266,6 +303,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     cards,
     weakPoints,
     deckOptions,
+    kanaMastery,
     isLoading,
     isSyncing,
     updateStats,
@@ -274,6 +312,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     recordReview,
     addWeakPoint,
     removeWeakPoint,
+    recordKanaAttempt,
+    resetAllProgress,
     syncNow,
     migrateLegacy,
     refreshAll,

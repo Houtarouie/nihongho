@@ -8,6 +8,7 @@ import type { WeakPointItem } from '@/data/weak-points'
 import { createClient } from '@/lib/supabase/client'
 import { getSupabaseEnv } from '@/lib/supabase/config'
 import { LocalRepository } from './local-repository'
+import type { KanaMasteryRecord, QuizModeType } from '@/lib/kana/types'
 import type {
   ProgressRepository,
   MigrationResult,
@@ -263,5 +264,30 @@ export class SupabaseRepository implements ProgressRepository {
       const msg = err instanceof Error ? err.message : 'Unknown sync error'
       return { success: false, error: msg }
     }
+  }
+
+  // Kana Mastery Tracking (Phase B)
+  async getKanaMastery(): Promise<Record<string, KanaMasteryRecord>> {
+    return this.local.getKanaMastery()
+  }
+
+  async saveKanaMastery(map: Record<string, KanaMasteryRecord>): Promise<void> {
+    return this.local.saveKanaMastery(map)
+  }
+
+  async recordKanaAttempt(params: {
+    kanaId: string
+    mode: QuizModeType | 'srs'
+    correct: boolean
+    responseMs?: number
+    source?: string
+    pickedKanaId?: string
+    now?: number
+  }): Promise<KanaMasteryRecord> {
+    return this.local.recordKanaAttempt(params)
+  }
+
+  async resetAllProgress(): Promise<void> {
+    return this.local.resetAllProgress()
   }
 }

@@ -13,6 +13,22 @@ import {
   getLocalYesterdayDate,
 } from '@/data/srs-deck'
 import type { WeakPointItem } from '@/data/weak-points'
+import {
+  HIRAGANA_GOJUON,
+  HIRAGANA_DAKUTEN,
+  HIRAGANA_YOON,
+  KATAKANA_GOJUON,
+  KATAKANA_DAKUTEN,
+  KATAKANA_YOON,
+  type KanaItem,
+} from '@/data/kana'
+import {
+  createInitialKanaRecord,
+  recordKanaAttempt as pureRecordAttempt,
+  makeKanaId,
+  detectKanaScript,
+} from '@/lib/kana/mastery-engine'
+import type { KanaMasteryRecord, QuizModeType, KanaGroup } from '@/lib/kana/types'
 import type {
   ProgressRepository,
   MigrationResult,
@@ -43,6 +59,7 @@ export class LocalRepository implements ProgressRepository {
     customDecks: string
     masteredGrammar: string
     readKana: string
+    kanaMastery: string
     migrated: string
   }
 
@@ -61,6 +78,7 @@ export class LocalRepository implements ProgressRepository {
       customDecks: `nihongo_${this.userId}_custom_decks_v2`,
       masteredGrammar: `nihongo_${this.userId}_mastered_grammar_v2`,
       readKana: `nihongo_${this.userId}_read_kana_v2`,
+      kanaMastery: `nihongo_${this.userId}_kana_mastery_v1`,
       migrated: `nihongo_${this.userId}_migrated_v1`,
     }
 
@@ -331,8 +349,159 @@ export class LocalRepository implements ProgressRepository {
     this.setItem(this.keys.readKana, list)
   }
 
+  // Kana Mastery Tracking (Phase B)
+  async getKanaMastery(): Promise<Record<string, KanaMasteryRecord>> {
+    const stored = this.getItem<Record<string, KanaMasteryRecord>>(this.keys.kanaMastery)
+    if (stored && Object.keys(stored).length > 0) {
+      return stored
+    }
+
+    // Initialize clean map for all kana derived from kana data
+    const all = getAllKanaWithGroups()
+    const map: Record<string, KanaMasteryRecord> = {}
+    for (const { item, group } of all) {
+      const script = detectKanaScript(item.kana)
+      const rec = createInitialKanaRecord({
+        kana: item.kana,
+        romaji: item.romaji,
+        row: item.row,
+        script,
+        group,
+      })
+      map[rec.id] = rec
+    }
+
+    // Passive migration from existing readKana
+    const readKana = await this.getReadKana()
+    for (const k of readKana) {
+      const id = makeKanaId(k)
+      if (map[id] && map[id].stage === 0) {
+        map[id].stage = 1
+        map[id].attempts = 1
+        map[id].lastSeenAt = Date.now()
+      }
+    }
+
+    // Passive migration from existing studied cards
+    const cards = this.getItem<SRSCard[]>(this.keys.cards) || []
+    for (const card of cards) {
+      if (card.repetition > 0 || card.status !== 'new') {
+        const reading = card.reading || card.front
+        for (const char of reading) {
+          if (char >= '\u3040' && char <= '\u30ff') {
+            const id = makeKanaId(char)
+            if (map[id] && map[id].stage < 2) {
+              map[id].stage = 2
+              map[id].streak = 2
+              map[id].attempts = Math.max(2, map[id].attempts)
+              map[id].correct = Math.max(2, map[id].correct)
+            }
+          }
+        }
+      }
+    }
+
+    this.setItem(this.keys.kanaMastery, map)
+    return map
+  }
+
+  async saveKanaMastery(map: Record<string, KanaMasteryRecord>): Promise<void> {
+    this.setItem(this.keys.kanaMastery, map)
+  }
+
+  async recordKanaAttempt(params: {
+    kanaId: string
+    mode: QuizModeType | 'srs'
+    correct: boolean
+    responseMs?: number
+    source?: string
+    pickedKanaId?: string
+    now?: number
+  }): Promise<KanaMasteryRecord> {
+    const map = await this.getKanaMastery()
+    let record = map[params.kanaId]
+
+    if (!record) {
+      const kanaChar = params.kanaId.split(':')[1] || params.kanaId
+      const script = detectKanaScript(kanaChar)
+      record = createInitialKanaRecord({
+        kana: kanaChar,
+        romaji: '',
+        row: 'a',
+        script,
+        group: 'gojuon',
+      })
+    }
+
+    const updated = pureRecordAttempt({
+      record,
+      mode: params.mode,
+      correct: params.correct,
+      responseMs: params.responseMs,
+      source: params.source,
+      pickedKanaId: params.pickedKanaId,
+      now: params.now || Date.now(),
+    })
+
+    map[params.kanaId] = updated
+    await this.saveKanaMastery(map)
+    return updated
+  }
+
   // Remote Sync (No-op in LocalRepository)
   async syncRemote(): Promise<SyncResult> {
     return { success: true }
   }
+
+  // Reset progress with clean state
+  async resetAllProgress(): Promise<void> {
+    if (!this.isClient()) return
+    localStorage.removeItem(this.keys.cards)
+    localStorage.removeItem(this.keys.stats)
+    localStorage.removeItem(this.keys.revlog)
+    localStorage.removeItem(this.keys.weakPoints)
+    localStorage.removeItem(this.keys.masteredGrammar)
+    localStorage.removeItem(this.keys.readKana)
+    localStorage.removeItem(this.keys.kanaMastery)
+  }
+}
+
+function getAllKanaWithGroups(): { item: KanaItem; group: KanaGroup }[] {
+  const result: { item: KanaItem; group: KanaGroup }[] = []
+
+  for (const r of HIRAGANA_GOJUON) {
+    for (const it of r.items) {
+      if (it) result.push({ item: it, group: 'gojuon' })
+    }
+  }
+  for (const r of HIRAGANA_DAKUTEN) {
+    const isHandakuten = r.rowName.includes('ぱ') || r.rowName.includes('P')
+    for (const it of r.items) {
+      if (it) result.push({ item: it, group: isHandakuten ? 'handakuten' : 'dakuten' })
+    }
+  }
+  for (const r of HIRAGANA_YOON) {
+    for (const it of r.items) {
+      if (it) result.push({ item: it, group: 'yoon' })
+    }
+  }
+
+  for (const r of KATAKANA_GOJUON) {
+    for (const it of r.items) {
+      if (it) result.push({ item: it, group: 'gojuon' })
+    }
+  }
+  for (const r of KATAKANA_DAKUTEN) {
+    const isHandakuten = r.rowName.includes('パ') || r.rowName.includes('P')
+    for (const it of r.items) {
+      if (it) result.push({ item: it, group: isHandakuten ? 'handakuten' : 'dakuten' })
+    }
+  }
+  for (const r of KATAKANA_YOON) {
+    for (const it of r.items) {
+      if (it) result.push({ item: it, group: 'yoon' })
+    }
+  }
+
+  return result
 }
