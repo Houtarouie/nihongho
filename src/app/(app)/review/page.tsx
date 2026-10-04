@@ -16,6 +16,7 @@ import {
   X,
   FileCode,
   Upload,
+  Lock,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import {
@@ -26,7 +27,13 @@ import {
   type CardRating,
   type CardCategory,
 } from '@/data/srs-deck'
-import { planDailySession, type PlannedCard } from '@/lib/srs/session-planner'
+import {
+  planDailySession,
+  areCardPrerequisitesMet,
+  extractRequiredKana,
+  containsKanji,
+  type PlannedCard,
+} from '@/lib/srs/session-planner'
 import { parseAnkiApkgBinary } from '@/lib/anki/importer'
 import { renderAnkiText } from '@/lib/anki/furigana'
 import { convertRomajiToKana } from '@/lib/kana-ime'
@@ -36,7 +43,12 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { weakKana, getAllKanaItems, makeKanaId } from '@/lib/kana/mastery-engine'
+import {
+  weakKana,
+  getAllKanaItems,
+  makeKanaId,
+  detectKanaScript,
+} from '@/lib/kana/mastery-engine'
 import { KanaQuizModal } from '@/components/quiz/kana-quiz-modal'
 import type { KanaItem } from '@/data/kana'
 import { Flame } from 'lucide-react'
@@ -75,6 +87,7 @@ function ReviewContent() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isRevealed, setIsRevealed] = useState(false)
   const [typedInput, setTypedInput] = useState('')
+  const [showKanjiOnFront, setShowKanjiOnFront] = useState(false)
   const [completedCount, setCompletedCount] = useState(0)
   const [sessionLapses, setSessionLapses] = useState<PlannedCard[]>([])
 
@@ -209,6 +222,7 @@ function ReviewContent() {
       setCurrentIndex((prev) => prev + 1)
       setIsRevealed(false)
       setTypedInput('')
+      setShowKanjiOnFront(false)
     },
     [currentCard, deckOptions, cards, recordReview, recordKanaAttempt, addWeakPoint, updateCards, updateStats, stats]
   )
@@ -490,9 +504,30 @@ function ReviewContent() {
                 {/* Front Side */}
                 <div className="space-y-6 text-center">
                   <div className="space-y-2">
-                    <span className="text-4xl sm:text-6xl font-bold font-japanese tracking-tight block py-4 select-text">
-                      {renderAnkiText(currentCard.front, { isClozeRevealed: isRevealed })}
-                    </span>
+                    {(() => {
+                      const hasKanji = containsKanji(currentCard.front)
+                      const kanaReading = currentCard.reading?.replace(/\([a-zA-Z\s]+\)/g, '').trim()
+                      const displayFront = (hasKanji && kanaReading && !showKanjiOnFront)
+                        ? kanaReading
+                        : currentCard.front
+
+                      return (
+                        <>
+                          <span className="text-4xl sm:text-6xl font-bold font-japanese tracking-tight block py-4 select-text">
+                            {renderAnkiText(displayFront, { isClozeRevealed: isRevealed })}
+                          </span>
+                          {hasKanji && kanaReading && !isRevealed && (
+                            <button
+                              type="button"
+                              onClick={() => setShowKanjiOnFront((prev) => !prev)}
+                              className="text-[11px] text-muted-foreground hover:text-foreground transition-colors underline block mx-auto -mt-2 pb-2"
+                            >
+                              {showKanjiOnFront ? 'Hide Kanji (Show Kana only)' : 'Show Kanji on front'}
+                            </button>
+                          )}
+                        </>
+                      )
+                    })()}
 
                     <button
                       onClick={() =>
@@ -826,32 +861,53 @@ function ReviewContent() {
                 No cards match &ldquo;{searchQuery}&rdquo;
               </div>
             ) : (
-              filteredCards.map((card) => (
-                <div
-                  key={card.id}
-                  className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-muted/30 transition-colors text-xs"
-                >
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-base font-bold font-japanese">{card.front}</span>
-                      <span className="text-muted-foreground">({card.reading})</span>
-                      <Badge variant="outline" className="text-[10px] py-0">
-                        {card.category}
-                      </Badge>
-                      <Badge variant="secondary" className="text-[10px] py-0">
-                        {card.jlptLevel}
-                      </Badge>
-                    </div>
-                    <p className="text-muted-foreground">{card.meaning}</p>
-                  </div>
+              filteredCards.map((card) => {
+                const isPrereqMet = areCardPrerequisitesMet(card, kanaMastery)
+                const reqKana = extractRequiredKana(card)
+                const missingKana = reqKana.filter((ch) => {
+                  const s = detectKanaScript(ch)
+                  const id = makeKanaId(ch, s)
+                  return (kanaMastery[id]?.stage ?? 0) < 3
+                })
 
-                  <div className="flex items-center gap-3 shrink-0 text-muted-foreground font-mono text-[11px]">
-                    <span>Interval: {card.interval}d</span>
-                    <span>Reps: {card.repetition}</span>
-                    <span>Status: {card.status}</span>
+                return (
+                  <div
+                    key={card.id}
+                    className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-muted/30 transition-colors text-xs"
+                  >
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-base font-bold font-japanese">{card.front}</span>
+                        <span className="text-muted-foreground">({card.reading})</span>
+                        <Badge variant="outline" className="text-[10px] py-0">
+                          {card.category}
+                        </Badge>
+                        <Badge variant="secondary" className="text-[10px] py-0">
+                          {card.jlptLevel}
+                        </Badge>
+                        {!isPrereqMet && (
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] py-0 text-amber-600 dark:text-amber-400 border-amber-500/30 gap-1 bg-amber-500/10 font-normal"
+                          >
+                            <Lock className="h-2.5 w-2.5" />
+                            {missingKana.length > 0
+                              ? `Unlocks after: ${missingKana.join(', ')}`
+                              : 'Locked (Requires Hiragana 80% Solid)'}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-muted-foreground">{card.meaning}</p>
+                    </div>
+
+                    <div className="flex items-center gap-3 shrink-0 text-muted-foreground font-mono text-[11px]">
+                      <span>Interval: {card.interval}d</span>
+                      <span>Reps: {card.repetition}</span>
+                      <span>Status: {card.status}</span>
+                    </div>
                   </div>
-                </div>
-              ))
+                )
+              })
             )}
           </div>
         </div>

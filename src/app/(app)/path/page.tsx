@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Compass,
@@ -168,6 +168,17 @@ export default function PathPage() {
     setQuizTitle(`Test Out: ${script === 'hiragana' ? 'Hiragana' : 'Katakana'} Placement (20 Questions)`)
     setIsQuizOpen(true)
   }
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    const placement = params.get('placement')
+    if (placement === 'hiragana') {
+      handleStartPlacementQuiz('hiragana')
+    } else if (placement === 'katakana' || placement === 'both') {
+      handleStartPlacementQuiz('katakana')
+    }
+  }, [])
 
   async function handleQuizComplete(results: { kana: string; correct: boolean }[]) {
     if (placementScript) {

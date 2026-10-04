@@ -5,6 +5,7 @@ import { MobileHeader } from '@/components/layout/mobile-header'
 import { StudyTimeTracker } from '@/components/layout/study-time-tracker'
 import { ProgressProvider } from '@/lib/progress'
 import { OmniSearchDialog } from '@/components/search/omni-search-dialog'
+import { OnboardingDialog } from '@/components/onboarding/onboarding-dialog'
 
 export default function AppLayout({
   children,
@@ -14,6 +15,7 @@ export default function AppLayout({
   return (
     <ProgressProvider>
       <div className="flex min-h-screen w-full flex-col bg-muted/20 md:flex-row">
+        <OnboardingDialog />
         <OmniSearchDialog />
         <StudyTimeTracker />
         <MobileHeader />
