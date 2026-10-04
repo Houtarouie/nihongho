@@ -15,6 +15,8 @@ import {
   Search,
   Zap,
   X,
+  Lock,
+  Plus,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import { CURRICULUM_PATH, type CurriculumUnit, type CurriculumLessonItem } from '@/data/curriculum-path'
@@ -29,11 +31,25 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { KanaQuizModal } from '@/components/quiz/kana-quiz-modal'
+import { MasteryPips } from '@/components/kana/mastery-pips'
 import { GrammarPointInspector } from '@/components/bunpro/grammar-point-inspector'
 import curatedGrammarData from '@/data/user-grammar-curated.json'
 import referenceGrammarData from '@/data/grammar.json'
 import type { GrammarPointSummary } from '@/data/bunpro-grammar-details'
 import { convertRomajiToKana } from '@/lib/kana-ime'
+import {
+  getUnit0Lessons,
+  getUnitState,
+  getNextCurriculumStep,
+  isLessonComplete,
+  buildPlacementQuiz,
+  evaluatePlacementQuiz,
+  type Unit0Lesson,
+} from '@/lib/curriculum/curriculum-engine'
+import { makeKanaId, detectKanaScript } from '@/lib/kana/mastery-engine'
+import type { KanaScript } from '@/lib/kana/types'
+import type { SRSCard } from '@/data/srs-deck'
+import { toast } from 'sonner'
 
 const ALL_GRAMMAR_POINTS: GrammarPointSummary[] = [
   ...curatedGrammarData.grammar.map((g) => ({
@@ -97,7 +113,7 @@ type LevelFilter = (typeof JLPT_LEVELS)[number]['id']
 
 export default function PathPage() {
   const router = useRouter()
-  const { stats } = useProgress()
+  const { stats, kanaMastery, upsertCards, saveKanaMasteryBatch } = useProgress()
   const [selectedLevel, setSelectedLevel] = useState<LevelFilter>('N5')
   const [expandedUnits, setExpandedUnits] = useState<Record<string, boolean>>({
     'unit-0': true,
@@ -105,6 +121,9 @@ export default function PathPage() {
     'unit-8': true,
   })
   const [searchQuery, setSearchQuery] = useState('')
+
+  // Placement Test Out State
+  const [placementScript, setPlacementScript] = useState<KanaScript | null>(null)
 
   // Quiz Modal State
   const [isQuizOpen, setIsQuizOpen] = useState(false)
@@ -115,6 +134,8 @@ export default function PathPage() {
   const [inspectingGrammar, setInspectingGrammar] = useState<GrammarPointSummary | null>(null)
 
   const completedLessonIds = new Set(stats.completedLessons || [])
+  const nextStep = getNextCurriculumStep(kanaMastery)
+  const unit0Lessons = getUnit0Lessons()
 
   function toggleUnit(unitId: string) {
     setExpandedUnits((prev) => ({
@@ -126,10 +147,70 @@ export default function PathPage() {
   function handleStartLessonQuiz(lessonId: string, title: string) {
     const pool = KANA_LESSON_POOLS[lessonId]
     if (pool && pool.length > 0) {
+      setPlacementScript(null)
       setQuizItems(pool)
       setQuizTitle(`${title} Recall Quiz`)
       setIsQuizOpen(true)
     }
+  }
+
+  function handleStartCustomKanaQuiz(items: KanaItem[], title: string) {
+    setPlacementScript(null)
+    setQuizItems(items)
+    setQuizTitle(title)
+    setIsQuizOpen(true)
+  }
+
+  function handleStartPlacementQuiz(script: KanaScript) {
+    const sample = buildPlacementQuiz(script)
+    setPlacementScript(script)
+    setQuizItems(sample)
+    setQuizTitle(`Test Out: ${script === 'hiragana' ? 'Hiragana' : 'Katakana'} Placement (20 Questions)`)
+    setIsQuizOpen(true)
+  }
+
+  async function handleQuizComplete(results: { kana: string; correct: boolean }[]) {
+    if (placementScript) {
+      const evaluated = evaluatePlacementQuiz(placementScript, results)
+      if (evaluated.passed && evaluated.recordsToUpdate) {
+        await saveKanaMasteryBatch(evaluated.recordsToUpdate)
+        toast.success(
+          `🎉 Passed with ${evaluated.accuracy}% (${evaluated.score}/${evaluated.total})! All ${
+            placementScript === 'hiragana' ? 'Hiragana' : 'Katakana'
+          } marked Solid (Stage 3). Unit 1 is unlocked!`
+        )
+      } else {
+        toast.error(
+          `Placement quiz: scored ${evaluated.accuracy}% (${evaluated.score}/${evaluated.total}). 90% required to test out. Keep practicing!`
+        )
+      }
+      setPlacementScript(null)
+    }
+  }
+
+  async function handleAddLessonToSRS(lesson: Unit0Lesson) {
+    const now = Date.now()
+    const newCards: SRSCard[] = lesson.items.map((it) => ({
+      id: `kana_${detectKanaScript(it.kana)}_${it.kana}`,
+      front: it.kana,
+      back: it.romaji,
+      reading: it.romaji,
+      meaning: `${lesson.script === 'hiragana' ? 'Hiragana' : 'Katakana'} character for "${it.romaji}"`,
+      category: 'kana',
+      jlptLevel: 'N5',
+      cardType: 'kana',
+      tags: ['kana', lesson.script, `${it.row}-row`],
+      exampleSentence: it.example,
+      interval: 0,
+      repetition: 0,
+      efactor: 2.5,
+      dueDate: now,
+      status: 'new',
+      queue: 'active',
+      lapses: 0,
+    }))
+    const res = await upsertCards(newCards)
+    toast.success(`Added ${res.addedCount} cards from ${lesson.title} to Daily SRS Reviews!`)
   }
 
   function handleStudyLesson(lesson: CurriculumLessonItem) {
@@ -254,6 +335,59 @@ export default function PathPage() {
         </div>
       </div>
 
+      {/* Hero Next Step Banner */}
+      <Card className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 via-background to-background shadow-xs overflow-hidden">
+        <CardContent className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs font-semibold text-primary border-primary/30 gap-1">
+                <Zap className="h-3 w-3" />
+                Current Curriculum Goal
+              </Badge>
+              <span className="text-xs font-mono text-muted-foreground">
+                {nextStep.unitId === 'unit-0' ? 'Unit 0 • Kana Foundations' : 'Unit 1 • Core Grammar'}
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              Continue: Lesson {nextStep.lessonNumber}, {nextStep.rowName} row
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {nextStep.title} — Practice these characters until Familiar (Stage 2) to advance.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            {nextStep.items.length > 0 && (
+              <Button
+                onClick={() => handleStartCustomKanaQuiz(nextStep.items, `Lesson ${nextStep.lessonNumber} Quiz`)}
+                className="rounded-xl gap-2 font-semibold shadow-xs"
+              >
+                <Zap className="h-4 w-4" />
+                Start Lesson {nextStep.lessonNumber} Quiz
+              </Button>
+            )}
+            <div className="flex items-center gap-1.5 border-l pl-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleStartPlacementQuiz('hiragana')}
+                className="h-9 text-xs rounded-xl border-dashed hover:border-primary font-medium"
+              >
+                Test Out: Hiragana
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleStartPlacementQuiz('katakana')}
+                className="h-9 text-xs rounded-xl border-dashed hover:border-primary font-medium"
+              >
+                Test Out: Katakana
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* JLPT Level Selector Pills */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
         {JLPT_LEVELS.map((lvl) => {
@@ -291,7 +425,7 @@ export default function PathPage() {
       {searchQuery && (
         <div className="flex items-center justify-between text-xs px-3 py-2 text-muted-foreground bg-muted/40 rounded-xl border">
           <span>
-            Found <strong>{filteredUnits.reduce((acc, u) => acc + u.lessons.length, 0)}</strong> lesson{filteredUnits.reduce((acc, u) => acc + u.lessons.length, 0) === 1 ? '' : 's'} matching &ldquo;{searchQuery}&rdquo;
+            Found <strong>{filteredUnits.reduce((acc, u) => acc + (u.unitNumber === 0 ? unit0Lessons.length : u.lessons.length), 0)}</strong> lesson{filteredUnits.reduce((acc, u) => acc + (u.unitNumber === 0 ? unit0Lessons.length : u.lessons.length), 0) === 1 ? '' : 's'} matching &ldquo;{searchQuery}&rdquo;
           </span>
           <div className="flex items-center gap-2">
             <Button
@@ -317,8 +451,9 @@ export default function PathPage() {
       <div className="space-y-4">
         {filteredUnits.map((unit: CurriculumUnit) => {
           const isExpanded = expandedUnits[unit.id] ?? false
-          const unitCompletedCount = unit.lessons.filter((l) => completedLessonIds.has(l.id)).length
-          const isUnitFullyDone = unitCompletedCount === unit.lessons.length && unit.lessons.length > 0
+          const unitState = getUnitState(unit.id, kanaMastery, completedLessonIds)
+          const isUnit0 = unit.unitNumber === 0
+          const unitLessonCount = isUnit0 ? unit0Lessons.length : unit.lessons.length
 
           return (
             <Card
@@ -334,7 +469,7 @@ export default function PathPage() {
                 onClick={() => toggleUnit(unit.id)}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
+                  <div className="space-y-1 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-xs font-bold uppercase tracking-wider text-primary">
                         Unit {unit.unitNumber}
@@ -344,17 +479,56 @@ export default function PathPage() {
                       </Badge>
                       <span className="text-xs text-muted-foreground">•</span>
                       <span className="text-xs text-muted-foreground">
-                        {unit.lessons.length} Lesson{unit.lessons.length === 1 ? '' : 's'}
+                        {unitLessonCount} Lessons
                       </span>
-                      {isUnitFullyDone && (
+
+                      {/* Derived Unit State Badge */}
+                      {unitState.status === 'completed' && (
                         <Badge variant="outline" className="text-[10px] py-0 gap-1 text-emerald-600 border-emerald-500/30">
                           <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                           Completed
                         </Badge>
                       )}
+                      {unitState.status === 'in_progress' && (
+                        <Badge variant="outline" className="text-[10px] py-0 text-blue-500 border-blue-500/30">
+                          In Progress ({unitState.progressPct}%)
+                        </Badge>
+                      )}
+                      {unitState.status === 'available' && (
+                        <Badge variant="outline" className="text-[10px] py-0 text-primary border-primary/30">
+                          Available
+                        </Badge>
+                      )}
+                      {unitState.status === 'locked' && (
+                        <Badge variant="outline" className="text-[10px] py-0 text-muted-foreground border-muted-foreground/30 gap-1">
+                          <Lock className="h-2.5 w-2.5" />
+                          Locked
+                        </Badge>
+                      )}
                     </div>
                     <CardTitle className="text-lg sm:text-xl">{unit.title}</CardTitle>
                     <CardDescription className="text-xs sm:text-sm">{unit.subtitle}</CardDescription>
+
+                    {/* Unit Progress Bar */}
+                    <div
+                      className="w-full bg-muted/60 rounded-full h-1.5 overflow-hidden mt-2"
+                      role="progressbar"
+                      aria-valuenow={unitState.progressPct}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`${unit.title} progress: ${unitState.progressPct}%`}
+                    >
+                      <div
+                        className={`h-full transition-all ${
+                          unitState.status === 'completed'
+                            ? 'bg-emerald-500'
+                            : unitState.status === 'in_progress'
+                            ? 'bg-blue-500'
+                            : 'bg-primary'
+                        }`}
+                        style={{ width: `${unitState.progressPct}%` }}
+                      />
+                    </div>
                   </div>
 
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0 shrink-0 rounded-lg">
@@ -365,77 +539,172 @@ export default function PathPage() {
 
               {isExpanded && (
                 <CardContent className="pt-2 pb-5 border-t bg-muted/10 space-y-3">
-                  <div className="grid gap-3">
-                    {unit.lessons.map((lesson) => {
-                      const Icon = TYPE_ICONS[lesson.type] || BookOpen
-                      const typeClass = TYPE_COLORS[lesson.type] || 'text-primary bg-primary/10'
-                      const isCompleted = completedLessonIds.has(lesson.id)
-                      const hasKanaQuiz = Boolean(KANA_LESSON_POOLS[lesson.id])
-
-                      return (
-                        <div
-                          key={lesson.id}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border bg-background hover:border-primary/30 transition-colors"
+                  {/* Soft gate locked explanation banner */}
+                  {unitState.status === 'locked' && (
+                    <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-600 dark:text-amber-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Lock className="h-4 w-4 shrink-0 text-amber-500" />
+                        <span>{unitState.lockedReason || 'Complete prerequisite units to unlock.'}</span>
+                      </div>
+                      {unit.id === 'unit-1' && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleStartPlacementQuiz('hiragana')}
+                          className="h-7 text-xs border-amber-500/30 text-amber-600 hover:bg-amber-500/10 shrink-0 font-medium"
                         >
-                          <div className="space-y-1.5 flex-1">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-mono text-xs font-bold text-muted-foreground">
-                                {lesson.lessonNumber}
-                              </span>
-                              <Badge variant="outline" className={`text-[10px] py-0 px-2 uppercase font-semibold border ${typeClass}`}>
-                                <Icon className="h-2.5 w-2.5 mr-1" />
-                                {lesson.type}
-                              </Badge>
-                              <h4 className="text-sm font-bold text-foreground">{lesson.title}</h4>
-                            </div>
+                          Test Out of Hiragana
+                        </Button>
+                      )}
+                    </div>
+                  )}
 
-                            <p className="text-xs text-muted-foreground">{lesson.description}</p>
-
-                            <div className="flex flex-wrap gap-1.5 pt-1">
-                              {lesson.keyPoints.map((point, idx) => (
-                                <span
-                                  key={idx}
-                                  className="text-[11px] font-japanese bg-muted/60 text-muted-foreground px-2 py-0.5 rounded-md"
-                                >
-                                  {point}
+                  <div className="grid gap-3">
+                    {isUnit0 ? (
+                      /* Unit 0: Dynamic row-by-row lessons with <= 5 kana each */
+                      unit0Lessons.map((lesson) => {
+                        const isDone = isLessonComplete(lesson, kanaMastery)
+                        return (
+                          <div
+                            key={lesson.id}
+                            className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border bg-background hover:border-primary/30 transition-colors"
+                          >
+                            <div className="space-y-1.5 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="font-mono text-xs font-bold text-muted-foreground">
+                                  {lesson.lessonNumber}
                                 </span>
-                              ))}
+                                <Badge variant="outline" className="text-[10px] py-0 px-2 uppercase font-semibold border text-blue-500 bg-blue-500/10 border-blue-500/20">
+                                  <GraduationCap className="h-2.5 w-2.5 mr-1" />
+                                  kana
+                                </Badge>
+                                <h4 className="text-sm font-bold text-foreground">{lesson.title}</h4>
+                              </div>
+
+                              {/* Character chips with live Mastery Pips */}
+                              <div className="flex flex-wrap items-center gap-2 pt-1">
+                                {lesson.items.map((it) => {
+                                  const id = makeKanaId(it.kana, lesson.script)
+                                  const stage = kanaMastery[id]?.stage ?? 0
+                                  return (
+                                    <div
+                                      key={it.kana}
+                                      className="flex items-center gap-1.5 bg-muted/40 hover:bg-muted/70 px-2 py-1 rounded-lg border text-xs transition-colors"
+                                    >
+                                      <span className="font-japanese font-bold text-sm text-foreground">{it.kana}</span>
+                                      <span className="text-[10px] text-muted-foreground font-mono">({it.romaji})</span>
+                                      <MasteryPips stage={stage} className="scale-75 origin-left" />
+                                    </div>
+                                  )
+                                })}
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="flex items-center gap-2 shrink-0 pt-2 sm:pt-0">
-                            {isCompleted ? (
-                              <Badge variant="outline" className="text-xs text-emerald-600 gap-1 border-emerald-500/20 py-1">
-                                <CheckCircle2 className="h-3.5 w-3.5" />
-                                Done
-                              </Badge>
-                            ) : null}
+                            <div className="flex items-center gap-2 shrink-0 pt-2 sm:pt-0">
+                              {isDone && (
+                                <Badge variant="outline" className="text-xs text-emerald-600 gap-1 border-emerald-500/20 py-1">
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                  Familiar
+                                </Badge>
+                              )}
 
-                            {hasKanaQuiz && (
                               <Button
                                 size="sm"
                                 variant="outline"
-                                onClick={() => handleStartLessonQuiz(lesson.id, lesson.title)}
+                                onClick={() => handleStartCustomKanaQuiz(lesson.items, `${lesson.title} Recall Quiz`)}
                                 className="h-8 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
                               >
                                 <Zap className="h-3.5 w-3.5" />
                                 Quiz
                               </Button>
-                            )}
 
-                            <Button
-                              size="sm"
-                              variant={isCompleted ? 'outline' : 'default'}
-                              onClick={() => handleStudyLesson(lesson)}
-                              className="h-8 text-xs rounded-xl gap-1.5"
-                            >
-                              Study Lesson
-                              <ArrowRight className="h-3.5 w-3.5" />
-                            </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => handleAddLessonToSRS(lesson)}
+                                className="h-8 text-xs rounded-xl gap-1 text-muted-foreground hover:text-foreground"
+                                title="Add lesson characters to Daily SRS review deck"
+                              >
+                                <Plus className="h-3.5 w-3.5" />
+                                SRS
+                              </Button>
+                            </div>
                           </div>
-                        </div>
-                      )
-                    })}
+                        )
+                      })
+                    ) : (
+                      /* Other Units (1 to 8) */
+                      unit.lessons.map((lesson) => {
+                        const Icon = TYPE_ICONS[lesson.type] || BookOpen
+                        const typeClass = TYPE_COLORS[lesson.type] || 'text-primary bg-primary/10'
+                        const isCompleted = completedLessonIds.has(lesson.id)
+                        const hasKanaQuiz = Boolean(KANA_LESSON_POOLS[lesson.id])
+
+                        return (
+                          <div
+                            key={lesson.id}
+                            className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border bg-background hover:border-primary/30 transition-colors"
+                          >
+                            <div className="space-y-1.5 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="font-mono text-xs font-bold text-muted-foreground">
+                                  {lesson.lessonNumber}
+                                </span>
+                                <Badge variant="outline" className={`text-[10px] py-0 px-2 uppercase font-semibold border ${typeClass}`}>
+                                  <Icon className="h-2.5 w-2.5 mr-1" />
+                                  {lesson.type}
+                                </Badge>
+                                <h4 className="text-sm font-bold text-foreground">{lesson.title}</h4>
+                              </div>
+
+                              <p className="text-xs text-muted-foreground">{lesson.description}</p>
+
+                              <div className="flex flex-wrap gap-1.5 pt-1">
+                                {lesson.keyPoints.map((point, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="text-[11px] font-japanese bg-muted/60 text-muted-foreground px-2 py-0.5 rounded-md"
+                                  >
+                                    {point}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0 pt-2 sm:pt-0">
+                              {isCompleted ? (
+                                <Badge variant="outline" className="text-xs text-emerald-600 gap-1 border-emerald-500/20 py-1">
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                  Done
+                                </Badge>
+                              ) : null}
+
+                              {hasKanaQuiz && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleStartLessonQuiz(lesson.id, lesson.title)}
+                                  className="h-8 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+                                >
+                                  <Zap className="h-3.5 w-3.5" />
+                                  Quiz
+                                </Button>
+                              )}
+
+                              <Button
+                                size="sm"
+                                variant={isCompleted ? 'outline' : 'default'}
+                                onClick={() => handleStudyLesson(lesson)}
+                                className="h-8 text-xs rounded-xl gap-1.5"
+                              >
+                                Study Lesson
+                                <ArrowRight className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          </div>
+                        )
+                      })
+                    )}
                   </div>
                 </CardContent>
               )}
@@ -447,10 +716,14 @@ export default function PathPage() {
       {/* Lesson Quiz Modal */}
       <KanaQuizModal
         isOpen={isQuizOpen}
-        onClose={() => setIsQuizOpen(false)}
+        onClose={() => {
+          setIsQuizOpen(false)
+          setPlacementScript(null)
+        }}
         items={quizItems}
         title={quizTitle}
         initialMode="kana-to-romaji"
+        onComplete={handleQuizComplete}
       />
 
       {/* Grammar Lesson Inspection Modal */}

@@ -54,6 +54,7 @@ interface ProgressContextValue {
     pickedKanaId?: string
     now?: number
   }) => Promise<KanaMasteryRecord>
+  saveKanaMasteryBatch: (records: Record<string, KanaMasteryRecord>) => Promise<void>
   resetAllProgress: () => Promise<void>
   syncNow: () => Promise<SyncResult>
   migrateLegacy: () => Promise<MigrationResult>
@@ -290,6 +291,16 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     []
   )
 
+  const saveKanaMasteryBatch = useCallback(
+    async (records: Record<string, KanaMasteryRecord>): Promise<void> => {
+      const current = await repoRef.current.getKanaMastery()
+      const merged = { ...current, ...records }
+      await repoRef.current.saveKanaMastery(merged)
+      setKanaMastery(merged)
+    },
+    []
+  )
+
   const resetAllProgress = useCallback(async (): Promise<void> => {
     await repoRef.current.resetAllProgress()
     await refreshAll()
@@ -313,6 +324,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     addWeakPoint,
     removeWeakPoint,
     recordKanaAttempt,
+    saveKanaMasteryBatch,
     resetAllProgress,
     syncNow,
     migrateLegacy,

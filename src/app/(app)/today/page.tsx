@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   BookOpen,
   Sparkles,
+  Lock,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import { Button } from '@/components/ui/button'
@@ -24,6 +25,7 @@ import {
   makeKanaId,
   detectKanaScript,
 } from '@/lib/kana/mastery-engine'
+import { getUnitState, getNextCurriculumStep } from '@/lib/curriculum/curriculum-engine'
 
 export default function TodayPage() {
   const { stats, cards, weakPoints, deckOptions, kanaMastery, isLoading } = useProgress()
@@ -120,6 +122,23 @@ export default function TodayPage() {
     }
     return null
   }, [kanaMastery])
+
+  const completedLessonIds = React.useMemo(
+    () => new Set(stats.completedLessons || []),
+    [stats.completedLessons]
+  )
+  const unit0State = React.useMemo(
+    () => getUnitState('unit-0', kanaMastery),
+    [kanaMastery]
+  )
+  const unit1State = React.useMemo(
+    () => getUnitState('unit-1', kanaMastery, completedLessonIds),
+    [kanaMastery, completedLessonIds]
+  )
+  const nextCurriculumStep = React.useMemo(
+    () => getNextCurriculumStep(kanaMastery),
+    [kanaMastery]
+  )
 
   return (
     <div className="space-y-6 pb-12">
@@ -412,7 +431,7 @@ export default function TodayPage() {
                 JLPT N5 Path Progress
               </CardTitle>
               <CardDescription className="text-xs mt-0.5">
-                Structured units from Kana scripts to core N5 grammar.
+                Dynamic curriculum tracking from Kana scripts to core N5 grammar.
               </CardDescription>
             </div>
             <Link href="/path">
@@ -425,35 +444,130 @@ export default function TodayPage() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="p-3.5 rounded-xl border bg-muted/10 space-y-1.5">
+            {/* Unit 0 */}
+            <div className="p-3.5 rounded-xl border bg-muted/10 space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold">Unit 0: Kana Foundations</span>
-                <Badge variant="outline" className="text-[10px]">Active</Badge>
+                <span className="font-semibold text-foreground">Unit 0: Kana Foundations</span>
+                {unit0State.status === 'completed' ? (
+                  <Badge variant="outline" className="text-[10px] text-emerald-600 border-emerald-500/30 gap-1">
+                    <CheckCircle2 className="h-2.5 w-2.5" /> Completed
+                  </Badge>
+                ) : unit0State.status === 'in_progress' ? (
+                  <Badge variant="outline" className="text-[10px] text-blue-500 border-blue-500/30">
+                    In Progress
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-[10px] text-primary border-primary/30">
+                    Available
+                  </Badge>
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Hiragana, Katakana, dakuten, and sound combinations with audio.
-              </p>
-              <div className="pt-1">
+
+              {/* Progress bar */}
+              <div
+                className="w-full bg-muted/60 rounded-full h-1.5 overflow-hidden"
+                role="progressbar"
+                aria-valuenow={unit0State.progressPct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`Unit 0 progress: ${unit0State.progressPct}%`}
+              >
+                <div
+                  className={`h-full transition-all ${unit0State.status === 'completed' ? 'bg-emerald-500' : 'bg-primary'}`}
+                  style={{ width: `${unit0State.progressPct}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                <span>{unit0State.progressPct}% mastered</span>
+                {nextCurriculumStep.unitId === 'unit-0' && (
+                  <span>Next: Lesson {nextCurriculumStep.lessonNumber} ({nextCurriculumStep.rowName})</span>
+                )}
+              </div>
+
+              <div className="pt-1 flex items-center gap-2">
+                <Link href="/path">
+                  <Button variant="secondary" size="sm" className="h-7 text-xs rounded-lg gap-1">
+                    {nextCurriculumStep.unitId === 'unit-0' ? `Continue Lesson ${nextCurriculumStep.lessonNumber}` : 'Review Unit 0'}
+                    <ArrowRight className="h-3 w-3" />
+                  </Button>
+                </Link>
                 <Link href="/library?tab=kana">
-                  <Button variant="secondary" size="sm" className="h-7 text-xs rounded-lg">
-                    Open Kana Tables
+                  <Button variant="ghost" size="sm" className="h-7 text-xs rounded-lg text-muted-foreground">
+                    Tables
                   </Button>
                 </Link>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl border bg-muted/10 space-y-1.5">
+            {/* Unit 1 */}
+            <div className="p-3.5 rounded-xl border bg-muted/10 space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold">Unit 1: Core Particles &amp; Sentences</span>
-                <Badge variant="secondary" className="text-[10px]">Up Next</Badge>
+                <span className="font-semibold text-foreground">Unit 1: Core Particles &amp; Sentences</span>
+                {unit1State.status === 'completed' ? (
+                  <Badge variant="outline" className="text-[10px] text-emerald-600 border-emerald-500/30 gap-1">
+                    <CheckCircle2 className="h-2.5 w-2.5" /> Completed
+                  </Badge>
+                ) : unit1State.status === 'locked' ? (
+                  <Badge variant="outline" className="text-[10px] text-muted-foreground border-muted-foreground/30 gap-1">
+                    <Lock className="h-2.5 w-2.5" /> Locked
+                  </Badge>
+                ) : unit1State.status === 'in_progress' ? (
+                  <Badge variant="outline" className="text-[10px] text-blue-500 border-blue-500/30">
+                    In Progress
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-[10px] text-primary border-primary/30">
+                    Available
+                  </Badge>
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">
-                です / だ, は, か, and introductory self-introductions.
-              </p>
-              <div className="pt-1">
+
+              {/* Progress bar */}
+              <div
+                className="w-full bg-muted/60 rounded-full h-1.5 overflow-hidden"
+                role="progressbar"
+                aria-valuenow={unit1State.progressPct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`Unit 1 progress: ${unit1State.progressPct}%`}
+              >
+                <div
+                  className={`h-full transition-all ${
+                    unit1State.status === 'completed'
+                      ? 'bg-emerald-500'
+                      : unit1State.status === 'locked'
+                      ? 'bg-muted-foreground/30'
+                      : 'bg-primary'
+                  }`}
+                  style={{ width: `${unit1State.progressPct}%` }}
+                />
+              </div>
+
+              {unit1State.status === 'locked' ? (
+                <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+                  🔒 {unit1State.lockedReason}
+                </p>
+              ) : (
+                <p className="text-[11px] text-muted-foreground">
+                  です / だ, は, か, and self-introductions.
+                </p>
+              )}
+
+              <div className="pt-1 flex items-center gap-2">
+                <Link href="/path">
+                  <Button
+                    variant={unit1State.status === 'locked' ? 'outline' : 'default'}
+                    size="sm"
+                    className="h-7 text-xs rounded-lg gap-1"
+                  >
+                    {unit1State.status === 'locked' ? 'Unlock on Path' : 'Study Unit 1'}
+                    <ArrowRight className="h-3 w-3" />
+                  </Button>
+                </Link>
                 <Link href="/library?tab=grammar">
-                  <Button variant="outline" size="sm" className="h-7 text-xs rounded-lg">
-                    Preview Grammar Points
+                  <Button variant="ghost" size="sm" className="h-7 text-xs rounded-lg text-muted-foreground">
+                    Preview
                   </Button>
                 </Link>
               </div>

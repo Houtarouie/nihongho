@@ -86,6 +86,7 @@ interface KanaQuizModalProps {
   items: KanaItem[]
   title?: string
   initialMode?: QuizMode
+  onComplete?: (results: { kana: string; correct: boolean }[]) => void
 }
 
 export function KanaQuizModal({
@@ -94,6 +95,7 @@ export function KanaQuizModal({
   items,
   title = 'Kana Quiz',
   initialMode = 'kana-to-romaji',
+  onComplete,
 }: KanaQuizModalProps) {
   const { addWeakPoint, upsertCards, stats, recordKanaAttempt, kanaMastery } = useProgress()
 
@@ -108,6 +110,7 @@ export function KanaQuizModal({
   const [missedItems, setMissedItems] = useState<KanaItem[]>([])
   const [isFinished, setIsFinished] = useState(false)
   const [savedToWeak, setSavedToWeak] = useState(false)
+  const [sessionResults, setSessionResults] = useState<{ kana: string; correct: boolean }[]>([])
   const [stageTransitions, setStageTransitions] = useState<Record<string, StageTransitionInfo>>({})
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now())
 
@@ -224,6 +227,8 @@ export function KanaQuizModal({
         },
       }))
 
+      setSessionResults((prev) => [...prev, { kana: currentQuestion.item.kana, correct }])
+
       if (correct) {
         setScore((prev) => prev + 1)
       } else {
@@ -281,6 +286,8 @@ export function KanaQuizModal({
         },
       }))
 
+      setSessionResults((prev) => [...prev, { kana: currentItem.kana, correct }])
+
       if (correct) {
         setScore((prev) => prev + 1)
       } else {
@@ -301,6 +308,7 @@ export function KanaQuizModal({
   const handleNext = useCallback(() => {
     if (currentIndex + 1 >= questions.length) {
       setIsFinished(true)
+      onComplete?.(sessionResults)
     } else {
       setCurrentIndex((prev) => prev + 1)
       setSelectedOption(null)
@@ -310,7 +318,7 @@ export function KanaQuizModal({
       setSavedToWeak(false)
       setQuestionStartTime(Date.now())
     }
-  }, [currentIndex, questions.length])
+  }, [currentIndex, questions.length, onComplete, sessionResults])
 
   function handlePracticeMissed() {
     if (missedItems.length === 0) return
