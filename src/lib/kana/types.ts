@@ -52,6 +52,7 @@ export interface ScriptProgress {
 export interface GroupProgress {
   group: KanaGroup
   total: number
+  countPerStage: Record<MasteryStage, number>
   knownCount: number
   knownPct: number
   masteredCount: number
@@ -61,6 +62,7 @@ export interface GroupProgress {
 export interface RowProgress {
   row: string
   total: number
+  countPerStage: Record<MasteryStage, number>
   knownCount: number
   knownPct: number
   masteredCount: number

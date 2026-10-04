@@ -19,6 +19,7 @@ import {
   HardDrive,
   X,
   FileCode,
+  RotateCcw,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import { createClient } from '@/lib/supabase/client'
@@ -36,8 +37,18 @@ interface AvatarMenuProps {
 export function AvatarMenu({ align = 'right', trigger }: AvatarMenuProps) {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
-  const { stats, updateStats, isGuest, syncNow, isSyncing, refreshAll, upsertCards } = useProgress()
+  const {
+    stats,
+    updateStats,
+    isGuest,
+    syncNow,
+    isSyncing,
+    refreshAll,
+    upsertCards,
+    resetAllProgress,
+  } = useProgress()
   const [isOpen, setIsOpen] = useState(false)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
   const backupInputRef = useRef<HTMLInputElement | null>(null)
   const apkgInputRef = useRef<HTMLInputElement | null>(null)
@@ -416,6 +427,17 @@ export function AvatarMenu({ align = 'right', trigger }: AvatarMenuProps) {
               Import Anki Deck (.apkg / .colpkg)
             </Button>
 
+            {/* Reset Progress */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowResetConfirm(true)}
+              className="w-full justify-start gap-2 h-8 text-xs font-normal border-destructive/30 text-destructive hover:bg-destructive/10"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              Reset All Progress
+            </Button>
+
             <input
               type="file"
               ref={backupInputRef}
@@ -457,6 +479,50 @@ export function AvatarMenu({ align = 'right', trigger }: AvatarMenuProps) {
                 Sign out
               </Button>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Reset Progress Confirmation Dialog */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in-50 duration-150">
+          <div className="w-full max-w-sm rounded-2xl border bg-card p-5 shadow-2xl space-y-4">
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-destructive flex items-center gap-2">
+                <RotateCcw className="h-4 w-4" />
+                Reset All Progress?
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                This will reset all your Kana mastery records, SRS card intervals, and weak points to beginner defaults. This action cannot be undone.
+              </p>
+            </div>
+            <div className="flex gap-2 justify-end pt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowResetConfirm(false)}
+                className="h-8 text-xs rounded-xl"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={async () => {
+                  try {
+                    await resetAllProgress()
+                    setShowResetConfirm(false)
+                    setIsOpen(false)
+                    toast.success('All progress has been reset to clean beginner defaults.')
+                  } catch {
+                    toast.error('Failed to reset progress')
+                  }
+                }}
+                className="h-8 text-xs rounded-xl font-bold"
+              >
+                Yes, Reset All
+              </Button>
+            </div>
           </div>
         </div>
       )}

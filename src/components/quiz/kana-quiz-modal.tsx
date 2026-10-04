@@ -33,6 +33,8 @@ import {
   fisherYatesShuffle,
 } from '@/lib/kana/question-builder'
 import { ROMAJI_ALTERNATES } from '@/lib/kana/config'
+import { makeKanaId, detectKanaScript } from '@/lib/kana/mastery-engine'
+import type { QuizModeType } from '@/lib/kana/types'
 import { speakJapanese, type SRSCard } from '@/data/srs-deck'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -41,6 +43,23 @@ import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 
 export type QuizMode = 'kana-to-romaji' | 'romaji-to-kana' | 'listening' | 'typing'
+
+interface StageTransitionInfo {
+  kana: string
+  romaji: string
+  oldStage: number
+  newStage: number
+  modesPracticed: string[]
+}
+
+const STAGE_NAMES: Record<number, string> = {
+  0: 'New',
+  1: 'Learning',
+  2: 'Familiar',
+  3: 'Solid',
+  4: 'Strong',
+  5: 'Mastered',
+}
 
 const ALL_KANA: KanaItem[] = [
   ...HIRAGANA_GOJUON,
@@ -76,7 +95,7 @@ export function KanaQuizModal({
   title = 'Kana Quiz',
   initialMode = 'kana-to-romaji',
 }: KanaQuizModalProps) {
-  const { addWeakPoint, upsertCards, stats } = useProgress()
+  const { addWeakPoint, upsertCards, stats, recordKanaAttempt, kanaMastery } = useProgress()
 
   const [mode, setMode] = useState<QuizMode>(initialMode)
   const [questions, setQuestions] = useState<QuizQuestionItem[]>([])
@@ -89,6 +108,8 @@ export function KanaQuizModal({
   const [missedItems, setMissedItems] = useState<KanaItem[]>([])
   const [isFinished, setIsFinished] = useState(false)
   const [savedToWeak, setSavedToWeak] = useState(false)
+  const [stageTransitions, setStageTransitions] = useState<Record<string, StageTransitionInfo>>({})
+  const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now())
 
   // Pure generator for full session questions with balanced position bags
   const generateQuestions = useCallback((quizItems: KanaItem[], quizMode: QuizMode) => {
@@ -136,6 +157,8 @@ export function KanaQuizModal({
     setMissedItems([])
     setIsFinished(false)
     setSavedToWeak(false)
+    setStageTransitions({})
+    setQuestionStartTime(Date.now())
   }, [isOpen, items, mode, generateQuestions])
 
   const currentQuestion = questions[currentIndex]
@@ -161,6 +184,46 @@ export function KanaQuizModal({
         option.trim().toLowerCase() === currentQuestion.correctValue.trim().toLowerCase()
       setIsCorrect(correct)
 
+      const responseMs = Math.max(100, Date.now() - questionStartTime)
+      const quizModeType: QuizModeType = mode
+
+      let pickedKanaId: string | undefined = undefined
+      if (mode === 'romaji-to-kana' && !correct) {
+        pickedKanaId = makeKanaId(option, detectKanaScript(option))
+      } else if (mode === 'kana-to-romaji' && !correct) {
+        const matched = ALL_KANA.find((k) => cleanRomaji(k.romaji) === cleanRomaji(option))
+        if (matched) {
+          pickedKanaId = makeKanaId(matched.kana, detectKanaScript(matched.kana))
+        }
+      }
+
+      const kanaId = makeKanaId(currentQuestion.item.kana, detectKanaScript(currentQuestion.item.kana))
+      const oldStage = kanaMastery[kanaId]?.stage ?? 0
+
+      // Record Kana Attempt in single source of truth mastery engine
+      const updated = await recordKanaAttempt({
+        kanaId,
+        mode: quizModeType,
+        correct,
+        responseMs,
+        pickedKanaId,
+        source: 'quiz',
+        now: Date.now(),
+      })
+
+      setStageTransitions((prev) => ({
+        ...prev,
+        [kanaId]: {
+          kana: currentQuestion.item.kana,
+          romaji: currentQuestion.item.romaji,
+          oldStage,
+          newStage: updated.stage,
+          modesPracticed: Object.entries(updated.perModeCounts || {})
+            .filter((entry) => (entry[1]?.attempts || 0) > 0)
+            .map((entry) => entry[0]),
+        },
+      }))
+
       if (correct) {
         setScore((prev) => prev + 1)
       } else {
@@ -176,7 +239,7 @@ export function KanaQuizModal({
         })
       }
     },
-    [isAnswered, currentQuestion, addWeakPoint]
+    [isAnswered, currentQuestion, questionStartTime, mode, kanaMastery, recordKanaAttempt, addWeakPoint]
   )
 
   const handleCheckTyping = useCallback(
@@ -191,6 +254,33 @@ export function KanaQuizModal({
       const correct = given === expected || alternates.includes(given)
 
       setIsCorrect(correct)
+
+      const responseMs = Math.max(100, Date.now() - questionStartTime)
+      const kanaId = makeKanaId(currentItem.kana, detectKanaScript(currentItem.kana))
+      const oldStage = kanaMastery[kanaId]?.stage ?? 0
+
+      const updated = await recordKanaAttempt({
+        kanaId,
+        mode: 'typing',
+        correct,
+        responseMs,
+        source: 'quiz',
+        now: Date.now(),
+      })
+
+      setStageTransitions((prev) => ({
+        ...prev,
+        [kanaId]: {
+          kana: currentItem.kana,
+          romaji: currentItem.romaji,
+          oldStage,
+          newStage: updated.stage,
+          modesPracticed: Object.entries(updated.perModeCounts || {})
+            .filter((entry) => (entry[1]?.attempts || 0) > 0)
+            .map((entry) => entry[0]),
+        },
+      }))
+
       if (correct) {
         setScore((prev) => prev + 1)
       } else {
@@ -205,7 +295,7 @@ export function KanaQuizModal({
         })
       }
     },
-    [isAnswered, currentItem, typedAnswer, addWeakPoint]
+    [isAnswered, currentItem, typedAnswer, questionStartTime, kanaMastery, recordKanaAttempt, addWeakPoint]
   )
 
   const handleNext = useCallback(() => {
@@ -218,8 +308,28 @@ export function KanaQuizModal({
       setIsAnswered(false)
       setIsCorrect(false)
       setSavedToWeak(false)
+      setQuestionStartTime(Date.now())
     }
   }, [currentIndex, questions.length])
+
+  function handlePracticeMissed() {
+    if (missedItems.length === 0) return
+    const uniqueMissed = Array.from(new Set(missedItems.map((m) => m.kana)))
+      .map((k) => missedItems.find((m) => m.kana === k)!)
+    const built = generateQuestions(uniqueMissed, mode)
+    setQuestions(built)
+    setCurrentIndex(0)
+    setSelectedOption(null)
+    setTypedAnswer('')
+    setIsAnswered(false)
+    setIsCorrect(false)
+    setScore(0)
+    setMissedItems([])
+    setIsFinished(false)
+    setSavedToWeak(false)
+    setStageTransitions({})
+    setQuestionStartTime(Date.now())
+  }
 
   // Keyboard controls: 1-4 for options, Space/Enter for Next
   useEffect(() => {
@@ -414,11 +524,69 @@ export function KanaQuizModal({
                 </p>
               </div>
 
+              {/* Stage Progression & Mastery Updates */}
+              {Object.keys(stageTransitions).length > 0 && (
+                <div className="p-4 rounded-2xl border bg-muted/20 text-left space-y-2.5">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <span>Kana Mastery Updates:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.values(stageTransitions).map((t) => {
+                      const isPromoted = t.newStage > t.oldStage
+                      const isDemoted = t.newStage < t.oldStage
+                      return (
+                        <div
+                          key={t.kana}
+                          className={`px-2.5 py-1.5 rounded-xl border text-xs flex items-center gap-1.5 bg-background shadow-2xs ${
+                            isPromoted
+                              ? 'border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-semibold'
+                              : isDemoted
+                              ? 'border-amber-500/40 text-amber-600 dark:text-amber-400 font-semibold'
+                              : 'border-border text-muted-foreground'
+                          }`}
+                        >
+                          <span className="font-japanese font-bold text-sm text-foreground">
+                            {t.kana}
+                          </span>
+                          <span className="text-[10px] font-mono text-muted-foreground">
+                            ({t.romaji})
+                          </span>
+                          <span className="font-mono text-[11px] font-bold">
+                            {isPromoted ? '↑' : isDemoted ? '↓' : '•'} {STAGE_NAMES[t.newStage] || 'New'}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Mode suggestion if stuck at Familiar */}
+                  {Object.values(stageTransitions).some(
+                    (t) => t.newStage === 2 && t.modesPracticed.length <= 1
+                  ) && (
+                    <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-700 dark:text-blue-300 text-xs space-y-1">
+                      <p className="font-semibold flex items-center gap-1">
+                        <span>💡 Unlock Solid Stage:</span>
+                      </p>
+                      <p className="text-[11px] text-muted-foreground">
+                        {Object.values(stageTransitions)
+                          .filter((t) => t.newStage === 2 && t.modesPracticed.length <= 1)
+                          .map((t) => t.kana)
+                          .join(', ')}{' '}
+                        reached Familiar! To reach Solid stage, practice in another mode like{' '}
+                        <strong>Sound &rarr; Kana</strong>, <strong>Listening</strong>, or{' '}
+                        <strong>Typing</strong>.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {missedItems.length > 0 && (
                 <div className="p-4 rounded-2xl border bg-muted/20 text-left space-y-3">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
                     <AlertCircle className="h-4 w-4" />
-                    <span>Review these tricky characters:</span>
+                    <span>Review these tricky characters ({missedItems.length}):</span>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {missedItems.map((m, idx) => (
@@ -435,13 +603,23 @@ export function KanaQuizModal({
                     ))}
                   </div>
 
-                  <Button
-                    onClick={handleAddMissedToSRS}
-                    className="w-full text-xs font-semibold rounded-xl gap-2 mt-2"
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                    Add Missed Items to Daily SRS Queue ({missedItems.length})
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                    <Button
+                      onClick={handlePracticeMissed}
+                      className="flex-1 text-xs font-semibold rounded-xl gap-2"
+                    >
+                      <RotateCcw className="h-3.5 w-3.5" />
+                      Practice Missed Kana ({missedItems.length})
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleAddMissedToSRS}
+                      className="flex-1 text-xs font-semibold rounded-xl gap-2"
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                      Add to SRS Queue
+                    </Button>
+                  </div>
                 </div>
               )}
 
@@ -458,6 +636,8 @@ export function KanaQuizModal({
                     setScore(0)
                     setMissedItems([])
                     setIsFinished(false)
+                    setStageTransitions({})
+                    setQuestionStartTime(Date.now())
                   }}
                   className="rounded-xl text-xs gap-1.5"
                 >

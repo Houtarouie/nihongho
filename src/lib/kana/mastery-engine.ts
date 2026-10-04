@@ -1,4 +1,12 @@
-import type { KanaItem } from '@/data/kana'
+import {
+  HIRAGANA_GOJUON,
+  HIRAGANA_DAKUTEN,
+  HIRAGANA_YOON,
+  KATAKANA_GOJUON,
+  KATAKANA_DAKUTEN,
+  KATAKANA_YOON,
+  type KanaItem,
+} from '@/data/kana'
 import { KANA_CONFIG } from './config'
 import type {
   GroupProgress,
@@ -10,6 +18,31 @@ import type {
   RowProgress,
   ScriptProgress,
 } from './types'
+
+let _cachedAllKana: KanaItem[] | null = null
+
+/**
+ * Returns complete list of KanaItem objects dynamically derived from data
+ */
+export function getAllKanaItems(): KanaItem[] {
+  if (_cachedAllKana) return _cachedAllKana
+  const allRows = [
+    ...HIRAGANA_GOJUON,
+    ...HIRAGANA_DAKUTEN,
+    ...HIRAGANA_YOON,
+    ...KATAKANA_GOJUON,
+    ...KATAKANA_DAKUTEN,
+    ...KATAKANA_YOON,
+  ]
+  const list: KanaItem[] = []
+  for (const r of allRows) {
+    for (const it of r.items) {
+      if (it) list.push(it)
+    }
+  }
+  _cachedAllKana = list
+  return list
+}
 
 /**
  * Returns formatted 'YYYY-MM-DD' calendar date in given or local timezone
@@ -268,7 +301,7 @@ export function kanaStage(
 export function scriptProgress(
   script: KanaScript,
   masteryMap: Record<string, KanaMasteryRecord>,
-  allKana: KanaItem[]
+  allKana: KanaItem[] = getAllKanaItems()
 ): ScriptProgress {
   const scriptKana = allKana.filter((k) => detectKanaScript(k.kana) === script)
   const total = scriptKana.length
@@ -307,7 +340,7 @@ export function groupProgress(
   script: KanaScript,
   group: KanaGroup,
   masteryMap: Record<string, KanaMasteryRecord>,
-  allKana: KanaItem[]
+  allKana: KanaItem[] = getAllKanaItems()
 ): GroupProgress {
   const groupKana = allKana.filter((k) => {
     const s = detectKanaScript(k.kana)
@@ -317,12 +350,14 @@ export function groupProgress(
   })
 
   const total = groupKana.length
+  const countPerStage: Record<MasteryStage, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
   let knownCount = 0
   let masteredCount = 0
 
   for (const k of groupKana) {
     const id = makeKanaId(k.kana, script)
     const stage = masteryMap[id]?.stage ?? 0
+    countPerStage[stage] = (countPerStage[stage] || 0) + 1
     if (stage >= 3) knownCount++
     if (stage === 5) masteredCount++
   }
@@ -333,6 +368,7 @@ export function groupProgress(
   return {
     group,
     total,
+    countPerStage,
     knownCount,
     knownPct,
     masteredCount,
@@ -344,18 +380,20 @@ export function rowProgress(
   script: KanaScript,
   row: string,
   masteryMap: Record<string, KanaMasteryRecord>,
-  allKana: KanaItem[]
+  allKana: KanaItem[] = getAllKanaItems()
 ): RowProgress {
   const rowKana = allKana.filter(
     (k) => detectKanaScript(k.kana) === script && k.row === row
   )
   const total = rowKana.length
+  const countPerStage: Record<MasteryStage, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
   let knownCount = 0
   let masteredCount = 0
 
   for (const k of rowKana) {
     const id = makeKanaId(k.kana, script)
     const stage = masteryMap[id]?.stage ?? 0
+    countPerStage[stage] = (countPerStage[stage] || 0) + 1
     if (stage >= 3) knownCount++
     if (stage === 5) masteredCount++
   }
@@ -366,6 +404,7 @@ export function rowProgress(
   return {
     row,
     total,
+    countPerStage,
     knownCount,
     knownPct,
     masteredCount,

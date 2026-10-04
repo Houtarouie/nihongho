@@ -27,8 +27,20 @@ import {
   Square,
   X,
   Zap,
+  Flame,
 } from 'lucide-react'
 import { KanaQuizModal, type QuizMode } from '@/components/quiz/kana-quiz-modal'
+import { StackedProgressBar } from './stacked-progress-bar'
+import { MasteryPips } from './mastery-pips'
+import { KanaTilePopover } from './kana-tile-popover'
+import {
+  scriptProgress,
+  groupProgress,
+  rowProgress,
+  weakKana,
+  makeKanaId,
+  getAllKanaItems,
+} from '@/lib/kana/mastery-engine'
 import { toast } from 'sonner'
 
 type ScriptType = 'hiragana' | 'katakana'
@@ -68,11 +80,13 @@ const CONFUSION_PAIRS = [
 ]
 
 export function KanaChart() {
-  const { stats, upsertCards } = useProgress()
+  const { stats, upsertCards, kanaMastery, cards } = useProgress()
   const [script, setScript] = useState<ScriptType>('hiragana')
   const [section, setSection] = useState<SectionType>('gojuon')
   const [showRomaji, setShowRomaji] = useState(true)
   const [activeItem, setActiveItem] = useState<KanaItem | null>(null)
+  const [hoveredTileKana, setHoveredTileKana] = useState<string | null>(null)
+  const [activePopoverKana, setActivePopoverKana] = useState<string | null>(null)
 
   // Custom Selection State
   const [isSelectMode, setIsSelectMode] = useState(false)
@@ -83,6 +97,24 @@ export function KanaChart() {
   const [quizItems, setQuizItems] = useState<KanaItem[]>([])
   const [quizTitle, setQuizTitle] = useState('Kana Quiz')
   const [quizMode, setQuizMode] = useState<QuizMode>('kana-to-romaji')
+
+  // Progress Selectors
+  const hiraganaProgress = useMemo(
+    () => scriptProgress('hiragana', kanaMastery),
+    [kanaMastery]
+  )
+  const katakanaProgress = useMemo(
+    () => scriptProgress('katakana', kanaMastery),
+    [kanaMastery]
+  )
+  const currentGroupProgress = useMemo(
+    () => groupProgress(script, section, kanaMastery),
+    [script, section, kanaMastery]
+  )
+  const currentWeakKana = useMemo(
+    () => weakKana(kanaMastery),
+    [kanaMastery]
+  )
 
   const rows: KanaRow[] =
     script === 'hiragana'
@@ -120,9 +152,27 @@ export function KanaChart() {
       })
     } else {
       setActiveItem(item)
+      // Toggle popover on tap/click for mobile & accessibility
+      setActivePopoverKana((prev) => (prev === item.kana ? null : item.kana))
       speakJapanese(item.kana, { rate: stats.audioSpeed || 1.0 })
       toast.success(`${item.kana} (${item.romaji}) — ${item.example}`, { duration: 1500 })
     }
+  }
+
+  function handlePracticeWeakKana() {
+    if (currentWeakKana.length === 0) {
+      toast.info('No weak kana identified yet! Practice quizzes to identify tricky characters.')
+      return
+    }
+    const all = getAllKanaItems()
+    const items = currentWeakKana
+      .map((w) => all.find((k) => k.kana === w.kana))
+      .filter((k): k is KanaItem => Boolean(k))
+
+    setQuizItems(items.length > 0 ? items : currentFlatKana.slice(0, 5))
+    setQuizTitle(`Weak Kana Practice (${items.length} characters)`)
+    setQuizMode('kana-to-romaji')
+    setIsQuizOpen(true)
   }
 
   function handleSelectRow(row: KanaRow) {
@@ -234,7 +284,13 @@ export function KanaChart() {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner: Quick Quizzes & Custom Selection Toggle */}
+      {/* Top Stacked Mastery Progress Bars */}
+      <div className="grid gap-3 sm:grid-cols-2 p-4 rounded-2xl border bg-card/60 backdrop-blur-xs shadow-xs">
+        <StackedProgressBar progress={hiraganaProgress} label="Hiragana Mastery" />
+        <StackedProgressBar progress={katakanaProgress} label="Katakana Mastery" />
+      </div>
+
+      {/* Top Banner: Quick Quizzes, Practice Weak Kana & Custom Selection Toggle */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl border bg-gradient-to-r from-primary/10 via-background to-muted/40 shadow-xs">
         <div className="space-y-0.5">
           <h3 className="text-sm font-bold flex items-center gap-2">
@@ -242,7 +298,7 @@ export function KanaChart() {
             Active Kana Quizzing &amp; SRS
           </h3>
           <p className="text-xs text-muted-foreground">
-            Test yourself with smart look-alike distractors or pick custom characters to drill.
+            Test yourself with smart look-alike distractors or drill your weakest kana.
           </p>
         </div>
 
@@ -254,6 +310,16 @@ export function KanaChart() {
           >
             <Play className="h-3.5 w-3.5 fill-current" />
             Quiz All
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePracticeWeakKana}
+            className="h-8 text-xs rounded-xl gap-1.5 border-orange-500/30 text-orange-600 dark:text-orange-400 hover:bg-orange-500/10"
+          >
+            <Flame className="h-3.5 w-3.5 fill-orange-500 text-orange-500" />
+            Practice Weak Kana {currentWeakKana.length > 0 && `(${currentWeakKana.length})`}
           </Button>
 
           <Button
@@ -280,8 +346,8 @@ export function KanaChart() {
         </div>
       </div>
 
-      {/* Control Switchers */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border bg-card">
+      {/* Control Switchers & Sub-bar */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-2xl border bg-card">
         {/* Hiragana vs Katakana */}
         <div className="flex items-center gap-1.5 bg-muted p-1 rounded-xl">
           <button
@@ -306,8 +372,25 @@ export function KanaChart() {
           </button>
         </div>
 
-        {/* Section tabs & Romaji toggle */}
-        <div className="flex items-center gap-2 flex-wrap">
+        {/* Section tabs & Romaji toggle & Group Sub-bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-wrap">
+          <div className="w-full sm:w-48">
+            <StackedProgressBar
+              progress={{
+                script,
+                total: currentGroupProgress.total,
+                countPerStage: currentGroupProgress.countPerStage,
+                knownCount: currentGroupProgress.knownCount,
+                knownPct: currentGroupProgress.knownPct,
+                masteredCount: currentGroupProgress.masteredCount,
+                masteredPct: currentGroupProgress.masteredPct,
+                weightedPct: currentGroupProgress.knownPct,
+              }}
+              label={`${section === 'gojuon' ? 'Gojūon' : section === 'dakuten' ? 'Dakuten' : 'Yōon'}`}
+              height="sm"
+            />
+          </div>
+
           <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl text-xs">
             <button
               onClick={() => setSection('gojuon')}
@@ -354,90 +437,147 @@ export function KanaChart() {
       </div>
 
       {/* Interactive Grid */}
-      <Card className="p-4 sm:p-6 rounded-2xl">
+      <Card className="p-4 sm:p-6 rounded-2xl overflow-visible">
         <div className="space-y-4">
-          {rows.map((row) => (
-            <div key={row.rowName} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-              {/* Row title with quick actions */}
-              <div className="flex items-center justify-between sm:justify-start gap-2 w-28 shrink-0">
-                <span className="text-xs font-mono font-bold text-muted-foreground uppercase">
-                  {row.rowName}-row
-                </span>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => handleQuizRow(row)}
-                    className="p-1 rounded-md text-primary hover:bg-primary/10 transition-colors"
-                    title={`Quiz ${row.rowName}-row`}
+          {rows.map((row, rowIdx) => {
+            const rowKey = row.items.find(Boolean)?.row || ''
+            const rProg = rowProgress(script, rowKey, kanaMastery)
+
+            return (
+              <div key={row.rowName} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                {/* Row title with mini-bar and quick actions */}
+                <div className="flex items-center justify-between sm:justify-start gap-2 w-36 shrink-0">
+                  <span className="text-xs font-mono font-bold text-muted-foreground uppercase">
+                    {row.rowName}-row
+                  </span>
+                  <div
+                    role="progressbar"
+                    aria-valuenow={rProg.knownPct}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={`${row.rowName} progress: ${rProg.knownPct}%`}
+                    className="w-7 h-1.5 bg-muted/60 rounded-full overflow-hidden flex shrink-0"
+                    title={`${row.rowName}: ${rProg.knownPct}% known (${rProg.knownCount}/${rProg.total})`}
                   >
-                    <Zap className="h-3.5 w-3.5" />
-                  </button>
-                  <button
-                    onClick={() => handleAddRowToSRS(row)}
-                    className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                    title={`Add ${row.rowName}-row to Daily SRS Reviews`}
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                  </button>
-                  {isSelectMode && (
+                    <div
+                      style={{ width: `${rProg.knownPct}%` }}
+                      className="bg-primary h-full transition-all"
+                    />
+                  </div>
+                  <div className="flex items-center gap-0.5">
                     <button
-                      onClick={() => handleSelectRow(row)}
-                      className="text-[10px] text-primary hover:underline font-semibold"
+                      onClick={() => handleQuizRow(row)}
+                      className="p-1 rounded-md text-primary hover:bg-primary/10 transition-colors"
+                      title={`Quiz ${row.rowName}-row`}
                     >
-                      +all
+                      <Zap className="h-3.5 w-3.5" />
                     </button>
-                  )}
+                    <button
+                      onClick={() => handleAddRowToSRS(row)}
+                      className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      title={`Add ${row.rowName}-row to Daily SRS Reviews`}
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </button>
+                    {isSelectMode && (
+                      <button
+                        onClick={() => handleSelectRow(row)}
+                        className="text-[10px] text-primary hover:underline font-semibold"
+                      >
+                        +all
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Row Characters */}
+                <div className="grid grid-cols-5 gap-2 sm:gap-3 flex-1">
+                  {row.items.map((item, idx) => {
+                    if (!item) {
+                      return <div key={`empty-${idx}`} className="min-h-[64px] sm:min-h-[72px]" />
+                    }
+                    const isSelectedInQuiz = Boolean(selectedKanaMap[item.kana])
+                    const isActive = activeItem?.kana === item.kana
+                    const record = kanaMastery[makeKanaId(item.kana, script)]
+                    const srsCard = cards.find(
+                      (c) => c.front === item.kana || c.id === `kana-${item.kana}`
+                    )
+                    const isPopoverVisible =
+                      hoveredTileKana === item.kana || activePopoverKana === item.kana
+                    const isTopRow = rowIdx === 0
+
+                    return (
+                      <div
+                        key={`${item.kana}-${idx}`}
+                        className="relative"
+                        onMouseEnter={() => setHoveredTileKana(item.kana)}
+                        onMouseLeave={() => setHoveredTileKana(null)}
+                      >
+                        <button
+                          onClick={() => handleKanaClick(item)}
+                          className={`relative w-full min-h-[64px] sm:min-h-[72px] flex flex-col items-center justify-center p-2 rounded-2xl border transition-all select-none ${
+                            isSelectedInQuiz
+                              ? 'border-primary bg-primary/15 ring-2 ring-primary'
+                              : isActive
+                              ? 'border-primary bg-primary/10 scale-102'
+                              : 'border-border/70 hover:border-primary/50 hover:bg-muted/40'
+                          }`}
+                          aria-label={`Character ${item.kana}, pronunciation ${item.romaji}, mastery stage ${record?.stage ?? 0} of 5`}
+                        >
+                          {/* Checkbox indicator when in select mode */}
+                          {isSelectMode && (
+                            <span
+                              className={`absolute top-1.5 right-1.5 h-3.5 w-3.5 rounded-md flex items-center justify-center border text-[9px] ${
+                                isSelectedInQuiz
+                                  ? 'bg-primary text-primary-foreground border-primary font-bold'
+                                  : 'border-muted-foreground/40 bg-background/80'
+                              }`}
+                            >
+                              {isSelectedInQuiz && '✓'}
+                            </span>
+                          )}
+
+                          <span className="text-2xl sm:text-3xl font-bold font-japanese leading-none">
+                            {item.kana}
+                          </span>
+                          {showRomaji && (
+                            <span className="text-xs font-mono text-muted-foreground mt-0.5 font-medium">
+                              {item.romaji}
+                            </span>
+                          )}
+
+                          {/* 5-pip mastery indicator */}
+                          <MasteryPips stage={record?.stage ?? 0} size="sm" className="mt-1" />
+                        </button>
+
+                        {/* Hover/Tap Popover */}
+                        {isPopoverVisible && (
+                          <div
+                            className={`absolute left-1/2 -translate-x-1/2 z-50 pointer-events-auto ${
+                              isTopRow ? 'top-full mt-2' : 'bottom-full mb-2'
+                            }`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <KanaTilePopover
+                              record={record}
+                              kana={item.kana}
+                              romaji={item.romaji}
+                              example={item.example}
+                              srsDueDate={srsCard?.dueDate}
+                              onClose={() => {
+                                setHoveredTileKana(null)
+                                setActivePopoverKana(null)
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
-
-              {/* Row Characters */}
-              <div className="grid grid-cols-5 gap-2 sm:gap-3 flex-1">
-                {row.items.map((item, idx) => {
-                  if (!item) {
-                    return <div key={`empty-${idx}`} className="min-h-[58px] sm:min-h-[64px]" />
-                  }
-                  const isSelectedInQuiz = Boolean(selectedKanaMap[item.kana])
-                  const isActive = activeItem?.kana === item.kana
-
-                  return (
-                    <button
-                      key={`${item.kana}-${idx}`}
-                      onClick={() => handleKanaClick(item)}
-                      className={`relative min-h-[58px] sm:min-h-[64px] flex flex-col items-center justify-center p-2 rounded-2xl border transition-all select-none ${
-                        isSelectedInQuiz
-                          ? 'border-primary bg-primary/15 ring-2 ring-primary'
-                          : isActive
-                          ? 'border-primary bg-primary/10 scale-102'
-                          : 'border-border/70 hover:border-primary/50 hover:bg-muted/40'
-                      }`}
-                      aria-label={`Character ${item.kana}, pronunciation ${item.romaji}`}
-                    >
-                      {/* Checkbox indicator when in select mode */}
-                      {isSelectMode && (
-                        <span
-                          className={`absolute top-1.5 right-1.5 h-3.5 w-3.5 rounded-md flex items-center justify-center border text-[9px] ${
-                            isSelectedInQuiz
-                              ? 'bg-primary text-primary-foreground border-primary font-bold'
-                              : 'border-muted-foreground/40 bg-background/80'
-                          }`}
-                        >
-                          {isSelectedInQuiz && '✓'}
-                        </span>
-                      )}
-
-                      <span className="text-2xl sm:text-3xl font-bold font-japanese leading-none">
-                        {item.kana}
-                      </span>
-                      {showRomaji && (
-                        <span className="text-xs font-mono text-muted-foreground mt-1 font-medium">
-                          {item.romaji}
-                        </span>
-                      )}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </Card>
 

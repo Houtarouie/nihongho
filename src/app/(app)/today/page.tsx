@@ -11,14 +11,22 @@ import {
   AlertCircle,
   CheckCircle2,
   BookOpen,
+  Sparkles,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { StackedProgressBar } from '@/components/kana/stacked-progress-bar'
+import {
+  scriptProgress,
+  getAllKanaItems,
+  makeKanaId,
+  detectKanaScript,
+} from '@/lib/kana/mastery-engine'
 
 export default function TodayPage() {
-  const { stats, cards, weakPoints, deckOptions, isLoading } = useProgress()
+  const { stats, cards, weakPoints, deckOptions, kanaMastery, isLoading } = useProgress()
 
   const now = Date.now()
   const tomorrow = now + 24 * 60 * 60 * 1000
@@ -55,6 +63,63 @@ export default function TodayPage() {
   const topWeakSpots = [...weakPoints]
     .sort((a, b) => (b.missCount || 0) - (a.missCount || 0))
     .slice(0, 3)
+
+  // Kana Mastery Progress Selectors
+  const hiraganaProgress = React.useMemo(
+    () => scriptProgress('hiragana', kanaMastery),
+    [kanaMastery]
+  )
+  const katakanaProgress = React.useMemo(
+    () => scriptProgress('katakana', kanaMastery),
+    [kanaMastery]
+  )
+
+  const nextKanaToLearn = React.useMemo(() => {
+    const all = getAllKanaItems()
+    // 1. Any Hiragana below Familiar (stage 2)
+    for (const k of all) {
+      if (detectKanaScript(k.kana) !== 'hiragana') continue
+      const id = makeKanaId(k.kana, 'hiragana')
+      const stage = kanaMastery[id]?.stage ?? 0
+      if (stage < 2) {
+        return {
+          kana: k.kana,
+          romaji: k.romaji,
+          script: 'Hiragana',
+          row: k.row,
+        }
+      }
+    }
+    // 2. Any Hiragana below Solid (stage 3)
+    for (const k of all) {
+      if (detectKanaScript(k.kana) !== 'hiragana') continue
+      const id = makeKanaId(k.kana, 'hiragana')
+      const stage = kanaMastery[id]?.stage ?? 0
+      if (stage < 3) {
+        return {
+          kana: k.kana,
+          romaji: k.romaji,
+          script: 'Hiragana',
+          row: k.row,
+        }
+      }
+    }
+    // 3. Any Katakana below Familiar (stage 2)
+    for (const k of all) {
+      if (detectKanaScript(k.kana) !== 'katakana') continue
+      const id = makeKanaId(k.kana, 'katakana')
+      const stage = kanaMastery[id]?.stage ?? 0
+      if (stage < 2) {
+        return {
+          kana: k.kana,
+          romaji: k.romaji,
+          script: 'Katakana',
+          row: k.row,
+        }
+      }
+    }
+    return null
+  }, [kanaMastery])
 
   return (
     <div className="space-y-6 pb-12">
@@ -142,6 +207,42 @@ export default function TodayPage() {
             </Link>
           </div>
         </CardContent>
+      </Card>
+
+      {/* 2.5 Compact Kana Mastery Card */}
+      <Card className="rounded-2xl border bg-card p-4 sm:p-5 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="font-bold text-sm">Kana Mastery</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs flex-wrap">
+            <span className="text-muted-foreground">
+              {nextKanaToLearn ? (
+                <span>
+                  Next up:{' '}
+                  <strong className="text-foreground">
+                    {nextKanaToLearn.script} {nextKanaToLearn.kana} ({nextKanaToLearn.romaji})
+                  </strong>
+                </span>
+              ) : (
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                  Kana foundations solid!
+                </span>
+              )}
+            </span>
+            <Link href="/library?tab=kana">
+              <Button variant="ghost" size="sm" className="h-7 text-xs text-primary gap-1 px-2 font-semibold">
+                Open Kana &rarr;
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <StackedProgressBar progress={hiraganaProgress} label="Hiragana Mastery" />
+          <StackedProgressBar progress={katakanaProgress} label="Katakana Mastery" />
+        </div>
       </Card>
 
       {/* 3. Daily Queue Breakdown & Honest SRS Distribution */}

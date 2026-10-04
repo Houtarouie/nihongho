@@ -35,6 +35,10 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
+import { weakKana, getAllKanaItems } from '@/lib/kana/mastery-engine'
+import { KanaQuizModal } from '@/components/quiz/kana-quiz-modal'
+import type { KanaItem } from '@/data/kana'
+import { Flame } from 'lucide-react'
 
 type ReviewTab = 'review' | 'weak' | 'browse' | 'add'
 
@@ -53,11 +57,16 @@ function ReviewContent() {
     deckOptions,
     updateStats,
     stats,
+    kanaMastery,
     isLoading,
   } = useProgress()
 
   const [activeTab, setActiveTab] = useState<ReviewTab>(initialMode)
   const [showAdvanced, setShowAdvanced] = useState(false)
+  const [isKanaQuizOpen, setIsKanaQuizOpen] = useState(false)
+  const [kanaQuizItems, setKanaQuizItems] = useState<KanaItem[]>([])
+
+  const weakKanaList = useMemo(() => weakKana(kanaMastery), [kanaMastery])
 
   // Current session queue
   const [sessionCards, setSessionCards] = useState<SRSCard[]>([])
@@ -620,73 +629,149 @@ function ReviewContent() {
 
       {/* 2. WEAK SPOTS TAB */}
       {activeTab === 'weak' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h2 className="text-lg font-bold">Focus Areas &amp; Weak Points</h2>
               <p className="text-xs text-muted-foreground">
-                Items missed during reviews or quizzes automatically log here for dedicated recall drills.
+                Kana confusions and difficult vocabulary automatically log here for dedicated recall drills.
               </p>
             </div>
+            {weakKanaList.length > 0 && (
+              <Button
+                size="sm"
+                onClick={() => {
+                  const all = getAllKanaItems()
+                  const items = weakKanaList
+                    .map((w) => all.find((k) => k.kana === w.kana))
+                    .filter((k): k is KanaItem => Boolean(k))
+                  setKanaQuizItems(items)
+                  setIsKanaQuizOpen(true)
+                }}
+                className="h-8 text-xs rounded-xl gap-1.5 font-bold"
+              >
+                <Flame className="h-3.5 w-3.5 fill-orange-500 text-orange-500" />
+                Drill Weak Kana ({weakKanaList.length})
+              </Button>
+            )}
           </div>
 
-          {weakPoints.length === 0 ? (
-            <Card className="p-8 text-center rounded-2xl">
-              <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
-              <p className="text-sm font-semibold">No weak spots recorded!</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                As you review, any tricky items you grade Again or Hard will appear here.
-              </p>
-            </Card>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {weakPoints.map((item) => (
-                <Card key={item.id || item.front} className="p-4 rounded-2xl flex flex-col justify-between">
-                  <div className="space-y-2">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <span className="text-2xl font-bold font-japanese">{item.front}</span>
-                        <p className="text-xs text-muted-foreground">{item.reading}</p>
+          {/* Kana Weak Spots */}
+          {weakKanaList.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
+                <AlertCircle className="h-4 w-4" />
+                <span>Tricky Kana Characters ({weakKanaList.length})</span>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {weakKanaList.map((rec) => {
+                  const attempts = rec.attempts || 0
+                  const correct = rec.correct || 0
+                  const accuracy = attempts > 0 ? Math.round((correct / attempts) * 100) : 0
+                  const topConfusion = Object.entries(rec.confusions || {}).sort((a, b) => b[1] - a[1])[0]
+
+                  return (
+                    <Card key={rec.id} className="p-4 rounded-2xl border-amber-500/20 bg-amber-500/5 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <span className="text-2xl font-bold font-japanese">{rec.kana}</span>
+                            <p className="text-xs text-muted-foreground font-mono">{rec.romaji}</p>
+                          </div>
+                          <Badge variant="outline" className="text-xs font-mono border-amber-500/30 text-amber-600 dark:text-amber-400">
+                            {attempts > 0 ? `${accuracy}% (${correct}/${attempts})` : 'New'}
+                          </Badge>
+                        </div>
+                        {topConfusion && topConfusion[1] > 0 && (
+                          <p className="text-xs text-amber-700 dark:text-amber-300 font-medium">
+                            Frequently confused with: <span className="font-bold font-japanese">{topConfusion[0].split(':')[1] || topConfusion[0]}</span> ({topConfusion[1]}x)
+                          </p>
+                        )}
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <Badge variant="secondary" className="text-xs font-mono">
-                          {item.missCount} lapse{item.missCount === 1 ? '' : 's'}
-                        </Badge>
-                        <button
-                          onClick={() => removeWeakPoint(item.id || item.front)}
-                          className="p-1 text-muted-foreground hover:text-destructive rounded-lg"
-                          title="Remove from weak spots"
+                      <div className="pt-3 border-t mt-3 flex justify-end">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => speakJapanese(rec.kana, { rate: stats.audioSpeed || 1.0 })}
+                          className="h-7 text-xs rounded-lg gap-1"
                         >
-                          <X className="h-3.5 w-3.5" />
-                        </button>
+                          <Volume2 className="h-3 w-3" />
+                          Listen
+                        </Button>
                       </div>
-                    </div>
-                    <p className="text-xs text-foreground font-medium">{item.meaning}</p>
-                    {item.notes && (
-                      <p className="text-xs text-muted-foreground font-japanese bg-muted/40 p-2 rounded-lg">
-                        {item.notes}
-                      </p>
-                    )}
-                  </div>
-                  <div className="pt-3 border-t mt-3 flex justify-end">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() =>
-                        speakJapanese(item.reading || item.front, {
-                          rate: stats.audioSpeed || 1.0,
-                        })
-                      }
-                      className="h-7 text-xs rounded-lg gap-1"
-                    >
-                      <Volume2 className="h-3 w-3" />
-                      Listen
-                    </Button>
-                  </div>
-                </Card>
-              ))}
+                    </Card>
+                  )
+                })}
+              </div>
             </div>
           )}
+
+          {/* Vocabulary Weak Points */}
+          <div className="space-y-3">
+            {weakPoints.length > 0 && (
+              <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+                <span>Vocabulary &amp; Grammar Misses ({weakPoints.length})</span>
+              </div>
+            )}
+
+            {weakPoints.length === 0 && weakKanaList.length === 0 ? (
+              <Card className="p-8 text-center rounded-2xl">
+                <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
+                <p className="text-sm font-semibold">No weak spots recorded!</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  As you review and quiz, any tricky kana or cards will appear here.
+                </p>
+              </Card>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {weakPoints.map((item) => (
+                  <Card key={item.id || item.front} className="p-4 rounded-2xl flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <span className="text-2xl font-bold font-japanese">{item.front}</span>
+                          <p className="text-xs text-muted-foreground">{item.reading}</p>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Badge variant="secondary" className="text-xs font-mono">
+                            {item.missCount} lapse{item.missCount === 1 ? '' : 's'}
+                          </Badge>
+                          <button
+                            onClick={() => removeWeakPoint(item.id || item.front)}
+                            className="p-1 text-muted-foreground hover:text-destructive rounded-lg"
+                            title="Remove from weak spots"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                      <p className="text-xs text-foreground font-medium">{item.meaning}</p>
+                      {item.notes && (
+                        <p className="text-xs text-muted-foreground font-japanese bg-muted/40 p-2 rounded-lg">
+                          {item.notes}
+                        </p>
+                      )}
+                    </div>
+                    <div className="pt-3 border-t mt-3 flex justify-end">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() =>
+                          speakJapanese(item.reading || item.front, {
+                            rate: stats.audioSpeed || 1.0,
+                          })
+                        }
+                        className="h-7 text-xs rounded-lg gap-1"
+                      >
+                        <Volume2 className="h-3 w-3" />
+                        Listen
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -952,6 +1037,14 @@ function ReviewContent() {
           )}
         </Card>
       )}
+
+      {/* Weak Kana Quiz Modal */}
+      <KanaQuizModal
+        isOpen={isKanaQuizOpen}
+        onClose={() => setIsKanaQuizOpen(false)}
+        items={kanaQuizItems}
+        title={`Weak Kana Practice (${kanaQuizItems.length} characters)`}
+      />
     </div>
   )
 }
