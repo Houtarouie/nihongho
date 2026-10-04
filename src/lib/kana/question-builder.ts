@@ -1,7 +1,26 @@
-import type { KanaItem } from '@/data/kana'
+import {
+  HIRAGANA_GOJUON,
+  HIRAGANA_DAKUTEN,
+  HIRAGANA_YOON,
+  KATAKANA_GOJUON,
+  KATAKANA_DAKUTEN,
+  KATAKANA_YOON,
+  type KanaItem,
+} from '@/data/kana'
 import { CONFUSION_MNEMONICS } from '@/data/quiz-engine'
 import { KANA_CONFUSABLES, SOUND_ALIKE_GROUPS } from './config'
 import type { BuiltQuizQuestion, KanaMasteryRecord, QuizModeType } from './types'
+
+const DEFAULT_ALL_KANA: KanaItem[] = [
+  ...HIRAGANA_GOJUON,
+  ...HIRAGANA_DAKUTEN,
+  ...HIRAGANA_YOON,
+  ...KATAKANA_GOJUON,
+  ...KATAKANA_DAKUTEN,
+  ...KATAKANA_YOON,
+]
+  .flatMap((r) => r.items)
+  .filter((it): it is KanaItem => Boolean(it))
 
 /**
  * Standardizes romaji to lowercase without parenthetical notes
@@ -40,11 +59,48 @@ export function getKanaId(item: KanaItem): string {
   return `${script === 'hiragana' ? 'hira' : 'kata'}:${item.kana}`
 }
 
+/**
+ * Builds a balanced position bag for an entire quiz session,
+ * ensuring equal slot distribution and preventing >2 consecutive repeats.
+ */
+export function buildBalancedPositionBag(
+  sessionLength: number,
+  rng: () => number = Math.random
+): number[] {
+  const fullBags = Math.floor(sessionLength / 4)
+  const remainder = sessionLength % 4
+  const slots: number[] = []
+
+  for (let i = 0; i < fullBags; i++) {
+    slots.push(...fisherYatesShuffle([0, 1, 2, 3], rng))
+  }
+  if (remainder > 0) {
+    const partial = fisherYatesShuffle([0, 1, 2, 3], rng).slice(0, remainder)
+    slots.push(...partial)
+  }
+
+  // Ensure no slot repeats > 2 times consecutively
+  for (let i = 2; i < slots.length; i++) {
+    if (slots[i] === slots[i - 1] && slots[i] === slots[i - 2]) {
+      for (let j = i + 1; j < slots.length; j++) {
+        if (slots[j] !== slots[i]) {
+          const tmp = slots[i]
+          slots[i] = slots[j]
+          slots[j] = tmp
+          break
+        }
+      }
+    }
+  }
+
+  return slots
+}
+
 export interface BuildQuestionParams {
   target: KanaItem
   pool: KanaItem[]
   mode: QuizModeType
-  allKana: KanaItem[]
+  allKana?: KanaItem[]
   masteryMap?: Record<string, KanaMasteryRecord>
   positionBag?: number[]
   lastPickedSlot?: number
@@ -76,6 +132,7 @@ export function buildQuestion({
   slotStreak = 0,
   rng = Math.random,
 }: BuildQuestionParams): BuiltQuizQuestion {
+  const effectiveAllKana = allKana && allKana.length > 0 ? allKana : DEFAULT_ALL_KANA
   const targetScript = getKanaScript(target.kana)
   const targetRomaji = cleanRomaji(target.romaji)
   const targetId = getKanaId(target)
@@ -183,7 +240,7 @@ export function buildQuestion({
 
     for (const confKana of sortedConfusions) {
       if (chosenDistractors.length >= 3) break
-      const match = allKana.find((k) => k.kana === confKana)
+      const match = effectiveAllKana.find((k) => k.kana === confKana)
       if (match && isValidCandidate(match)) {
         addCandidate(match)
       }
@@ -195,7 +252,7 @@ export function buildQuestion({
     for (const saRomaji of soundAlikes) {
       if (chosenDistractors.length >= 3) break
       if (lookAlikesAdded >= maxLookAlikesAllowed) break
-      const match = allKana.find(
+      const match = effectiveAllKana.find(
         (k) =>
           getKanaScript(k.kana) === targetScript &&
           cleanRomaji(k.romaji) === saRomaji
@@ -208,15 +265,15 @@ export function buildQuestion({
     for (const laKana of visualLookAlikes) {
       if (chosenDistractors.length >= 3) break
       if (lookAlikesAdded >= maxLookAlikesAllowed) break
-      const match = allKana.find((k) => k.kana === laKana)
+      const match = effectiveAllKana.find((k) => k.kana === laKana)
       if (match && isValidCandidate(match)) {
         addCandidate(match)
       }
     }
   }
 
-  // Priority 3: Same-row or same-column neighbours from pool or allKana
-  const sameRowCandidates = allKana.filter(
+  // Priority 3: Same-row or same-column neighbours from pool or effectiveAllKana
+  const sameRowCandidates = effectiveAllKana.filter(
     (k) =>
       getKanaScript(k.kana) === targetScript &&
       k.row === target.row &&
@@ -236,7 +293,7 @@ export function buildQuestion({
   }
 
   // Priority 5: Fallback random items from entire script pool
-  const scriptCandidates = allKana.filter(
+  const scriptCandidates = effectiveAllKana.filter(
     (k) => getKanaScript(k.kana) === targetScript && isValidCandidate(k)
   )
   for (const scriptItem of fisherYatesShuffle(scriptCandidates, rng)) {
