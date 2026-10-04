@@ -114,65 +114,25 @@ export function getKanaPool(
  * Generates 4 multiple-choice options prioritizing Confusion Pairs (look-alikes)
  * instead of trivially easy random distractors.
  */
+import { buildQuestion } from '@/lib/kana/question-builder'
+
+/**
+ * Generates 4 multiple-choice options prioritizing Confusion Pairs (look-alikes)
+ * using the pure buildQuestion engine with Fisher-Yates shuffle.
+ */
 export function buildSmartDistractors(
   target: KanaItem,
   pool: KanaItem[],
   mode: 'kana-to-romaji' | 'romaji-to-kana'
 ): string[] {
-  const correctValue =
-    mode === 'kana-to-romaji' ? cleanRomaji(target.romaji) : target.kana
-
-  const isHiragana = /^[\u3040-\u309f]/.test(target.kana)
-  const isKatakana = /^[\u30a0-\u30ff]/.test(target.kana)
-  const matchesScript = (kana: string) => {
-    if (isHiragana) return /^[\u3040-\u309f]/.test(kana)
-    if (isKatakana) return /^[\u30a0-\u30ff]/.test(kana)
-    return true
-  }
-
-  const lookAlikeKanas = (KANA_CONFUSION_GROUPS[target.kana] || []).filter(matchesScript)
-  const lookAlikeItems = pool.filter(
-    (p) => lookAlikeKanas.includes(p.kana) && matchesScript(p.kana)
-  )
-
-  const candidateValues: string[] = []
-  for (const item of lookAlikeItems) {
-    const val =
-      mode === 'kana-to-romaji' ? cleanRomaji(item.romaji) : item.kana
-    if (val !== correctValue && !candidateValues.includes(val)) {
-      candidateValues.push(val)
-    }
-  }
-
-  // Fill remaining slots from current pool matching script
-  for (const item of pool) {
-    if (candidateValues.length >= 3) break
-    if (mode === 'romaji-to-kana' && !matchesScript(item.kana)) continue
-    const val =
-      mode === 'kana-to-romaji' ? cleanRomaji(item.romaji) : item.kana
-    if (val !== correctValue && !candidateValues.includes(val)) {
-      candidateValues.push(val)
-    }
-  }
-
-  // If pool was small (e.g. only 2 or 5 items selected), pull extra distractors from base gojuon pool of the target script
-  if (candidateValues.length < 3) {
-    const targetScript = isHiragana ? 'hiragana' : isKatakana ? 'katakana' : 'both'
-    const fallbackPool = getKanaPool(targetScript, 'gojuon')
-    for (const item of fallbackPool) {
-      if (candidateValues.length >= 3) break
-      if (mode === 'romaji-to-kana' && !matchesScript(item.kana)) continue
-      const val =
-        mode === 'kana-to-romaji' ? cleanRomaji(item.romaji) : item.kana
-      if (val !== correctValue && !candidateValues.includes(val)) {
-        candidateValues.push(val)
-      }
-    }
-  }
-
-  const options = [correctValue, ...candidateValues.slice(0, 3)]
-  // Deterministic sort based on string characters so SSR/CSR stay consistent
-  return options.sort((a, b) => a.localeCompare(b))
+  const allKana = getKanaPool('both', 'all')
+  const q = buildQuestion({
+    target,
+    pool: pool.length > 0 ? pool : [target],
+    mode,
+    allKana,
+  })
+  return q.options
 }
 
 export function cleanRomaji(romaji: string): string {

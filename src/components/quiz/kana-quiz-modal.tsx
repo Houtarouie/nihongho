@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   Volume2,
   CheckCircle2,
@@ -15,12 +15,24 @@ import {
   Check,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
-import type { KanaItem } from '@/data/kana'
 import {
-  buildSmartDistractors,
+  HIRAGANA_GOJUON,
+  HIRAGANA_DAKUTEN,
+  HIRAGANA_YOON,
+  KATAKANA_GOJUON,
+  KATAKANA_DAKUTEN,
+  KATAKANA_YOON,
+  type KanaItem,
+} from '@/data/kana'
+import {
   cleanRomaji,
   CONFUSION_MNEMONICS,
 } from '@/data/quiz-engine'
+import {
+  buildQuestion,
+  fisherYatesShuffle,
+} from '@/lib/kana/question-builder'
+import { ROMAJI_ALTERNATES } from '@/lib/kana/config'
 import { speakJapanese, type SRSCard } from '@/data/srs-deck'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -29,6 +41,25 @@ import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 
 export type QuizMode = 'kana-to-romaji' | 'romaji-to-kana' | 'listening' | 'typing'
+
+const ALL_KANA: KanaItem[] = [
+  ...HIRAGANA_GOJUON,
+  ...HIRAGANA_DAKUTEN,
+  ...HIRAGANA_YOON,
+  ...KATAKANA_GOJUON,
+  ...KATAKANA_DAKUTEN,
+  ...KATAKANA_YOON,
+]
+  .flatMap((r) => r.items)
+  .filter((it): it is KanaItem => Boolean(it))
+
+interface QuizQuestionItem {
+  item: KanaItem
+  options: string[]
+  correctIndex: number
+  correctValue: string
+  distinctionTip?: string
+}
 
 interface KanaQuizModalProps {
   isOpen: boolean
@@ -48,7 +79,7 @@ export function KanaQuizModal({
   const { addWeakPoint, upsertCards, stats } = useProgress()
 
   const [mode, setMode] = useState<QuizMode>(initialMode)
-  const [questions, setQuestions] = useState<KanaItem[]>([])
+  const [questions, setQuestions] = useState<QuizQuestionItem[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [typedAnswer, setTypedAnswer] = useState('')
@@ -59,11 +90,43 @@ export function KanaQuizModal({
   const [isFinished, setIsFinished] = useState(false)
   const [savedToWeak, setSavedToWeak] = useState(false)
 
-  // Shuffle and set questions when modal opens or items change
+  // Pure generator for full session questions with balanced position bags
+  const generateQuestions = useCallback((quizItems: KanaItem[], quizMode: QuizMode) => {
+    if (quizItems.length === 0) return []
+    const shuffled = fisherYatesShuffle(quizItems)
+    let positionBag: number[] = []
+    let lastSlot: number | undefined = undefined
+    let streak = 0
+
+    return shuffled.map((target) => {
+      const q = buildQuestion({
+        target,
+        pool: quizItems,
+        mode: quizMode,
+        allKana: ALL_KANA,
+        positionBag,
+        lastPickedSlot: lastSlot,
+        slotStreak: streak,
+      })
+      positionBag = q.newPositionBag
+      lastSlot = q.newLastPickedSlot
+      streak = q.newSlotStreak ?? 1
+
+      return {
+        item: target,
+        options: q.options,
+        correctIndex: q.correctIndex,
+        correctValue: q.correctValue,
+        distinctionTip: q.distinctionTip,
+      }
+    })
+  }, [])
+
+  // Build and freeze questions once when modal opens, items change, or mode changes
   useEffect(() => {
     if (!isOpen || items.length === 0) return
-    const shuffled = [...items].sort(() => Math.random() - 0.5)
-    setQuestions(shuffled)
+    const built = generateQuestions(items, mode)
+    setQuestions(built)
     setCurrentIndex(0)
     setSelectedOption(null)
     setTypedAnswer('')
@@ -73,9 +136,11 @@ export function KanaQuizModal({
     setMissedItems([])
     setIsFinished(false)
     setSavedToWeak(false)
-  }, [isOpen, items])
+  }, [isOpen, items, mode, generateQuestions])
 
-  const currentItem = questions[currentIndex]
+  const currentQuestion = questions[currentIndex]
+  const currentItem = currentQuestion?.item
+  const options = currentQuestion?.options || []
 
   // Play audio for listening mode or when question loads
   useEffect(() => {
@@ -85,41 +150,33 @@ export function KanaQuizModal({
     }
   }, [isOpen, currentItem, mode, stats.audioSpeed])
 
-  // Smart options with lookalikes
-  const options = useMemo(() => {
-    if (!currentItem || questions.length === 0) return []
-    const distractorMode = mode === 'kana-to-romaji' ? 'kana-to-romaji' : 'romaji-to-kana'
-    return buildSmartDistractors(currentItem, items, distractorMode)
-  }, [currentItem, items, mode, questions])
-
   const handleSelectOption = useCallback(
     async (option: string) => {
-      if (isAnswered || !currentItem) return
+      if (isAnswered || !currentQuestion) return
 
       setSelectedOption(option)
       setIsAnswered(true)
 
-      const correctAnswer =
-        mode === 'kana-to-romaji' ? cleanRomaji(currentItem.romaji) : currentItem.kana
-      const correct = option.toLowerCase() === correctAnswer.toLowerCase()
+      const correct =
+        option.trim().toLowerCase() === currentQuestion.correctValue.trim().toLowerCase()
       setIsCorrect(correct)
 
       if (correct) {
         setScore((prev) => prev + 1)
       } else {
-        setMissedItems((prev) => [...prev, currentItem])
+        setMissedItems((prev) => [...prev, currentQuestion.item])
         // Automatically register to weak points
         await addWeakPoint({
-          id: `kana-${currentItem.kana}`,
+          id: `kana-${currentQuestion.item.kana}`,
           type: 'kana',
-          front: currentItem.kana,
-          reading: currentItem.romaji,
-          meaning: `Sound: ${currentItem.romaji} (e.g. ${currentItem.example})`,
-          notes: CONFUSION_MNEMONICS[currentItem.kana] || currentItem.example,
+          front: currentQuestion.item.kana,
+          reading: currentQuestion.item.romaji,
+          meaning: `Sound: ${currentQuestion.item.romaji} (e.g. ${currentQuestion.item.example})`,
+          notes: CONFUSION_MNEMONICS[currentQuestion.item.kana] || currentQuestion.item.example,
         })
       }
     },
-    [isAnswered, currentItem, mode, addWeakPoint]
+    [isAnswered, currentQuestion, addWeakPoint]
   )
 
   const handleCheckTyping = useCallback(
@@ -130,7 +187,8 @@ export function KanaQuizModal({
       setIsAnswered(true)
       const expected = cleanRomaji(currentItem.romaji)
       const given = typedAnswer.trim().toLowerCase()
-      const correct = given === expected
+      const alternates = ROMAJI_ALTERNATES[expected] || []
+      const correct = given === expected || alternates.includes(given)
 
       setIsCorrect(correct)
       if (correct) {
@@ -162,6 +220,53 @@ export function KanaQuizModal({
       setSavedToWeak(false)
     }
   }, [currentIndex, questions.length])
+
+  // Keyboard controls: 1-4 for options, Space/Enter for Next
+  useEffect(() => {
+    if (!isOpen || isFinished || !currentQuestion) return
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (mode === 'typing') {
+        if (e.key === 'Enter' && isAnswered) {
+          e.preventDefault()
+          handleNext()
+        }
+        return
+      }
+
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+
+      if (!isAnswered) {
+        if (['1', '2', '3', '4'].includes(e.key)) {
+          const slot = parseInt(e.key, 10) - 1
+          if (currentQuestion.options[slot]) {
+            e.preventDefault()
+            handleSelectOption(currentQuestion.options[slot])
+          }
+        }
+      } else {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handleNext()
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [
+    isOpen,
+    isFinished,
+    isAnswered,
+    currentQuestion,
+    mode,
+    handleSelectOption,
+    handleNext,
+    onClose,
+  ])
 
   // Save explicitly to weak spots if user clicks button
   async function handleManualSaveWeak() {
@@ -344,7 +449,8 @@ export function KanaQuizModal({
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setQuestions([...items].sort(() => Math.random() - 0.5))
+                    const built = generateQuestions(items, mode)
+                    setQuestions(built)
                     setCurrentIndex(0)
                     setSelectedOption(null)
                     setTypedAnswer('')
@@ -405,11 +511,11 @@ export function KanaQuizModal({
               {/* Multiple Choice Options */}
               {mode !== 'typing' ? (
                 <div className="grid grid-cols-2 gap-3">
-                  {options.map((opt) => {
+                  {options.map((opt, optIdx) => {
                     const isPicked = selectedOption === opt
-                    const correctAnswer =
-                      mode === 'kana-to-romaji' ? cleanRomaji(currentItem.romaji) : currentItem.kana
-                    const isThisCorrect = opt.toLowerCase() === correctAnswer.toLowerCase()
+                    const correctAnswer = currentQuestion?.correctValue || ''
+                    const isThisCorrect =
+                      opt.trim().toLowerCase() === correctAnswer.trim().toLowerCase()
 
                     let buttonClass = 'border-border/80 hover:border-primary/50 hover:bg-muted/40'
                     if (isAnswered) {
@@ -424,13 +530,16 @@ export function KanaQuizModal({
 
                     return (
                       <button
-                        key={opt}
+                        key={`${opt}-${optIdx}`}
                         onClick={() => handleSelectOption(opt)}
                         disabled={isAnswered}
-                        className={`h-14 sm:h-16 rounded-2xl border-2 text-xl font-bold flex items-center justify-center transition-all ${
+                        className={`relative h-14 sm:h-16 rounded-2xl border-2 text-xl font-bold flex items-center justify-center transition-all ${
                           mode === 'romaji-to-kana' || mode === 'listening' ? 'font-japanese text-2xl' : 'font-mono'
                         } ${buttonClass}`}
                       >
+                        <span className="absolute top-1.5 left-2.5 text-[10px] font-mono text-muted-foreground/60 select-none">
+                          {optIdx + 1}
+                        </span>
                         {opt}
                       </button>
                     )
