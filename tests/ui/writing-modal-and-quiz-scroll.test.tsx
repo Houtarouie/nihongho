@@ -46,7 +46,7 @@ describe('Kana Writing & Stroke Order and Modal Scroll Tests', () => {
     expect(html).toContain('2')
     expect(html).toContain('3')
     // Controls
-    expect(html).toContain('Animate')
+    expect(html).toContain('Replay')
     expect(html).toContain('How to write あ:')
   })
 
