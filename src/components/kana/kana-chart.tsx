@@ -28,8 +28,10 @@ import {
   X,
   Zap,
   Flame,
+  PenTool,
 } from 'lucide-react'
 import { KanaQuizModal, type QuizMode } from '@/components/quiz/kana-quiz-modal'
+import { KanaWritingModal } from './kana-writing-modal'
 import { StackedProgressBar } from './stacked-progress-bar'
 import { MasteryPips } from './mastery-pips'
 import { KanaTilePopover } from './kana-tile-popover'
@@ -97,6 +99,10 @@ export function KanaChart() {
   const [quizItems, setQuizItems] = useState<KanaItem[]>([])
   const [quizTitle, setQuizTitle] = useState('Kana Quiz')
   const [quizMode, setQuizMode] = useState<QuizMode>('kana-to-romaji')
+
+  // Writing Modal State
+  const [isWritingModalOpen, setIsWritingModalOpen] = useState(false)
+  const [writingModalItem, setWritingModalItem] = useState<KanaItem | null>(null)
 
   // Progress Selectors
   const hiraganaProgress = useMemo(
@@ -320,6 +326,20 @@ export function KanaChart() {
           >
             <Flame className="h-3.5 w-3.5 fill-orange-500 text-orange-500" />
             Practice Weak Kana {currentWeakKana.length > 0 && `(${currentWeakKana.length})`}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              const first = currentFlatKana[0] || null
+              setWritingModalItem(first)
+              setIsWritingModalOpen(true)
+            }}
+            className="h-8 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+          >
+            <PenTool className="h-3.5 w-3.5" />
+            Write & Stroke Order
           </Button>
 
           <Button
@@ -564,6 +584,12 @@ export function KanaChart() {
                               romaji={item.romaji}
                               example={item.example}
                               srsDueDate={srsCard?.dueDate}
+                              onPracticeWriting={() => {
+                                setHoveredTileKana(null)
+                                setActivePopoverKana(null)
+                                setWritingModalItem(item)
+                                setIsWritingModalOpen(true)
+                              }}
                               onClose={() => {
                                 setHoveredTileKana(null)
                                 setActivePopoverKana(null)
@@ -619,6 +645,22 @@ export function KanaChart() {
               >
                 <Plus className="h-3.5 w-3.5" />
                 + Add to SRS
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const selectedList = Object.values(selectedKanaMap)
+                  if (selectedList.length > 0) {
+                    setWritingModalItem(selectedList[0])
+                    setIsWritingModalOpen(true)
+                  }
+                }}
+                className="h-9 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+              >
+                <PenTool className="h-3.5 w-3.5" />
+                Write Selected
               </Button>
 
               <Button
@@ -683,6 +725,14 @@ export function KanaChart() {
         items={quizItems}
         title={quizTitle}
         initialMode={quizMode}
+      />
+
+      {/* Kana Writing & Stroke Order Modal */}
+      <KanaWritingModal
+        isOpen={isWritingModalOpen}
+        onClose={() => setIsWritingModalOpen(false)}
+        initialItem={writingModalItem || undefined}
+        items={selectedCount > 0 ? Object.values(selectedKanaMap) : currentFlatKana}
       />
     </div>
   )

@@ -1,6 +1,8 @@
 import React from 'react'
+import { PenTool } from 'lucide-react'
 import type { KanaMasteryRecord, MasteryStage } from '@/lib/kana/types'
 import { MasteryPips } from './mastery-pips'
+import { Button } from '@/components/ui/button'
 
 const STAGE_LABELS: Record<MasteryStage, { name: string; color: string; desc: string }> = {
   0: { name: 'New', color: 'text-muted-foreground', desc: 'Not practiced yet' },
@@ -18,6 +20,7 @@ interface KanaTilePopoverProps {
   example?: string
   srsDueDate?: number
   onClose?: () => void
+  onPracticeWriting?: () => void
 }
 
 export function KanaTilePopover({
@@ -26,6 +29,7 @@ export function KanaTilePopover({
   romaji,
   example,
   srsDueDate,
+  onPracticeWriting,
 }: KanaTilePopoverProps) {
   const stage = record?.stage ?? 0
   const info = STAGE_LABELS[stage] || STAGE_LABELS[0]
@@ -124,6 +128,20 @@ export function KanaTilePopover({
         <p className="text-[10px] text-muted-foreground italic border-t pt-1 line-clamp-1">
           {example}
         </p>
+      )}
+
+      {onPracticeWriting && (
+        <div className="pt-1.5 border-t">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={onPracticeWriting}
+            className="w-full h-7 text-[11px] rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+          >
+            <PenTool className="h-3 w-3" />
+            Write & Stroke Order
+          </Button>
+        </div>
       )}
     </div>
   )

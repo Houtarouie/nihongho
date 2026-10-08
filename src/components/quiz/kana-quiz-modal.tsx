@@ -13,7 +13,9 @@ import {
   Headphones,
   Keyboard,
   Check,
+  PenTool,
 } from 'lucide-react'
+import { KanaWritingModal } from '@/components/kana/kana-writing-modal'
 import { useProgress } from '@/lib/progress'
 import {
   HIRAGANA_GOJUON,
@@ -113,6 +115,8 @@ export function KanaQuizModal({
   const [sessionResults, setSessionResults] = useState<{ kana: string; correct: boolean }[]>([])
   const [stageTransitions, setStageTransitions] = useState<Record<string, StageTransitionInfo>>({})
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now())
+  const [isWritingModalOpen, setIsWritingModalOpen] = useState(false)
+  const [writingTarget, setWritingTarget] = useState<KanaItem | null>(null)
 
   // Pure generator for full session questions with balanced position bags
   const generateQuestions = useCallback((quizItems: KanaItem[], quizMode: QuizMode) => {
@@ -429,10 +433,10 @@ export function KanaQuizModal({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in-50 duration-150">
-      <Card className="w-full max-w-lg rounded-3xl border-2 shadow-2xl overflow-hidden bg-card">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-sm animate-in fade-in-50 duration-150 overflow-y-auto">
+      <Card className="w-full max-w-lg rounded-3xl border-2 shadow-2xl bg-card max-h-[90vh] flex flex-col overflow-hidden my-auto">
         {/* Header */}
-        <CardHeader className="p-4 sm:p-5 border-b bg-muted/20">
+        <CardHeader className="p-4 sm:p-5 border-b bg-muted/20 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
@@ -515,7 +519,7 @@ export function KanaQuizModal({
         </CardHeader>
 
         {/* Content */}
-        <CardContent className="p-5 sm:p-6">
+        <CardContent className="p-5 sm:p-6 overflow-y-auto flex-1 min-h-0">
           {isFinished ? (
             /* FINISHED SUMMARY SCREEN */
             <div className="text-center space-y-5 py-4">
@@ -601,23 +605,47 @@ export function KanaQuizModal({
                       <div key={idx} className="p-2 rounded-xl bg-background border flex items-center justify-between">
                         <span className="font-japanese font-bold text-lg">{m.kana}</span>
                         <span className="text-xs text-muted-foreground font-mono">{m.romaji}</span>
-                        <button
-                          onClick={() => speakJapanese(m.kana)}
-                          className="p-1 text-muted-foreground hover:text-primary"
-                        >
-                          <Volume2 className="h-3.5 w-3.5" />
-                        </button>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => speakJapanese(m.kana)}
+                            className="p-1 text-muted-foreground hover:text-primary transition-colors"
+                            title={`Listen ${m.kana}`}
+                          >
+                            <Volume2 className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              setWritingTarget(m)
+                              setIsWritingModalOpen(true)
+                            }}
+                            className="p-1 text-muted-foreground hover:text-primary transition-colors"
+                            title={`Practice writing ${m.kana} stroke order`}
+                          >
+                            <PenTool className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-1 flex-wrap">
                     <Button
                       onClick={handlePracticeMissed}
                       className="flex-1 text-xs font-semibold rounded-xl gap-2"
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
-                      Practice Missed Kana ({missedItems.length})
+                      Practice Missed ({missedItems.length})
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setWritingTarget(missedItems[0])
+                        setIsWritingModalOpen(true)
+                      }}
+                      className="flex-1 text-xs font-semibold rounded-xl gap-2 border-primary/30 text-primary hover:bg-primary/10"
+                    >
+                      <PenTool className="h-3.5 w-3.5" />
+                      Write Strokes
                     </Button>
                     <Button
                       variant="outline"
@@ -625,7 +653,7 @@ export function KanaQuizModal({
                       className="flex-1 text-xs font-semibold rounded-xl gap-2"
                     >
                       <Plus className="h-3.5 w-3.5" />
-                      Add to SRS Queue
+                      Add to SRS
                     </Button>
                   </div>
                 </div>
@@ -809,6 +837,14 @@ export function KanaQuizModal({
           ) : null}
         </CardContent>
       </Card>
+
+      {/* Kana Writing Practice Modal for Missed Characters */}
+      <KanaWritingModal
+        isOpen={isWritingModalOpen}
+        onClose={() => setIsWritingModalOpen(false)}
+        initialItem={writingTarget || undefined}
+        items={missedItems}
+      />
     </div>
   )
 }
