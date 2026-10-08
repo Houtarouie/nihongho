@@ -193,6 +193,7 @@ export function KanaWritingModal({
                   romaji={currentRomaji}
                   size={210}
                   showControls={true}
+                  autoPlay={true}
                 />
               </div>
 

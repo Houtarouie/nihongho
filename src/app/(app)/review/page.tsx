@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, useRef, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -17,6 +17,7 @@ import {
   FileCode,
   Upload,
   Lock,
+  RotateCcw,
 } from 'lucide-react'
 import { useProgress } from '@/lib/progress'
 import {
@@ -103,13 +104,19 @@ function ReviewContent() {
   const [newJlpt, setNewJlpt] = useState('N5')
   const [isImportingApkg, setIsImportingApkg] = useState(false)
 
-  // Initialize review queue through pure daily session planner
+  // Session initialization ref and live cards ref
+  const sessionInitializedRef = useRef(false)
+  const cardsRef = useRef(cards)
   useEffect(() => {
-    if (isLoading) return
+    cardsRef.current = cards
+  }, [cards])
+
+  // Initialize review queue through pure daily session planner ONCE per session
+  const initSession = useCallback(() => {
     const now = Date.now() + 60 * 1000
 
     const plan = planDailySession({
-      deck: cards,
+      deck: cardsRef.current,
       kanaMastery,
       options: {
         newCardsPerDay: deckOptions.newCardsPerDay || 5,
@@ -125,7 +132,15 @@ function ReviewContent() {
     setTypedInput('')
     setCompletedCount(0)
     setSessionLapses([])
-  }, [cards, kanaMastery, isLoading, deckOptions.newCardsPerDay, deckOptions.maxReviewsPerDay])
+    sessionInitializedRef.current = true
+  }, [kanaMastery, deckOptions.newCardsPerDay, deckOptions.maxReviewsPerDay])
+
+  useEffect(() => {
+    if (isLoading) return
+    if (!sessionInitializedRef.current) {
+      initSession()
+    }
+  }, [isLoading, initSession])
 
   const currentCard: PlannedCard | undefined = sessionCards[currentIndex]
 
@@ -205,7 +220,8 @@ function ReviewContent() {
       }
 
       // Update in main cards collection
-      const nextAllCards = cards.map((c) => (c.id === currentCard.id ? updatedCard : c))
+      const nextAllCards = cardsRef.current.map((c) => (c.id === currentCard.id ? updatedCard : c))
+      cardsRef.current = nextAllCards
       await updateCards(nextAllCards)
 
       // Update local study stats
@@ -224,7 +240,7 @@ function ReviewContent() {
       setTypedInput('')
       setShowKanjiOnFront(false)
     },
-    [currentCard, deckOptions, cards, recordReview, recordKanaAttempt, addWeakPoint, updateCards, updateStats, stats]
+    [currentCard, deckOptions, recordReview, recordKanaAttempt, addWeakPoint, updateCards, updateStats, stats]
   )
 
   // Keyboard shortcuts (Space = reveal, 1 = Again, 2 = Hard, 3 = Good, 4 = Easy)
@@ -462,8 +478,12 @@ function ReviewContent() {
               )}
 
               <div className="flex flex-wrap justify-center gap-3 pt-2">
+                <Button size="lg" onClick={initSession} className="rounded-xl gap-2 font-semibold">
+                  <RotateCcw className="h-4 w-4" />
+                  Practice More
+                </Button>
                 <Link href="/today">
-                  <Button size="lg" className="rounded-xl gap-2 font-semibold">
+                  <Button variant="outline" size="lg" className="rounded-xl gap-2 font-semibold">
                     Return to Today
                     <ArrowRight className="h-4 w-4" />
                   </Button>

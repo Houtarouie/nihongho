@@ -38,15 +38,16 @@ export function StrokeOrderGuide({
 
   // Animation states
   const [isPlaying, setIsPlaying] = useState(false)
-  const [completedCount, setCompletedCount] = useState<number>(totalStrokes)
+  const [completedCount, setCompletedCount] = useState<number>(autoPlay ? 0 : totalStrokes)
   const [animatingStrokeIdx, setAnimatingStrokeIdx] = useState<number | null>(null)
-  const [activeProgress, setActiveProgress] = useState<number>(1) // 0 to 1 for current stroke
-  const [penPoint, setPenPoint] = useState<{ x: number; y: number } | null>(null)
   const [speed, setSpeed] = useState<number>(1) // 0.75, 1, 1.5
 
   // SVG Path Element References & Cached Lengths
   const pathRefs = useRef<(SVGPathElement | null)[]>([])
   const pathLengthsRef = useRef<number[]>([])
+
+  // Moving pen tip DOM reference for direct 60fps transform without React re-renders
+  const penRef = useRef<SVGGElement | null>(null)
 
   // Animation frame & timeout refs
   const rafRef = useRef<number | null>(null)
@@ -59,12 +60,13 @@ export function StrokeOrderGuide({
       const el = pathRefs.current[idx]
       if (el) {
         try {
-          return el.getTotalLength() || 150
+          const l = el.getTotalLength()
+          return l > 0 ? l : 180
         } catch {
-          return 150
+          return 180
         }
       }
-      return 150
+      return 180
     })
     pathLengthsRef.current = lengths
   }, [strokeData])
@@ -79,8 +81,27 @@ export function StrokeOrderGuide({
       clearTimeout(timeoutRef.current)
       timeoutRef.current = null
     }
-    setPenPoint(null)
+    if (penRef.current) {
+      penRef.current.style.display = 'none'
+    }
   }, [])
+
+  // Sync all DOM paths to a given completion count
+  const updateAllPathsToCount = useCallback(
+    (count: number) => {
+      if (!strokeData) return
+      strokeData.strokes.forEach((_, idx) => {
+        const el = pathRefs.current[idx]
+        const length = pathLengthsRef.current[idx] || 180
+        if (el) {
+          el.style.strokeDasharray = `${length}`
+          el.style.strokeDashoffset = idx < count ? '0' : `${length}`
+          el.style.stroke = 'currentColor'
+        }
+      })
+    },
+    [strokeData]
+  )
 
   // Start animated playback from a specific stroke
   const playFromStroke = useCallback(
@@ -94,14 +115,44 @@ export function StrokeOrderGuide({
       let currentIdx = startStrokeIdx
       setCompletedCount(currentIdx)
       setAnimatingStrokeIdx(currentIdx)
-      setActiveProgress(0)
+
+      // Initialize all paths: prior strokes drawn, future strokes hidden
+      strokeData.strokes.forEach((_, idx) => {
+        const el = pathRefs.current[idx]
+        const length = pathLengthsRef.current[idx] || 180
+        if (el) {
+          el.style.strokeDasharray = `${length}`
+          if (idx < currentIdx) {
+            el.style.strokeDashoffset = '0'
+            el.style.stroke = 'currentColor'
+          } else {
+            el.style.strokeDashoffset = `${length}`
+            el.style.stroke = idx === currentIdx ? '#0284c7' : 'currentColor'
+          }
+        }
+      })
 
       const strokeDuration = 600 / speed // ms per stroke
       const pauseBetweenStrokes = 160 / speed // ms pause between strokes
 
       function animateStroke(strokeIndex: number) {
         const el = pathRefs.current[strokeIndex]
-        const length = pathLengthsRef.current[strokeIndex] || 150
+        let length = pathLengthsRef.current[strokeIndex] || 180
+        if (el) {
+          try {
+            const l = el.getTotalLength()
+            if (l > 0) {
+              length = l
+              pathLengthsRef.current[strokeIndex] = l
+            }
+          } catch {
+            // fallback
+          }
+          el.style.strokeDasharray = `${length}`
+          el.style.strokeDashoffset = `${length}`
+          el.style.stroke = '#0284c7'
+        }
+
         let startTime: number | null = null
 
         function step(now: number) {
@@ -109,13 +160,15 @@ export function StrokeOrderGuide({
           const elapsed = now - startTime
           const progress = Math.min(1, elapsed / strokeDuration)
 
-          setActiveProgress(progress)
-
-          // Track moving pen position along the path
+          // 1. Hardware-accelerated direct DOM offset update
           if (el) {
+            el.style.strokeDashoffset = `${length * (1 - progress)}`
             try {
               const pt = el.getPointAtLength(length * progress)
-              setPenPoint({ x: pt.x, y: pt.y })
+              if (penRef.current) {
+                penRef.current.style.display = 'block'
+                penRef.current.setAttribute('transform', `translate(${pt.x}, ${pt.y})`)
+              }
             } catch {
               // ignore
             }
@@ -124,8 +177,15 @@ export function StrokeOrderGuide({
           if (progress < 1) {
             rafRef.current = requestAnimationFrame(step)
           } else {
-            // Finished current stroke
-            setPenPoint(null)
+            // Stroke completed
+            if (el) {
+              el.style.strokeDashoffset = '0'
+              el.style.stroke = 'currentColor'
+            }
+            if (penRef.current) {
+              penRef.current.style.display = 'none'
+            }
+
             setCompletedCount(strokeIndex + 1)
 
             if (strokeIndex + 1 < totalStrokes) {
@@ -133,14 +193,12 @@ export function StrokeOrderGuide({
               timeoutRef.current = setTimeout(() => {
                 currentIdx = strokeIndex + 1
                 setAnimatingStrokeIdx(currentIdx)
-                setActiveProgress(0)
                 animateStroke(currentIdx)
               }, pauseBetweenStrokes)
             } else {
               // Entire character finished
               setIsPlaying(false)
               setAnimatingStrokeIdx(null)
-              setActiveProgress(1)
               setCompletedCount(totalStrokes)
             }
           }
@@ -169,14 +227,18 @@ export function StrokeOrderGuide({
     stopAnimation()
     setIsPlaying(false)
     setAnimatingStrokeIdx(null)
-    setCompletedCount((prev) => Math.max(1, prev - 1))
+    const nextCount = Math.max(0, completedCount - 1)
+    setCompletedCount(nextCount)
+    updateAllPathsToCount(nextCount)
   }
 
   const handleStepNext = () => {
     stopAnimation()
     setIsPlaying(false)
     setAnimatingStrokeIdx(null)
-    setCompletedCount((prev) => Math.min(totalStrokes, prev + 1))
+    const nextCount = Math.min(totalStrokes, completedCount + 1)
+    setCompletedCount(nextCount)
+    updateAllPathsToCount(nextCount)
   }
 
   const handleShowAll = () => {
@@ -184,35 +246,43 @@ export function StrokeOrderGuide({
     setIsPlaying(false)
     setAnimatingStrokeIdx(null)
     setCompletedCount(totalStrokes)
-    setActiveProgress(1)
+    updateAllPathsToCount(totalStrokes)
   }
 
   const handleCycleSpeed = () => {
     setSpeed((prev) => (prev === 1 ? 1.5 : prev === 1.5 ? 0.75 : 1))
   }
 
-  // Reset when kana changes
+  // Reset when kana or autoPlay changes
   useEffect(() => {
     stopAnimation()
-    setCompletedCount(totalStrokes)
-    setAnimatingStrokeIdx(null)
-    setActiveProgress(1)
-    setIsPlaying(false)
-    setPenPoint(null)
 
-    // Measure after DOM paint
-    const t = setTimeout(() => {
-      measurePathLengths()
-      if (autoPlay) {
+    if (autoPlay) {
+      setCompletedCount(0)
+      setAnimatingStrokeIdx(0)
+      setIsPlaying(true)
+      const t = setTimeout(() => {
+        measurePathLengths()
         playFromStroke(0)
+      }, 60)
+      return () => {
+        clearTimeout(t)
+        stopAnimation()
       }
-    }, 50)
-
-    return () => {
-      clearTimeout(t)
-      stopAnimation()
+    } else {
+      setCompletedCount(totalStrokes)
+      setAnimatingStrokeIdx(null)
+      setIsPlaying(false)
+      const t = setTimeout(() => {
+        measurePathLengths()
+        updateAllPathsToCount(totalStrokes)
+      }, 60)
+      return () => {
+        clearTimeout(t)
+        stopAnimation()
+      }
     }
-  }, [kana, totalStrokes, autoPlay, playFromStroke, measurePathLengths, stopAnimation])
+  }, [kana, totalStrokes, autoPlay, playFromStroke, measurePathLengths, stopAnimation, updateAllPathsToCount])
 
   if (!strokeData) {
     return (
@@ -294,28 +364,18 @@ export function StrokeOrderGuide({
             ))}
           </g>
 
-          {/* Render Active & Completed Strokes with Precise Dashoffset Interpolation */}
+          {/* Render Active & Completed Strokes with Hardware-Accelerated Dashoffset */}
           <g>
             {strokeData.strokes.map((pathD, idx) => {
               const isCompleted = idx < completedCount
               const isCurrentlyAnimating = animatingStrokeIdx === idx
-              const length = pathLengthsRef.current[idx] || 150
+              const length = pathLengthsRef.current[idx] || 180
 
-              let dasharray: string | number = 'none'
-              let dashoffset: string | number = 'none'
-              let strokeColor = 'currentColor'
-              let strokeWidth = 4.2
-
-              if (isCurrentlyAnimating) {
-                dasharray = length
-                dashoffset = length * (1 - activeProgress)
-                strokeColor = '#0284c7' // Bright sky blue ink for currently drawn stroke
-                strokeWidth = 4.6
-              } else if (!isCompleted) {
-                // Stroke has not been drawn yet
-                dasharray = length
-                dashoffset = length
-              }
+              const initialOffset = isCurrentlyAnimating
+                ? length
+                : isCompleted
+                ? 0
+                : length
 
               return (
                 <path
@@ -325,40 +385,38 @@ export function StrokeOrderGuide({
                   }}
                   d={pathD}
                   fill="none"
-                  stroke={strokeColor}
-                  strokeWidth={strokeWidth}
+                  stroke={isCurrentlyAnimating ? '#0284c7' : 'currentColor'}
+                  strokeWidth={isCurrentlyAnimating ? 4.6 : 4.2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   style={{
-                    strokeDasharray: dasharray,
-                    strokeDashoffset: dashoffset,
+                    strokeDasharray: length,
+                    strokeDashoffset: initialOffset,
                   }}
-                  className={`${
+                  className={
                     isCurrentlyAnimating
                       ? 'text-sky-500 drop-shadow-[0_0_8px_rgba(2,132,199,0.5)]'
                       : 'text-foreground'
-                  }`}
+                  }
                 />
               )
             })}
           </g>
 
           {/* Moving Pen / Brush Tip Indicator */}
-          {penPoint && (
-            <g transform={`translate(${penPoint.x}, ${penPoint.y})`}>
-              <circle
-                r="7"
-                fill="#38bdf8"
-                className="opacity-40 animate-ping"
-              />
-              <circle
-                r="4.5"
-                fill="#0284c7"
-                stroke="#ffffff"
-                strokeWidth="1.5"
-              />
-            </g>
-          )}
+          <g ref={penRef} style={{ display: 'none', pointerEvents: 'none' }}>
+            <circle
+              r="7"
+              fill="#38bdf8"
+              className="opacity-40 animate-ping"
+            />
+            <circle
+              r="4.5"
+              fill="#0284c7"
+              stroke="#ffffff"
+              strokeWidth="1.5"
+            />
+          </g>
 
           {/* Numbered Start Badges */}
           <g>
@@ -425,7 +483,7 @@ export function StrokeOrderGuide({
             size="sm"
             variant="outline"
             onClick={handleStepPrev}
-            disabled={completedCount <= 1 && animatingStrokeIdx === null}
+            disabled={completedCount <= 0 && animatingStrokeIdx === null}
             className="h-8 px-2 rounded-xl text-xs"
             title="Previous stroke"
           >
