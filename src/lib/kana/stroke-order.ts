@@ -147,31 +147,38 @@ const STROKE_DATABASE: Record<string, KanaStrokeData> = rawKanaStrokes as unknow
   KanaStrokeData
 >
 
+const STROKE_DATA_CACHE: Record<string, KanaStrokeData> = {}
+
 /**
  * Retrieve KanjiVG stroke vector data and writing guidance for a given kana character.
  */
 export function getKanaStrokes(char: string): KanaStrokeData | null {
   if (!char) return null
+  if (STROKE_DATA_CACHE[char]) return STROKE_DATA_CACHE[char]
 
   // If compound (e.g. きゃ or キャ), return the first character's strokes or compose
   if (char.length > 1) {
     const first = char[0]
     const base = STROKE_DATABASE[first]
     if (base) {
-      return {
+      const res: KanaStrokeData = {
         ...base,
         tip: `Compound character: write ${char[0]} first, then add smaller ${char[1]}.`,
       }
+      STROKE_DATA_CACHE[char] = res
+      return res
     }
   }
 
   const data = STROKE_DATABASE[char]
   if (!data) return null
 
-  return {
+  const res: KanaStrokeData = {
     ...data,
     tip: KANA_WRITING_TIPS[char] || `${data.strokeCount} strokes: follow the numbered order from 1 to ${data.strokeCount}.`,
   }
+  STROKE_DATA_CACHE[char] = res
+  return res
 }
 
 /**
