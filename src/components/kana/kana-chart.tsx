@@ -274,6 +274,14 @@ export function KanaChart() {
     setIsQuizOpen(true)
   }
 
+  // Quick launch writing quiz for current section
+  function handleQuizWriting() {
+    setQuizItems(currentFlatKana)
+    setQuizTitle(`${script === 'hiragana' ? 'Hiragana' : 'Katakana'} (${section}) Stroke Order Quiz`)
+    setQuizMode('writing')
+    setIsQuizOpen(true)
+  }
+
   // Quick launch confusion drill
   function handleQuizConfusion() {
     const confusionItems = currentFlatKana.filter((it) =>
@@ -340,6 +348,16 @@ export function KanaChart() {
           >
             <PenTool className="h-3.5 w-3.5" />
             Write & Stroke Order
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleQuizWriting}
+            className="h-8 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+          >
+            <PenTool className="h-3.5 w-3.5" />
+            Draw Quiz
           </Button>
 
           <Button
@@ -661,6 +679,23 @@ export function KanaChart() {
               >
                 <PenTool className="h-3.5 w-3.5" />
                 Write Selected
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const selectedList = Object.values(selectedKanaMap)
+                  if (selectedList.length === 0) return
+                  setQuizItems(selectedList)
+                  setQuizTitle(`Custom Stroke Order Quiz (${selectedList.length} kana)`)
+                  setQuizMode('writing')
+                  setIsQuizOpen(true)
+                }}
+                className="h-9 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+              >
+                <PenTool className="h-3.5 w-3.5" />
+                Draw Selected ({selectedCount})
               </Button>
 
               <Button

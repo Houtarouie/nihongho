@@ -16,6 +16,7 @@ import {
   PenTool,
 } from 'lucide-react'
 import { KanaWritingModal } from '@/components/kana/kana-writing-modal'
+import { KanaWritingQuizCard } from '@/components/quiz/kana-writing-quiz-card'
 import { useProgress } from '@/lib/progress'
 import {
   HIRAGANA_GOJUON,
@@ -44,7 +45,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 
-export type QuizMode = 'kana-to-romaji' | 'romaji-to-kana' | 'listening' | 'typing'
+export type QuizMode = 'kana-to-romaji' | 'romaji-to-kana' | 'listening' | 'typing' | 'writing'
 
 interface StageTransitionInfo {
   kana: string
@@ -91,6 +92,45 @@ interface KanaQuizModalProps {
   onComplete?: (results: { kana: string; correct: boolean }[]) => void
 }
 
+function generateQuizQuestions(quizItems: KanaItem[], quizMode: QuizMode): QuizQuestionItem[] {
+  if (quizItems.length === 0) return []
+  const shuffled = fisherYatesShuffle(quizItems)
+  if (quizMode === 'writing') {
+    return shuffled.map((target) => ({
+      item: target,
+      options: [],
+      correctIndex: 0,
+      correctValue: target.kana,
+    }))
+  }
+  let positionBag: number[] = []
+  let lastSlot: number | undefined = undefined
+  let streak = 0
+
+  return shuffled.map((target) => {
+    const q = buildQuestion({
+      target,
+      pool: quizItems,
+      mode: quizMode,
+      allKana: ALL_KANA,
+      positionBag,
+      lastPickedSlot: lastSlot,
+      slotStreak: streak,
+    })
+    positionBag = q.newPositionBag
+    lastSlot = q.newLastPickedSlot
+    streak = q.newSlotStreak ?? 1
+
+    return {
+      item: target,
+      options: q.options,
+      correctIndex: q.correctIndex,
+      correctValue: q.correctValue,
+      distinctionTip: q.distinctionTip,
+    }
+  })
+}
+
 export function KanaQuizModal({
   isOpen,
   onClose,
@@ -102,7 +142,9 @@ export function KanaQuizModal({
   const { addWeakPoint, upsertCards, stats, recordKanaAttempt, kanaMastery } = useProgress()
 
   const [mode, setMode] = useState<QuizMode>(initialMode)
-  const [questions, setQuestions] = useState<QuizQuestionItem[]>([])
+  const [questions, setQuestions] = useState<QuizQuestionItem[]>(() =>
+    isOpen && items.length > 0 ? generateQuizQuestions(items, initialMode) : []
+  )
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [typedAnswer, setTypedAnswer] = useState('')
@@ -118,42 +160,10 @@ export function KanaQuizModal({
   const [isWritingModalOpen, setIsWritingModalOpen] = useState(false)
   const [writingTarget, setWritingTarget] = useState<KanaItem | null>(null)
 
-  // Pure generator for full session questions with balanced position bags
-  const generateQuestions = useCallback((quizItems: KanaItem[], quizMode: QuizMode) => {
-    if (quizItems.length === 0) return []
-    const shuffled = fisherYatesShuffle(quizItems)
-    let positionBag: number[] = []
-    let lastSlot: number | undefined = undefined
-    let streak = 0
-
-    return shuffled.map((target) => {
-      const q = buildQuestion({
-        target,
-        pool: quizItems,
-        mode: quizMode,
-        allKana: ALL_KANA,
-        positionBag,
-        lastPickedSlot: lastSlot,
-        slotStreak: streak,
-      })
-      positionBag = q.newPositionBag
-      lastSlot = q.newLastPickedSlot
-      streak = q.newSlotStreak ?? 1
-
-      return {
-        item: target,
-        options: q.options,
-        correctIndex: q.correctIndex,
-        correctValue: q.correctValue,
-        distinctionTip: q.distinctionTip,
-      }
-    })
-  }, [])
-
   // Build and freeze questions once when modal opens, items change, or mode changes
   useEffect(() => {
     if (!isOpen || items.length === 0) return
-    const built = generateQuestions(items, mode)
+    const built = generateQuizQuestions(items, mode)
     setQuestions(built)
     setCurrentIndex(0)
     setSelectedOption(null)
@@ -166,7 +176,7 @@ export function KanaQuizModal({
     setSavedToWeak(false)
     setStageTransitions({})
     setQuestionStartTime(Date.now())
-  }, [isOpen, items, mode, generateQuestions])
+  }, [isOpen, items, mode])
 
   const currentQuestion = questions[currentIndex]
   const currentItem = currentQuestion?.item
@@ -309,6 +319,79 @@ export function KanaQuizModal({
     [isAnswered, currentItem, typedAnswer, questionStartTime, kanaMastery, recordKanaAttempt, addWeakPoint]
   )
 
+  const handleWritingResult = useCallback(
+    async (wasCorrect: boolean) => {
+      if (!currentItem) return
+
+      const responseMs = Math.max(100, Date.now() - questionStartTime)
+      const kanaId = makeKanaId(currentItem.kana, detectKanaScript(currentItem.kana))
+      const oldStage = kanaMastery[kanaId]?.stage ?? 0
+
+      const updated = await recordKanaAttempt({
+        kanaId,
+        mode: 'writing',
+        correct: wasCorrect,
+        responseMs,
+        source: 'quiz',
+        now: Date.now(),
+      })
+
+      setStageTransitions((prev) => ({
+        ...prev,
+        [kanaId]: {
+          kana: currentItem.kana,
+          romaji: currentItem.romaji,
+          oldStage,
+          newStage: updated.stage,
+          modesPracticed: Object.entries(updated.perModeCounts || {})
+            .filter((entry) => (entry[1]?.attempts || 0) > 0)
+            .map((entry) => entry[0]),
+        },
+      }))
+
+      const nextResults = [...sessionResults, { kana: currentItem.kana, correct: wasCorrect }]
+      setSessionResults(nextResults)
+
+      if (wasCorrect) {
+        setScore((prev) => prev + 1)
+      } else {
+        setMissedItems((prev) => [...prev, currentItem])
+        await addWeakPoint({
+          id: `kana-${currentItem.kana}`,
+          type: 'kana',
+          front: currentItem.kana,
+          reading: currentItem.romaji,
+          meaning: `Sound: ${currentItem.romaji} (e.g. ${currentItem.example})`,
+          notes: CONFUSION_MNEMONICS[currentItem.kana] || currentItem.example,
+        })
+      }
+
+      if (currentIndex + 1 >= questions.length) {
+        setIsFinished(true)
+        onComplete?.(nextResults)
+      } else {
+        setCurrentIndex((prev) => prev + 1)
+        setSelectedOption(null)
+        setTypedAnswer('')
+        setIsAnswered(false)
+        setIsCorrect(false)
+        setSavedToWeak(false)
+        setQuestionStartTime(Date.now())
+      }
+    },
+    [
+      currentItem,
+      questionStartTime,
+      kanaMastery,
+      recordKanaAttempt,
+      sessionResults,
+      currentIndex,
+      questions.length,
+      onComplete,
+      addWeakPoint,
+    ]
+  )
+
   const handleNext = useCallback(() => {
     if (currentIndex + 1 >= questions.length) {
       setIsFinished(true)
@@ -328,7 +411,7 @@ export function KanaQuizModal({
     if (missedItems.length === 0) return
     const uniqueMissed = Array.from(new Set(missedItems.map((m) => m.kana)))
       .map((k) => missedItems.find((m) => m.kana === k)!)
-    const built = generateQuestions(uniqueMissed, mode)
+    const built = generateQuizQuestions(uniqueMissed, mode)
     setQuestions(built)
     setCurrentIndex(0)
     setSelectedOption(null)
@@ -348,16 +431,16 @@ export function KanaQuizModal({
     if (!isOpen || isFinished || !currentQuestion) return
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (mode === 'typing') {
-        if (e.key === 'Enter' && isAnswered) {
-          e.preventDefault()
-          handleNext()
-        }
+      if (e.key === 'Escape') {
+        onClose()
         return
       }
 
-      if (e.key === 'Escape') {
-        onClose()
+      if (mode === 'typing' || mode === 'writing') {
+        if (e.key === 'Enter' && isAnswered && mode === 'typing') {
+          e.preventDefault()
+          handleNext()
+        }
         return
       }
 
@@ -496,6 +579,17 @@ export function KanaQuizModal({
                 <Keyboard className="h-3 w-3" />
                 Typing
               </button>
+              <button
+                onClick={() => setMode('writing')}
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all flex items-center gap-1 ${
+                  mode === 'writing'
+                    ? 'bg-background text-primary font-bold shadow-xs'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <PenTool className="h-3 w-3" />
+                Draw
+              </button>
             </div>
           )}
 
@@ -586,8 +680,8 @@ export function KanaQuizModal({
                           .map((t) => t.kana)
                           .join(', ')}{' '}
                         reached Familiar! To reach Solid stage, practice in another mode like{' '}
-                        <strong>Sound &rarr; Kana</strong>, <strong>Listening</strong>, or{' '}
-                        <strong>Typing</strong>.
+                        <strong>Sound &rarr; Kana</strong>, <strong>Listening</strong>,{' '}
+                        <strong>Typing</strong>, or <strong>Draw / Stroke Order</strong>.
                       </p>
                     </div>
                   )}
@@ -663,7 +757,7 @@ export function KanaQuizModal({
                 <Button
                   variant="outline"
                   onClick={() => {
-                    const built = generateQuestions(items, mode)
+                    const built = generateQuizQuestions(items, mode)
                     setQuestions(built)
                     setCurrentIndex(0)
                     setSelectedOption(null)
@@ -687,7 +781,18 @@ export function KanaQuizModal({
             </div>
           ) : currentItem ? (
             /* ACTIVE QUESTION VIEW */
-            <div className="space-y-6">
+            mode === 'writing' ? (
+              <div className="py-2">
+                <KanaWritingQuizCard
+                  kana={currentItem.kana}
+                  romaji={currentItem.romaji}
+                  script={detectKanaScript(currentItem.kana)}
+                  onCorrect={() => handleWritingResult(true)}
+                  onSkip={() => handleWritingResult(false)}
+                />
+              </div>
+            ) : (
+              <div className="space-y-6">
               {/* Question Prompt */}
               <div className="text-center py-4 space-y-2">
                 {mode === 'listening' ? (
@@ -834,7 +939,8 @@ export function KanaQuizModal({
                 </div>
               )}
             </div>
-          ) : null}
+          )
+        ) : null}
         </CardContent>
       </Card>
 

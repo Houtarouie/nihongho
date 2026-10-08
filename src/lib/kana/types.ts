@@ -3,7 +3,7 @@ import type { KanaItem } from '@/data/kana'
 export type KanaScript = 'hiragana' | 'katakana'
 export type KanaGroup = 'gojuon' | 'dakuten' | 'handakuten' | 'yoon'
 export type MasteryStage = 0 | 1 | 2 | 3 | 4 | 5
-export type QuizModeType = 'kana-to-romaji' | 'romaji-to-kana' | 'listening' | 'typing'
+export type QuizModeType = 'kana-to-romaji' | 'romaji-to-kana' | 'listening' | 'typing' | 'writing'
 
 export interface KanaAttemptLog {
   ts: number

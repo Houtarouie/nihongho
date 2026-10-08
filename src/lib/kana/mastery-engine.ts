@@ -186,7 +186,7 @@ export function recordKanaAttempt({
   } else if (mode === 'listening') {
     updated.perModeCounts.listening.attempts += 1
     if (correct) updated.perModeCounts.listening.correct += 1
-  } else if (mode === 'typing') {
+  } else if (mode === 'typing' || mode === 'writing') {
     updated.perModeCounts.typing.attempts += 1
     if (correct) updated.perModeCounts.typing.correct += 1
   }

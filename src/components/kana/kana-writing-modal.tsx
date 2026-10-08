@@ -10,12 +10,14 @@ import {
   Volume2,
   Sparkles,
   Lightbulb,
+  Zap,
 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { StrokeOrderGuide } from './stroke-order-guide'
 import { KanaDrawingPad } from './kana-drawing-pad'
+import { KanaWritingQuizCard } from '@/components/quiz/kana-writing-quiz-card'
 import { MasteryPips } from './mastery-pips'
 import { useProgress } from '@/lib/progress'
 import { makeKanaId, detectKanaScript } from '@/lib/kana/mastery-engine'
@@ -42,7 +44,7 @@ export function KanaWritingModal({
   const { kanaMastery, recordKanaAttempt, stats } = useProgress()
 
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [activeTab, setActiveTab] = useState<'practice' | 'rules'>('practice')
+  const [activeTab, setActiveTab] = useState<'practice' | 'quiz' | 'rules'>('practice')
 
   // Find index in items if provided
   useEffect(() => {
@@ -80,7 +82,7 @@ export function KanaWritingModal({
     try {
       await recordKanaAttempt({
         kanaId,
-        mode: 'typing',
+        mode: 'writing',
         correct,
         responseMs: 2500,
         source: 'quiz',
@@ -159,6 +161,17 @@ export function KanaWritingModal({
               Writing Practice
             </button>
             <button
+              onClick={() => setActiveTab('quiz')}
+              className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
+                activeTab === 'quiz'
+                  ? 'bg-background text-primary shadow-xs font-bold'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Zap className="h-3 w-3 text-amber-500" />
+              Stroke Order Quiz
+            </button>
+            <button
               onClick={() => setActiveTab('rules')}
               className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
                 activeTab === 'rules'
@@ -216,6 +229,21 @@ export function KanaWritingModal({
                   onComplete={handlePracticeComplete}
                 />
               </div>
+            </div>
+          ) : activeTab === 'quiz' ? (
+            <div className="flex flex-col items-center justify-center py-2 max-w-sm mx-auto">
+              <KanaWritingQuizCard
+                kana={currentKana}
+                romaji={currentRomaji}
+                script={script}
+                onCorrect={() => {
+                  handlePracticeComplete(true)
+                  if (items.length > 1) {
+                    setTimeout(() => handleNext(), 1200)
+                  }
+                }}
+                onSkip={items.length > 1 ? handleNext : undefined}
+              />
             </div>
           ) : (
             /* Calligraphy Rules & Guides */
