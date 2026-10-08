@@ -48,6 +48,7 @@ export function KanaWritingQuizCard({
   const [showGhostGuide, setShowGhostGuide] = useState<boolean>(false)
   const [feedback, setFeedback] = useState<{
     type: 'success' | 'error' | 'info'
+    category?: 'wrong_order' | 'wrong_direction' | 'off_target' | 'too_short'
     message: string
   } | null>(null)
   const [isCharacterComplete, setIsCharacterComplete] = useState<boolean>(false)
@@ -203,6 +204,7 @@ export function KanaWritingQuizCard({
 
       setFeedback({
         type: 'error',
+        category: evalResult.feedbackType === 'correct' ? undefined : evalResult.feedbackType,
         message: evalResult.message,
       })
     }
@@ -405,13 +407,19 @@ export function KanaWritingQuizCard({
           className={`w-full p-3 rounded-2xl border text-xs flex items-start gap-2 animate-in fade-in duration-150 ${
             feedback.type === 'success'
               ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-semibold'
-              : feedback.type === 'error'
-              ? 'bg-destructive/10 border-destructive/30 text-destructive font-medium'
-              : 'bg-muted border-border text-muted-foreground'
+              : feedback.category === 'wrong_order'
+              ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 font-semibold'
+              : feedback.category === 'wrong_direction'
+              ? 'bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400 font-semibold'
+              : 'bg-destructive/10 border-destructive/30 text-destructive font-medium'
           }`}
         >
           {feedback.type === 'success' ? (
             <Sparkles className="h-4 w-4 shrink-0 mt-0.5 text-emerald-500" />
+          ) : feedback.category === 'wrong_order' ? (
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-amber-500" />
+          ) : feedback.category === 'wrong_direction' ? (
+            <RotateCcw className="h-4 w-4 shrink-0 mt-0.5 text-blue-500" />
           ) : (
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-destructive" />
           )}

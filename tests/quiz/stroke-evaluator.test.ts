@@ -113,8 +113,6 @@ describe('Kana Stroke Evaluator (Stroke-by-Stroke Recognition)', () => {
 
   it('provides confusable directional feedback for Katakana シ vs ツ', () => {
     // In Katakana シ, Stroke 3 sweeps UPWARD from bottom-left (33, 85) to top-right (89, 40)
-    // If user starts at top-right (89, 40) and sweeps DOWNWARD to (33, 85)
-    // Let's test starting near (35, 85) but drawing downward to (35, 105):
     const wrongDirShi = [
       { x: 35, y: 85 },
       { x: 35, y: 100 },
@@ -129,5 +127,88 @@ describe('Kana Stroke Evaluator (Stroke-by-Stroke Recognition)', () => {
     expect(result.isMatch).toBe(false)
     expect(result.feedbackType).toBe('wrong_direction')
     expect(result.message).toContain('sweeps UPWARD')
+  })
+
+  it('rejects multi-turn zigzag scribbles (like user screenshot) on Hiragana ま', () => {
+    // User draws an erratic zigzag across the canvas instead of a clean horizontal line
+    const zigzagScribble = [
+      { x: 28, y: 32 },
+      { x: 80, y: 32 },
+      { x: 28, y: 45 },
+      { x: 80, y: 55 },
+      { x: 28, y: 70 },
+      { x: 80, y: 75 },
+    ]
+
+    const result = evaluateUserStroke({
+      kana: 'ま',
+      expectedStrokeIndex: 0,
+      userPoints: zigzagScribble,
+    })
+
+    expect(result.isMatch).toBe(false)
+    expect(result.feedbackType).toBe('off_target')
+    expect(result.message).toContain('without zigzags')
+  })
+
+  it('strictly detects wrong stroke order when user draws Stroke 2 of ま instead of Stroke 1', () => {
+    // In ま:
+    // Stroke 1 is top horizontal: (29.8, 32.3) -> (78.8, 28.2)
+    // Stroke 2 is bottom horizontal: (33.8, 51.8) -> (77.0, 46.6)
+    const stroke2DrawnFirst = [
+      { x: 34, y: 52 },
+      { x: 55, y: 50 },
+      { x: 77, y: 47 },
+    ]
+
+    const result = evaluateUserStroke({
+      kana: 'ま',
+      expectedStrokeIndex: 0, // Stroke 1 was expected
+      userPoints: stroke2DrawnFirst,
+    })
+
+    expect(result.isMatch).toBe(false)
+    expect(result.feedbackType).toBe('wrong_order')
+    expect(result.matchedStrokeIndex).toBe(1) // Identified as Stroke 2 (0-indexed 1)
+    expect(result.message).toContain('Wrong stroke order')
+    expect(result.message).toContain('stroke 2')
+    expect(result.message).toContain('stroke 1 comes first')
+  })
+
+  it('strictly accepts correct Stroke 1 of ま when drawn accurately left-to-right', () => {
+    const stroke1Accurate = [
+      { x: 30, y: 32 },
+      { x: 52, y: 31 },
+      { x: 78, y: 28 },
+    ]
+
+    const result = evaluateUserStroke({
+      kana: 'ま',
+      expectedStrokeIndex: 0,
+      userPoints: stroke1Accurate,
+    })
+
+    expect(result.isMatch).toBe(true)
+    expect(result.feedbackType).toBe('correct')
+    expect(result.message).toContain('Stroke 1 completed')
+  })
+
+  it('detects reverse drawing when Stroke 1 of ま is drawn right-to-left', () => {
+    // Drawn backwards from right to left
+    const stroke1Backwards = [
+      { x: 78, y: 28 },
+      { x: 52, y: 31 },
+      { x: 30, y: 32 },
+    ]
+
+    const result = evaluateUserStroke({
+      kana: 'ま',
+      expectedStrokeIndex: 0,
+      userPoints: stroke1Backwards,
+    })
+
+    expect(result.isMatch).toBe(false)
+    expect(result.feedbackType).toBe('wrong_direction')
+    expect(result.message).toContain('Wrong direction')
   })
 })

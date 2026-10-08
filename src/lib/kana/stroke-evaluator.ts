@@ -27,8 +27,38 @@ export function distance(p1: Point2D, p2: Point2D): number {
 }
 
 /**
- * Parses SVG path string `d` into key anchor points along the trajectory.
- * Works deterministically in any environment (Browser, Node, Vitest).
+ * Samples points along a cubic Bézier curve segment B(t) for t in [0, 1].
+ */
+export function sampleCubicBezier(
+  p0: Point2D,
+  p1: Point2D,
+  p2: Point2D,
+  p3: Point2D,
+  steps: number = 8
+): Point2D[] {
+  const pts: Point2D[] = []
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps
+    const mt = 1 - t
+    const x =
+      mt * mt * mt * p0.x +
+      3 * mt * mt * t * p1.x +
+      3 * mt * t * t * p2.x +
+      t * t * t * p3.x
+    const y =
+      mt * mt * mt * p0.y +
+      3 * mt * mt * t * p1.y +
+      3 * mt * t * t * p2.y +
+      t * t * t * p3.y
+    pts.push({ x, y })
+  }
+  return pts
+}
+
+/**
+ * Parses SVG path string `d` into dense anchor points along true Bézier trajectories.
+ * Evaluates cubic curves (`c`, `C`, `s`, `S`) with parametric sampling so loops, hooks,
+ * and curves are accurately represented.
  */
 export function parsePathPoints(d: string): Point2D[] {
   let currX = 0
@@ -50,15 +80,25 @@ export function parsePathPoints(d: string): Point2D[] {
       points.push({ x: currX, y: currY })
     } else if (type === 'c') {
       for (let i = 0; i < args.length; i += 6) {
-        currX += args[i + 4]
-        currY += args[i + 5]
-        points.push({ x: currX, y: currY })
+        const p0 = { x: currX, y: currY }
+        const p1 = { x: currX + args[i], y: currY + args[i + 1] }
+        const p2 = { x: currX + args[i + 2], y: currY + args[i + 3] }
+        const p3 = { x: currX + args[i + 4], y: currY + args[i + 5] }
+        const sampled = sampleCubicBezier(p0, p1, p2, p3, 8)
+        points.push(...sampled.slice(1))
+        currX = p3.x
+        currY = p3.y
       }
     } else if (type === 'C') {
       for (let i = 0; i < args.length; i += 6) {
-        currX = args[i + 4]
-        currY = args[i + 5]
-        points.push({ x: currX, y: currY })
+        const p0 = { x: currX, y: currY }
+        const p1 = { x: args[i], y: args[i + 1] }
+        const p2 = { x: args[i + 2], y: args[i + 3] }
+        const p3 = { x: args[i + 4], y: args[i + 5] }
+        const sampled = sampleCubicBezier(p0, p1, p2, p3, 8)
+        points.push(...sampled.slice(1))
+        currX = p3.x
+        currY = p3.y
       }
     } else if (type === 'l') {
       for (let i = 0; i < args.length; i += 2) {
@@ -66,11 +106,33 @@ export function parsePathPoints(d: string): Point2D[] {
         currY += args[i + 1]
         points.push({ x: currX, y: currY })
       }
+    } else if (type === 'L') {
+      for (let i = 0; i < args.length; i += 2) {
+        currX = args[i]
+        currY = args[i + 1]
+        points.push({ x: currX, y: currY })
+      }
     } else if (type === 's') {
       for (let i = 0; i < args.length; i += 4) {
-        currX += args[i + 2]
-        currY += args[i + 3]
-        points.push({ x: currX, y: currY })
+        const p0 = { x: currX, y: currY }
+        const p1 = { x: currX, y: currY }
+        const p2 = { x: currX + args[i], y: currY + args[i + 1] }
+        const p3 = { x: currX + args[i + 2], y: currY + args[i + 3] }
+        const sampled = sampleCubicBezier(p0, p1, p2, p3, 8)
+        points.push(...sampled.slice(1))
+        currX = p3.x
+        currY = p3.y
+      }
+    } else if (type === 'S') {
+      for (let i = 0; i < args.length; i += 4) {
+        const p0 = { x: currX, y: currY }
+        const p1 = { x: currX, y: currY }
+        const p2 = { x: args[i], y: args[i + 1] }
+        const p3 = { x: args[i + 2], y: args[i + 3] }
+        const sampled = sampleCubicBezier(p0, p1, p2, p3, 8)
+        points.push(...sampled.slice(1))
+        currX = p3.x
+        currY = p3.y
       }
     }
   }
@@ -79,7 +141,7 @@ export function parsePathPoints(d: string): Point2D[] {
 }
 
 /**
- * Calculates total path length across sampled points.
+ * Calculates total path arc length across sampled points.
  */
 export function getPointsLength(points: Point2D[]): number {
   let len = 0
@@ -90,9 +152,9 @@ export function getPointsLength(points: Point2D[]): number {
 }
 
 /**
- * Resamples an array of points into N evenly spaced points along the path.
+ * Resamples an array of points into N equidistant points along the arc length.
  */
-export function resamplePoints(points: Point2D[], count: number = 10): Point2D[] {
+export function resamplePoints(points: Point2D[], count: number = 32): Point2D[] {
   if (points.length <= 1) return points
   const totalLen = getPointsLength(points)
   if (totalLen <= 0) return Array(count).fill(points[0])
@@ -131,7 +193,7 @@ export function resamplePoints(points: Point2D[], count: number = 10): Point2D[]
 }
 
 /**
- * Returns directional advice for strokes, including katakana confusables (シ vs ツ, ソ vs ン).
+ * Returns directional advice for strokes, including Katakana confusables (シ vs ツ, ソ vs ン).
  */
 export function getDirectionFeedback(char: string, strokeIndex: number): string | null {
   if (char === 'シ' && strokeIndex === 2) {
@@ -149,9 +211,23 @@ export function getDirectionFeedback(char: string, strokeIndex: number): string 
   return null
 }
 
+interface StrokeComparison {
+  index: number
+  startDist: number
+  endDist: number
+  canonLen: number
+  lenRatio: number
+  fwdTrajErr: number
+  maxFwdDev: number
+  revTrajErr: number
+}
+
 /**
- * Evaluates a user-drawn stroke against the expected stroke in a kana character.
- * Enforces stroke order, starting point, and drawing direction.
+ * Multi-candidate handwriting evaluator.
+ * Evaluates the user stroke against all strokes of the kana, enforcing:
+ * 1. Strict stroke order (detects if user drew stroke 2 or 3 instead of 1).
+ * 2. Proper drawing direction (detects reverse drawing / opposite angle).
+ * 3. Exact trajectory shape (rejects zigzags, scribbles, loops where lines shouldn't be).
  */
 export function evaluateUserStroke(params: {
   kana: string
@@ -171,9 +247,9 @@ export function evaluateUserStroke(params: {
 
   const totalStrokes = strokeData.strokeCount
 
-  // 1. Guard against accidental taps
+  // 1. Guard against accidental taps / too short input
   const userLen = getPointsLength(userPoints)
-  if (userPoints.length < 2 || userLen < 10) {
+  if (userPoints.length < 2 || userLen < 12) {
     return {
       isMatch: false,
       feedbackType: 'too_short',
@@ -181,9 +257,44 @@ export function evaluateUserStroke(params: {
     }
   }
 
-  const expectedPathD = strokeData.strokes[expectedStrokeIndex]
-  const expectedPoints = parsePathPoints(expectedPathD)
-  if (expectedPoints.length === 0) {
+  // Resample user drawing to 32 equidistant points along arc length
+  const userResampled = resamplePoints(userPoints, 32)
+  const userStart = userResampled[0]
+  const userEnd = userResampled[31]
+
+  // Precompute metrics for ALL canonical strokes in this character
+  const comparisons: StrokeComparison[] = strokeData.strokes.map((pathD, idx) => {
+    const rawPts = parsePathPoints(pathD)
+    const canonPts = resamplePoints(rawPts, 32)
+    const canonLen = getPointsLength(canonPts)
+
+    let fwdSum = 0
+    let maxFwd = 0
+    let revSum = 0
+
+    for (let i = 0; i < 32; i++) {
+      const fwdD = distance(userResampled[i], canonPts[i])
+      fwdSum += fwdD
+      if (fwdD > maxFwd) maxFwd = fwdD
+
+      const revD = distance(userResampled[31 - i], canonPts[i])
+      revSum += revD
+    }
+
+    return {
+      index: idx,
+      startDist: distance(userStart, canonPts[0]),
+      endDist: distance(userEnd, canonPts[31]),
+      canonLen,
+      lenRatio: userLen / Math.max(1, canonLen),
+      fwdTrajErr: fwdSum / 32,
+      maxFwdDev: maxFwd,
+      revTrajErr: revSum / 32,
+    }
+  })
+
+  const expectedComp = comparisons[expectedStrokeIndex]
+  if (!expectedComp) {
     return {
       isMatch: true,
       feedbackType: 'correct',
@@ -191,106 +302,109 @@ export function evaluateUserStroke(params: {
     }
   }
 
-  const expectedStart = expectedPoints[0]
-  const expectedEnd = expectedPoints[expectedPoints.length - 1]
-  const userStart = userPoints[0]
-  const userEnd = userPoints[userPoints.length - 1]
+  // 2. Scribble / Wild Disproportion Check
+  // If the user's stroke is excessively long (zigzag, multi-pass scribble) compared to the expected stroke:
+  if (expectedComp.lenRatio > 1.9) {
+    const matchesOtherLonger = comparisons.some(
+      (c) => c.index !== expectedStrokeIndex && c.lenRatio <= 1.6 && c.fwdTrajErr <= 14.0
+    )
+    if (!matchesOtherLonger) {
+      return {
+        isMatch: false,
+        feedbackType: 'off_target',
+        message: 'Stroke didn\'t match. Draw a single clean stroke without zigzags.',
+      }
+    }
+  }
 
-  const distToExpectedStart = distance(userStart, expectedStart)
+  // 3. Direction Check: Did user draw the expected stroke in REVERSE?
+  if (expectedComp.revTrajErr <= 14.0 && expectedComp.fwdTrajErr >= 17.0) {
+    const customTip = getDirectionFeedback(kana, expectedStrokeIndex)
+    return {
+      isMatch: false,
+      feedbackType: 'wrong_direction',
+      message:
+        customTip ||
+        `Wrong direction! Draw stroke ${expectedStrokeIndex + 1} in the opposite direction.`,
+    }
+  }
 
-  // 2. Stroke Order Check: Did user draw another stroke instead?
-  for (let j = 0; j < totalStrokes; j++) {
-    if (j === expectedStrokeIndex) continue
-    const otherPoints = parsePathPoints(strokeData.strokes[j])
-    if (otherPoints.length > 0) {
-      const otherStart = otherPoints[0]
-      const distOther = distance(userStart, otherStart)
-      // If user started close to stroke j AND significantly closer than expected stroke:
-      if (distOther <= 25 && distOther < distToExpectedStart - 6) {
+  // Also check displacement vector cosine angle if stroke has significant length
+  const userVecX = userEnd.x - userStart.x
+  const userVecY = userEnd.y - userStart.y
+  const userVecLen = Math.hypot(userVecX, userVecY)
+  if (expectedComp.canonLen > 15 && userVecLen >= 12) {
+    const rawExpected = parsePathPoints(strokeData.strokes[expectedStrokeIndex])
+    const canonStart = rawExpected[0]
+    const canonEnd = rawExpected[rawExpected.length - 1]
+    const cVecX = canonEnd.x - canonStart.x
+    const cVecY = canonEnd.y - canonStart.y
+    const cVecLen = Math.hypot(cVecX, cVecY)
+
+    if (cVecLen > 12) {
+      const dot = userVecX * cVecX + userVecY * cVecY
+      const cos = dot / (userVecLen * cVecLen)
+      if (
+        cos < -0.25 &&
+        (expectedComp.revTrajErr < expectedComp.fwdTrajErr || expectedComp.startDist <= 25)
+      ) {
+        const customTip = getDirectionFeedback(kana, expectedStrokeIndex)
         return {
           isMatch: false,
-          feedbackType: 'wrong_order',
-          matchedStrokeIndex: j,
-          message: `Wrong stroke order! That was stroke ${j + 1}, but stroke ${
-            expectedStrokeIndex + 1
-          } comes first. Follow the numbered guide 1 → ${totalStrokes}.`,
+          feedbackType: 'wrong_direction',
+          message:
+            customTip ||
+            `Wrong direction! Draw stroke ${expectedStrokeIndex + 1} in the opposite direction.`,
         }
       }
     }
   }
 
-  // If user started too far from expected start point:
-  if (distToExpectedStart > 28) {
-    // Check if user started closer to a DIFFERENT stroke of this character
-    let bestOtherMatch: { idx: number; dist: number } | null = null
+  // 4. Stroke Order Check: Did user draw another stroke of this character instead?
+  const otherMatches = comparisons
+    .filter((c) => c.index !== expectedStrokeIndex)
+    .filter((c) => {
+      const isCleanTraj = c.fwdTrajErr <= 14.5 && c.lenRatio >= 0.5 && c.lenRatio <= 1.7
+      const isClearlyCloserThanExpected = c.fwdTrajErr < expectedComp.fwdTrajErr - 4.0
+      const isStartCloser = c.startDist <= 20.0 && c.startDist < expectedComp.startDist - 8.0
+      return isCleanTraj && (isClearlyCloserThanExpected || isStartCloser)
+    })
+    .sort((a, b) => a.fwdTrajErr - b.fwdTrajErr)
 
-    for (let j = 0; j < totalStrokes; j++) {
-      if (j === expectedStrokeIndex) continue
-      const otherPoints = parsePathPoints(strokeData.strokes[j])
-      if (otherPoints.length > 0) {
-        const otherStart = otherPoints[0]
-        const d = distance(userStart, otherStart)
-        if (d <= 28 && (!bestOtherMatch || d < bestOtherMatch.dist)) {
-          bestOtherMatch = { idx: j, dist: d }
-        }
-      }
+  if (otherMatches.length > 0) {
+    const bestOther = otherMatches[0]
+    return {
+      isMatch: false,
+      feedbackType: 'wrong_order',
+      matchedStrokeIndex: bestOther.index,
+      message: `Wrong stroke order! That was stroke ${bestOther.index + 1}, but stroke ${
+        expectedStrokeIndex + 1
+      } comes first. Follow the numbered guide 1 → ${totalStrokes}.`,
     }
+  }
 
-    if (bestOtherMatch !== null) {
+  // If user started much closer to another stroke's start point (> 12 units closer):
+  for (const c of comparisons) {
+    if (c.index === expectedStrokeIndex) continue
+    if (c.startDist <= 22.0 && c.startDist < expectedComp.startDist - 12.0) {
       return {
         isMatch: false,
         feedbackType: 'wrong_order',
-        matchedStrokeIndex: bestOtherMatch.idx,
-        message: `Wrong stroke order! That was stroke ${bestOtherMatch.idx + 1}, but stroke ${
+        matchedStrokeIndex: c.index,
+        message: `Wrong stroke order! That was stroke ${c.index + 1}, but stroke ${
           expectedStrokeIndex + 1
         } comes first. Follow the numbered guide 1 → ${totalStrokes}.`,
       }
     }
-
-    return {
-      isMatch: false,
-      feedbackType: 'off_target',
-      message: `Start stroke ${expectedStrokeIndex + 1} near circle ${
-        expectedStrokeIndex + 1
-      }.`,
-    }
   }
 
-  // 3. Direction Check: Did the user draw the stroke backwards?
-  const expVecX = expectedEnd.x - expectedStart.x
-  const expVecY = expectedEnd.y - expectedStart.y
-  const expVecLen = Math.hypot(expVecX, expVecY)
+  // 5. Expected Stroke Verification
+  const isTrajGood = expectedComp.fwdTrajErr <= 15.5
+  const isStartGood = expectedComp.startDist <= 24.0
+  const isLenGood = expectedComp.lenRatio >= 0.45 && expectedComp.lenRatio <= 1.85
+  const isMaxDevGood = expectedComp.maxFwdDev <= 32.0
 
-  const userVecX = userEnd.x - userStart.x
-  const userVecY = userEnd.y - userStart.y
-  const userVecLen = Math.hypot(userVecX, userVecY)
-
-  if (expVecLen > 12 && userVecLen > 10) {
-    const dotProduct = expVecX * userVecX + expVecY * userVecY
-    const cosAngle = dotProduct / (expVecLen * userVecLen)
-
-    // Angle > ~105 degrees means drawn in opposite direction
-    if (cosAngle < -0.25) {
-      const customTip = getDirectionFeedback(kana, expectedStrokeIndex)
-      return {
-        isMatch: false,
-        feedbackType: 'wrong_direction',
-        message:
-          customTip ||
-          `Wrong direction! Draw stroke ${
-            expectedStrokeIndex + 1
-          } in the opposite direction.`,
-      }
-    }
-  }
-
-  // 4. Shape & Proximity Check: User started in correct place and drew in correct direction!
-  // Verify user didn't stop wildly far away from the intended path
-  const distToEnd = distance(userEnd, expectedEnd)
-  const isLoopOrComplex = expectedPoints.length >= 4
-
-  // If start is close (< 30) and direction is forward (cos > 0), accept with generous handwriting tolerance
-  if (distToExpectedStart <= 30 && (distToEnd <= 45 || isLoopOrComplex || userLen >= expVecLen * 0.45)) {
+  if (isTrajGood && isStartGood && isLenGood && isMaxDevGood) {
     return {
       isMatch: true,
       feedbackType: 'correct',
@@ -298,9 +412,18 @@ export function evaluateUserStroke(params: {
     }
   }
 
+  // 6. Specific Off-Target Feedback
+  if (!isStartGood) {
+    return {
+      isMatch: false,
+      feedbackType: 'off_target',
+      message: `Start stroke ${expectedStrokeIndex + 1} near circle ${expectedStrokeIndex + 1}.`,
+    }
+  }
+
   return {
-    isMatch: true,
-    feedbackType: 'correct',
-    message: `Nice! Stroke ${expectedStrokeIndex + 1} matched.`,
+    isMatch: false,
+    feedbackType: 'off_target',
+    message: `Stroke shape didn't match. Draw stroke ${expectedStrokeIndex + 1} cleanly.`,
   }
 }
