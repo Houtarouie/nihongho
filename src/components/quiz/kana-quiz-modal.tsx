@@ -536,10 +536,10 @@ export function KanaQuizModal({
 
           {/* Mode Selector */}
           {!isFinished && (
-            <div className="flex items-center gap-1 mt-3 bg-muted/60 p-1 rounded-xl text-xs overflow-x-auto">
+            <div className="flex items-center gap-1 mt-3 bg-muted/60 p-1 rounded-xl text-xs overflow-x-auto scrollbar-none">
               <button
                 onClick={() => setMode('kana-to-romaji')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all whitespace-nowrap shrink-0 ${
                   mode === 'kana-to-romaji'
                     ? 'bg-background text-primary font-bold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
@@ -549,7 +549,7 @@ export function KanaQuizModal({
               </button>
               <button
                 onClick={() => setMode('romaji-to-kana')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all whitespace-nowrap shrink-0 ${
                   mode === 'romaji-to-kana'
                     ? 'bg-background text-primary font-bold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
@@ -559,7 +559,7 @@ export function KanaQuizModal({
               </button>
               <button
                 onClick={() => setMode('listening')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all flex items-center gap-1 ${
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                   mode === 'listening'
                     ? 'bg-background text-primary font-bold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
@@ -570,7 +570,7 @@ export function KanaQuizModal({
               </button>
               <button
                 onClick={() => setMode('typing')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all flex items-center gap-1 ${
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                   mode === 'typing'
                     ? 'bg-background text-primary font-bold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
@@ -581,7 +581,7 @@ export function KanaQuizModal({
               </button>
               <button
                 onClick={() => setMode('writing')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all flex items-center gap-1 ${
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
                   mode === 'writing'
                     ? 'bg-background text-primary font-bold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'

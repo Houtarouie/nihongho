@@ -148,10 +148,10 @@ export function KanaWritingModal({
           </div>
 
           {/* Sub Navigation Tabs */}
-          <div className="flex items-center gap-1 mt-3 bg-muted/60 p-1 rounded-xl text-xs w-fit">
+          <div className="flex items-center gap-1 mt-3 bg-muted/60 p-1 rounded-xl text-xs max-w-full overflow-x-auto scrollbar-none">
             <button
               onClick={() => setActiveTab('practice')}
-              className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'practice'
                   ? 'bg-background text-primary shadow-xs font-bold'
                   : 'text-muted-foreground hover:text-foreground'
@@ -162,7 +162,7 @@ export function KanaWritingModal({
             </button>
             <button
               onClick={() => setActiveTab('quiz')}
-              className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'quiz'
                   ? 'bg-background text-primary shadow-xs font-bold'
                   : 'text-muted-foreground hover:text-foreground'
@@ -173,7 +173,7 @@ export function KanaWritingModal({
             </button>
             <button
               onClick={() => setActiveTab('rules')}
-              className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'rules'
                   ? 'bg-background text-primary shadow-xs font-bold'
                   : 'text-muted-foreground hover:text-foreground'

@@ -13,6 +13,7 @@ import {
 } from '@/data/kana'
 import { speakJapanese, type SRSCard } from '@/data/srs-deck'
 import { useProgress } from '@/lib/progress'
+import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -297,7 +298,7 @@ export function KanaChart() {
   const scriptConfusions = CONFUSION_PAIRS.filter((c) => c.script === script)
 
   return (
-    <div className="space-y-6">
+    <div className={cn('space-y-6', isSelectMode && selectedCount > 0 && 'pb-44 sm:pb-32')}>
       {/* Top Stacked Mastery Progress Bars */}
       <div className="grid gap-3 sm:grid-cols-2 p-4 rounded-2xl border bg-card/60 backdrop-blur-xs shadow-xs">
         <StackedProgressBar progress={hiraganaProgress} label="Hiragana Mastery" />
@@ -387,10 +388,10 @@ export function KanaChart() {
       {/* Control Switchers & Sub-bar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-2xl border bg-card">
         {/* Hiragana vs Katakana */}
-        <div className="flex items-center gap-1.5 bg-muted p-1 rounded-xl">
+        <div className="flex items-center gap-1.5 bg-muted p-1 rounded-xl w-full sm:w-auto">
           <button
             onClick={() => setScript('hiragana')}
-            className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+            className={`flex-1 sm:flex-initial text-center px-4 py-2 rounded-lg font-bold text-sm transition-all ${
               script === 'hiragana'
                 ? 'bg-background text-primary shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -400,7 +401,7 @@ export function KanaChart() {
           </button>
           <button
             onClick={() => setScript('katakana')}
-            className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+            className={`flex-1 sm:flex-initial text-center px-4 py-2 rounded-lg font-bold text-sm transition-all ${
               script === 'katakana'
                 ? 'bg-background text-primary shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -484,8 +485,8 @@ export function KanaChart() {
             return (
               <div key={row.rowName} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 {/* Row title with mini-bar and quick actions */}
-                <div className="flex items-center justify-between sm:justify-start gap-2 w-36 shrink-0">
-                  <span className="text-xs font-mono font-bold text-muted-foreground uppercase">
+                <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-36 shrink-0">
+                  <span className="text-xs font-mono font-bold text-muted-foreground uppercase whitespace-nowrap">
                     {row.rowName}-row
                   </span>
                   <div
@@ -502,7 +503,7 @@ export function KanaChart() {
                       className="bg-primary h-full transition-all"
                     />
                   </div>
-                  <div className="flex items-center gap-0.5">
+                  <div className="flex items-center gap-0.5 shrink-0">
                     <button
                       onClick={() => handleQuizRow(row)}
                       className="p-1 rounded-md text-primary hover:bg-primary/10 transition-colors"
@@ -520,7 +521,7 @@ export function KanaChart() {
                     {isSelectMode && (
                       <button
                         onClick={() => handleSelectRow(row)}
-                        className="text-[10px] text-primary hover:underline font-semibold"
+                        className="text-[10px] text-primary hover:underline font-semibold px-1"
                       >
                         +all
                       </button>
@@ -627,7 +628,7 @@ export function KanaChart() {
 
       {/* Floating Bottom Selection Bar (When user has selected items) */}
       {selectedCount > 0 && (
-        <div className="fixed bottom-16 md:bottom-6 left-4 right-4 max-w-2xl mx-auto z-40 p-4 rounded-2xl border-2 border-primary/40 bg-background/95 backdrop-blur-md shadow-2xl animate-in slide-in-from-bottom-5 duration-200">
+        <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] md:bottom-6 left-3 right-3 sm:left-4 sm:right-4 max-w-2xl mx-auto z-40 p-3 sm:p-4 rounded-2xl border-2 border-primary/40 bg-background/95 backdrop-blur-md shadow-2xl animate-in slide-in-from-bottom-5 duration-200">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
@@ -654,15 +655,16 @@ export function KanaChart() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleAddSelectedToSRS}
-                className="h-9 text-xs rounded-xl gap-1.5"
+                className="h-9 text-xs rounded-xl gap-1.5 w-full sm:w-auto"
               >
                 <Plus className="h-3.5 w-3.5" />
-                + Add to SRS
+                <span className="hidden sm:inline">+ Add to SRS</span>
+                <span className="sm:hidden">+ SRS</span>
               </Button>
 
               <Button
@@ -675,10 +677,11 @@ export function KanaChart() {
                     setIsWritingModalOpen(true)
                   }
                 }}
-                className="h-9 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+                className="h-9 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10 w-full sm:w-auto"
               >
                 <PenTool className="h-3.5 w-3.5" />
-                Write Selected
+                <span className="hidden sm:inline">Write Selected</span>
+                <span className="sm:hidden">Write ({selectedCount})</span>
               </Button>
 
               <Button
@@ -692,19 +695,21 @@ export function KanaChart() {
                   setQuizMode('writing')
                   setIsQuizOpen(true)
                 }}
-                className="h-9 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10"
+                className="h-9 text-xs rounded-xl gap-1.5 font-semibold text-primary border-primary/30 hover:bg-primary/10 w-full sm:w-auto"
               >
                 <PenTool className="h-3.5 w-3.5" />
-                Draw Selected ({selectedCount})
+                <span className="hidden sm:inline">Draw Selected ({selectedCount})</span>
+                <span className="sm:hidden">Draw ({selectedCount})</span>
               </Button>
 
               <Button
                 size="sm"
                 onClick={handleLaunchCustomQuiz}
-                className="h-9 text-xs rounded-xl gap-1.5 font-bold shadow-xs"
+                className="h-9 text-xs rounded-xl gap-1.5 font-bold shadow-xs w-full sm:w-auto"
               >
                 <Play className="h-3.5 w-3.5 fill-current" />
-                Start Quiz ({selectedCount})
+                <span className="hidden sm:inline">Start Quiz ({selectedCount})</span>
+                <span className="sm:hidden">Quiz ({selectedCount})</span>
               </Button>
             </div>
           </div>
@@ -714,16 +719,16 @@ export function KanaChart() {
       {/* Confusion Pairs Reference */}
       <Card className="rounded-2xl border-amber-500/20 bg-amber-500/5">
         <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <CardTitle className="text-base flex items-center gap-2 text-amber-600 dark:text-amber-400">
-              <AlertCircle className="h-4 w-4" />
-              Look-Alike Character Distinctions
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span>Look-Alike Character Distinctions</span>
             </CardTitle>
             <Button
               size="sm"
               variant="outline"
               onClick={handleQuizConfusion}
-              className="h-7 text-xs rounded-lg gap-1 border-amber-500/30 text-amber-700 dark:text-amber-300"
+              className="h-7 text-xs rounded-lg gap-1 border-amber-500/30 text-amber-700 dark:text-amber-300 self-start sm:self-auto shrink-0"
             >
               <Zap className="h-3 w-3" />
               Drill Look-Alikes
