@@ -186,6 +186,9 @@ export function KanaChart() {
     const validItems = row.items.filter((it): it is KanaItem => Boolean(it))
     if (validItems.length === 0) return
 
+    setHoveredTileKana(null)
+    setActivePopoverKana(null)
+
     const allAlreadySelected = validItems.every((it) => Boolean(selectedKanaMap[it.kana]))
 
     if (allAlreadySelected) {
@@ -390,7 +393,14 @@ export function KanaChart() {
           <Button
             variant={isSelectMode ? 'default' : 'outline'}
             size="sm"
-            onClick={() => setIsSelectMode(!isSelectMode)}
+            onClick={() => {
+              const nextMode = !isSelectMode
+              setIsSelectMode(nextMode)
+              if (nextMode) {
+                setHoveredTileKana(null)
+                setActivePopoverKana(null)
+              }
+            }}
             className={`h-8 text-xs rounded-xl gap-1.5 ${
               isSelectMode ? 'bg-primary text-primary-foreground font-bold' : ''
             }`}
@@ -404,10 +414,10 @@ export function KanaChart() {
       {/* Control Switchers & Sub-bar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-2xl border bg-card">
         {/* Hiragana vs Katakana */}
-        <div className="flex items-center gap-1.5 bg-muted p-1 rounded-xl w-full sm:w-auto">
+        <div className="flex items-center gap-1.5 bg-muted p-1 rounded-xl w-full sm:w-auto shrink-0">
           <button
             onClick={() => setScript('hiragana')}
-            className={`flex-1 sm:flex-initial text-center px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+            className={`flex-1 sm:flex-initial text-center px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
               script === 'hiragana'
                 ? 'bg-background text-primary shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -417,7 +427,7 @@ export function KanaChart() {
           </button>
           <button
             onClick={() => setScript('katakana')}
-            className={`flex-1 sm:flex-initial text-center px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+            className={`flex-1 sm:flex-initial text-center px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
               script === 'katakana'
                 ? 'bg-background text-primary shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -574,14 +584,17 @@ export function KanaChart() {
                       (c) => c.front === item.kana || c.id === `kana-${item.kana}`
                     )
                     const isPopoverVisible =
-                      hoveredTileKana === item.kana || activePopoverKana === item.kana
+                      !isSelectMode &&
+                      (hoveredTileKana === item.kana || activePopoverKana === item.kana)
                     const isTopRow = rowIdx === 0
 
                     return (
                       <div
                         key={`${item.kana}-${idx}`}
                         className="relative"
-                        onMouseEnter={() => setHoveredTileKana(item.kana)}
+                        onMouseEnter={() => {
+                          if (!isSelectMode) setHoveredTileKana(item.kana)
+                        }}
                         onMouseLeave={() => setHoveredTileKana(null)}
                       >
                         <button
@@ -624,7 +637,13 @@ export function KanaChart() {
                         {/* Hover/Tap Popover */}
                         {isPopoverVisible && (
                           <div
-                            className={`absolute left-1/2 -translate-x-1/2 z-50 pointer-events-auto ${
+                            className={`absolute z-50 pointer-events-auto ${
+                              idx === 0
+                                ? 'left-0'
+                                : idx === 4
+                                ? 'right-0'
+                                : 'left-1/2 -translate-x-1/2'
+                            } ${
                               isTopRow ? 'top-full mt-2' : 'bottom-full mb-2'
                             }`}
                             onClick={(e) => e.stopPropagation()}
