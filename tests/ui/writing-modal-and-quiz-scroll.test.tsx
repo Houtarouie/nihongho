@@ -17,6 +17,7 @@ import { KanaTilePopover } from '@/components/kana/kana-tile-popover'
 import { StrokeOrderGuide } from '@/components/kana/stroke-order-guide'
 import { KanaDrawingPad } from '@/components/kana/kana-drawing-pad'
 import { KanaWritingModal } from '@/components/kana/kana-writing-modal'
+import { KanaChart } from '@/components/kana/kana-chart'
 import { KanaQuizModal } from '@/components/quiz/kana-quiz-modal'
 import { HIRAGANA_GOJUON } from '@/data/kana'
 
@@ -99,4 +100,13 @@ describe('Kana Writing & Stroke Order and Modal Scroll Tests', () => {
     // Card content has min-h-0 and overflow-y-auto
     expect(html).toContain('min-h-0')
   })
+
+  it('renders KanaChart with non-overlapping row headers and clickable +all buttons', () => {
+    const html = renderToStaticMarkup(<KanaChart />)
+    expect(html).toContain('+all')
+    expect(html).toContain('relative z-10 flex flex-row sm:flex-col')
+    expect(html).toContain('sm:w-40')
+    expect(html).toContain('Select all in あ (Vowels)-row')
+  })
 })
+

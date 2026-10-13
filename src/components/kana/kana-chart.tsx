@@ -183,13 +183,29 @@ export function KanaChart() {
   }
 
   function handleSelectRow(row: KanaRow) {
-    const newItems: Record<string, KanaItem> = {}
-    row.items.forEach((it) => {
-      if (it) newItems[it.kana] = it
-    })
-    setSelectedKanaMap((prev) => ({ ...prev, ...newItems }))
-    setIsSelectMode(true)
-    toast.success(`Selected ${row.rowName}-row for quiz`)
+    const validItems = row.items.filter((it): it is KanaItem => Boolean(it))
+    if (validItems.length === 0) return
+
+    const allAlreadySelected = validItems.every((it) => Boolean(selectedKanaMap[it.kana]))
+
+    if (allAlreadySelected) {
+      setSelectedKanaMap((prev) => {
+        const next = { ...prev }
+        validItems.forEach((it) => {
+          delete next[it.kana]
+        })
+        return next
+      })
+      toast.info(`Deselected ${row.rowName}-row`)
+    } else {
+      const newItems: Record<string, KanaItem> = {}
+      validItems.forEach((it) => {
+        newItems[it.kana] = it
+      })
+      setSelectedKanaMap((prev) => ({ ...prev, ...newItems }))
+      setIsSelectMode(true)
+      toast.success(`Selected ${row.rowName}-row for quiz`)
+    }
   }
 
   // Launch quiz for a specific row
@@ -481,51 +497,67 @@ export function KanaChart() {
           {rows.map((row, rowIdx) => {
             const rowKey = row.items.find(Boolean)?.row || ''
             const rProg = rowProgress(script, rowKey, kanaMastery)
+            const validRowItems = row.items.filter((it): it is KanaItem => Boolean(it))
+            const isAllRowSelected =
+              validRowItems.length > 0 &&
+              validRowItems.every((it) => Boolean(selectedKanaMap[it.kana]))
 
             return (
               <div key={row.rowName} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 {/* Row title with mini-bar and quick actions */}
-                <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-36 shrink-0">
+                <div className="relative z-10 flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-center gap-2 sm:gap-1.5 w-full sm:w-40 shrink-0">
                   <span className="text-xs font-mono font-bold text-muted-foreground uppercase whitespace-nowrap">
                     {row.rowName}-row
                   </span>
-                  <div
-                    role="progressbar"
-                    aria-valuenow={rProg.knownPct}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-label={`${row.rowName} progress: ${rProg.knownPct}%`}
-                    className="w-7 h-1.5 bg-muted/60 rounded-full overflow-hidden flex shrink-0"
-                    title={`${row.rowName}: ${rProg.knownPct}% known (${rProg.knownCount}/${rProg.total})`}
-                  >
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <div
-                      style={{ width: `${rProg.knownPct}%` }}
-                      className="bg-primary h-full transition-all"
-                    />
-                  </div>
-                  <div className="flex items-center gap-0.5 shrink-0">
-                    <button
-                      onClick={() => handleQuizRow(row)}
-                      className="p-1 rounded-md text-primary hover:bg-primary/10 transition-colors"
-                      title={`Quiz ${row.rowName}-row`}
+                      role="progressbar"
+                      aria-valuenow={rProg.knownPct}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`${row.rowName} progress: ${rProg.knownPct}%`}
+                      className="w-7 h-1.5 bg-muted/60 rounded-full overflow-hidden flex shrink-0"
+                      title={`${row.rowName}: ${rProg.knownPct}% known (${rProg.knownCount}/${rProg.total})`}
                     >
-                      <Zap className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      onClick={() => handleAddRowToSRS(row)}
-                      className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                      title={`Add ${row.rowName}-row to Daily SRS Reviews`}
-                    >
-                      <Plus className="h-3.5 w-3.5" />
-                    </button>
-                    {isSelectMode && (
+                      <div
+                        style={{ width: `${rProg.knownPct}%` }}
+                        className="bg-primary h-full transition-all"
+                      />
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
                       <button
-                        onClick={() => handleSelectRow(row)}
-                        className="text-[10px] text-primary hover:underline font-semibold px-1"
+                        type="button"
+                        onClick={() => handleQuizRow(row)}
+                        className="p-1 rounded-md text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+                        title={`Quiz ${row.rowName}-row`}
                       >
-                        +all
+                        <Zap className="h-3.5 w-3.5" />
                       </button>
-                    )}
+                      <button
+                        type="button"
+                        onClick={() => handleAddRowToSRS(row)}
+                        className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+                        title={`Add ${row.rowName}-row to Daily SRS Reviews`}
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleSelectRow(row)
+                        }}
+                        className={cn(
+                          'text-[10px] font-bold px-2 py-0.5 rounded-md border transition-colors cursor-pointer select-none',
+                          isAllRowSelected
+                            ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
+                            : 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/20'
+                        )}
+                        title={isAllRowSelected ? `Deselect ${row.rowName}-row` : `Select all in ${row.rowName}-row`}
+                      >
+                        {isAllRowSelected ? '✓ all' : '+all'}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
